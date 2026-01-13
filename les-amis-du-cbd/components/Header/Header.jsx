@@ -1,0 +1,24 @@
+import styles from './Header.module.css';
+import { User, Search, ShoppingBag } from 'lucide-react';
+
+export default function Header({ logoText, menuItems }) {
+    return (
+        <header className={styles.header}>
+            <div className={styles.container}>
+                <div className={styles.logo}>{logoText}</div>
+                <nav className={styles.nav}>
+                    <ul>
+                        {menuItems && menuItems.map((item, index) => (
+                            <li key={index}><a href={item.href}>{item.label}</a></li>
+                        ))}
+                    </ul>
+                </nav>
+                <div className={styles.actions}>
+                    <button className={styles.iconBtn} aria-label="Compte"><User size={20} /></button>
+                    <button className={styles.iconBtn} aria-label="Recherche"><Search size={20} /></button>
+                    <button className={styles.iconBtn} aria-label="Panier"><ShoppingBag size={20} /></button>
+                </div>
+            </div>
+        </header>
+    );
+}

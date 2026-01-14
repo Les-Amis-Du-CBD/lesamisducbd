@@ -1,0 +1,32 @@
+'use client';
+import { useState } from 'react';
+import styles from './FAQ.module.css';
+
+export default function FAQ({ items }) {
+    const [openIndex, setOpenIndex] = useState(null);
+
+    const toggle = (index) => {
+        setOpenIndex(openIndex === index ? null : index);
+    };
+
+    return (
+        <section className={styles.section}>
+            {items.map((item, index) => {
+                const isOpen = openIndex === index;
+                return (
+                    <div key={index} className={`${styles.item} ${isOpen ? styles.open : ''}`}>
+                        <button className={styles.question} onClick={() => toggle(index)}>
+                            <span>{item.question}</span>
+                            <span className={styles.icon}>{isOpen ? '-' : '+'}</span>
+                        </button>
+                        {isOpen && (
+                            <div className={styles.answer}>
+                                {item.answer}
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
+        </section>
+    );
+}

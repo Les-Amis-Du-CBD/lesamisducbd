@@ -1,0 +1,118 @@
+.section {
+    padding: 80px 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 95%;
+}
+
+.title {
+    font-size: 2rem;
+    color: var(--primary-dark);
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 600px 600px;
+    /* Large fixed height as per mockup */
+    gap: 30px;
+}
+
+.card {
+    position: relative;
+    border-radius: 40px;
+    overflow: hidden;
+    /* Box shadow or border? Mockup looks clean */
+}
+
+/* Specific grid cell modifications if needed, but 2x2 is simple */
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .image {
+    transform: scale(1.03);
+}
+
+.overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.cardTitle {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+/* Some cards have detailed text content overlaying the image */
+.textCard {
+    /* If the text is baked into the image, we don't need this.
+       But accessibility wise, we should add it if possible, or visually hidden.
+       The mockup shows text directly on images. 
+       Wait, the uploaded images seem to contain the text already?
+       Checking filenames: uploaded_image_1... might be the images provided.
+       If user provided images WITH text, I just render the images.
+       If user provided clean images, I need to overlay text.
+       
+       Let's assume images might contain text or I need to optimize. 
+       The user said "BentoGrid assets" and uploaded 4 images.
+       Let's assume they are the 4 main visuals.
+       Checking previous context: 
+       "uploaded_image_1...png" through 4.
+       They look like the final composition cards. 
+       If they are the full cards, CSS is just displaying them.
+       
+       However, "textCard" style is for when I need to overlay text if images are raw.
+       I will set up the component to handle both or just images for now based on file names.
+    */
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    right: 40px;
+    color: white;
+    text-align: left;
+}
+
+.list {
+    list-style: disc;
+    padding-left: 20px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.quoteSection {
+    margin-top: 100px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--text-white);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.author {
+    font-weight: 700;
+    color: var(--accent-neon);
+    font-size: 1rem;
+}

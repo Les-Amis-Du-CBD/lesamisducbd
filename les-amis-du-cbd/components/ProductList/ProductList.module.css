@@ -1,0 +1,138 @@
+.section {
+    padding: 80px 0;
+    width: 95%;
+    max-width: 1400px;
+    margin: 40px auto;
+    /* 40px gap, centered */
+    border-radius: 40px;
+    background: linear-gradient(90deg, #4AA088 0%, #112924 100%);
+    color: var(--text-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1.1;
+    max-width: 500px;
+}
+
+.viewAll {
+    color: var(--text-white);
+    text-decoration: none;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+}
+
+.viewAll:hover {
+    opacity: 1;
+    border-bottom-color: var(--text-white);
+}
+
+.grid {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.card {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--accent-neon);
+    color: var(--primary-dark);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.imageContainer {
+    width: 100%;
+    aspect-ratio: 4/5;
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    /* Transparent background for image */
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.productImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.productName {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: serif;
+    font-style: italic;
+}
+
+.rating {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.cta {
+    margin-top: auto;
+    background: var(--text-white);
+    color: var(--primary-dark);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    text-transform: uppercase;
+}
+
+.cta:hover {
+    transform: scale(1.05);
+}

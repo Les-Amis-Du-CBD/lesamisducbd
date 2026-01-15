@@ -43,7 +43,7 @@
       "id": "hero-home",
       "type": "Hero",
       "props": {
-        "backgroundImage": "https://images.unsplash.com/photo-1603909223429-69bb7101f420?q=80&w=2940&auto=format&fit=crop",
+        "backgroundImage": "/images/hero-flower.png",
         "title": "Le CBD fiable, testé et accessible.",
         "description": "Chez Les Amis du CBD, on fait simple : des produits naturels, conformes à la loi, analysés en laboratoire, et expliqués clairement.",
         "ctaLabel": "Découvrir nos produits",
@@ -55,32 +55,39 @@
       "type": "ProductList",
       "props": {
         "title": "Nos fleurs phares, pour chaque moment.",
-        "linkLabel": "Voir tout ->",
+        "description": "Que vous cherchiez à vous détendre, rester concentré ou mieux dormir, nos variétés de CBD sont sélectionnées pour leurs effets précis et naturels. Chaque fleur est cultivée sans chimie, pour un plaisir authentique à chaque utilisation.",
+        "linkLabel": "Voir Tout →",
         "linkHref": "/fleurs",
         "products": [
           {
             "name": "Gorilla Glue",
+            "subtitle": "GORILLA GLUE",
+            "quoteTitle": "“La Puissante”",
             "image": "/images/products/gorilla-glue.png",
-            "reviews": "145",
-            "tag": "La Puissante"
+            "priceInfo": "À partir de 2€ le gramme",
+            "tag": "Bestseller"
           },
           {
             "name": "Remedy",
+            "subtitle": "REMEDY",
+            "quoteTitle": "“La Relaxante”",
             "image": "/images/products/remedy.png",
-            "reviews": "98",
-            "tag": "La Relaxante"
+            "priceInfo": "À partir de 2€ le gramme"
           },
           {
             "name": "Super Skunk",
+            "subtitle": "SUPER SKUNK",
+            "quoteTitle": "“La Classique”",
             "image": "/images/products/super-skunk.png",
-            "reviews": "256",
-            "tag": "La Classique"
+            "priceInfo": "À partir de 2€ le gramme",
+            "tag": "Bestseller"
           },
           {
             "name": "Amnésia",
+            "subtitle": "AMNÉZIA",
+            "quoteTitle": "“La Rêveuse”",
             "image": "/images/products/amnesia.png",
-            "reviews": "180",
-            "tag": "La Rêveuse"
+            "priceInfo": "À partir de 2€ le gramme"
           }
         ]
       }

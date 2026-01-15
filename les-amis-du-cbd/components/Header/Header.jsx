@@ -1,9 +1,21 @@
+'use client';
+import { useState, useEffect } from 'react';
 import styles from './Header.module.css';
 import { User, Search, ShoppingBag } from 'lucide-react';
 
 export default function Header({ logoText, menuItems }) {
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
-        <header className={styles.header}>
+        <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
             <div className={styles.container}>
                 <div className={styles.logo}>{logoText}</div>
                 <nav className={styles.nav}>

@@ -1,31 +1,44 @@
 .section {
-    padding: 80px 0;
-    margin: 0 auto;
+    padding: 50px 0;
     width: calc(100% - 100px);
+    margin: 40px auto;
+    border-radius: 40px;
+    background: linear-gradient(90deg, #4AA088 0%, #112924 100%);
+    color: var(--text-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 40%);
+    gap: 25px 40px;
+    justify-content: center;
 }
 
 .item {
-    margin-bottom: 20px;
-    border-radius: var(--radius-md);
+    border-radius: 20px;
     overflow: hidden;
     background: transparent;
 }
 
 .question {
     width: 100%;
-    padding: 20px 30px;
-    background: var(--accent-neon);
-    color: var(--primary-dark);
+    padding: 12px 30px;
+    background: #2CEDBE;
+    color: #1F4B40;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: none;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 700;
     text-align: left;
     transition: filter 0.2s;
-    border-radius: 30px;
+    border-radius: 40px;
     /* Pill shape for closed/header */
 }
 
@@ -35,19 +48,19 @@
 
 .icon {
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 700;
 }
 
 .answer {
     padding: 30px;
     background: transparent;
     /* Text sits on background */
-    color: var(--primary-dark);
+    color: #1F4B40;
     font-size: 0.95rem;
     line-height: 1.6;
     opacity: 0.9;
     display: none;
-    border: 1px solid var(--accent-neon);
+    border: 1px solid #1F4B40;
     /* Dashed border in mockup? Or plain? Mockup has dashed border around everything? No, looks like container */
     border-top: none;
     border-radius: 0 0 30px 30px;

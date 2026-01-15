@@ -13,6 +13,28 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.header.scrolled {
+    height: 50px;
+    top: 10px;
+    background-color: rgba(17, 41, 36, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -32,12 +54,31 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    opacity: 0.9;
-    transition: opacity 0.3s;
+    opacity: 0.75;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: inline-block;
 }
 
 .nav a:hover {
     opacity: 1;
+    transform: translateY(-2px);
+    letter-spacing: 0.08em;
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #00FFC2;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav a:hover::after {
+    width: 100%;
 }
 
 .actions {
@@ -53,12 +94,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.9;
-    transition: opacity 0.3s;
+    opacity: 0.8;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .iconBtn:hover {
     opacity: 1;
+    transform: scale(1.2) rotate(5deg);
+    color: #00FFC2;
 }
 
 .logo {

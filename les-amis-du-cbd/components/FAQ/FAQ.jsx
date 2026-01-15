@@ -11,22 +11,24 @@ export default function FAQ({ items }) {
 
     return (
         <section className={styles.section}>
-            {items.map((item, index) => {
-                const isOpen = openIndex === index;
-                return (
-                    <div key={index} className={`${styles.item} ${isOpen ? styles.open : ''}`}>
-                        <button className={styles.question} onClick={() => toggle(index)}>
-                            <span>{item.question}</span>
-                            <span className={styles.icon}>{isOpen ? '-' : '+'}</span>
-                        </button>
-                        {isOpen && (
-                            <div className={styles.answer}>
-                                {item.answer}
-                            </div>
-                        )}
-                    </div>
-                );
-            })}
+            <div className={styles.container}>
+                {items.map((item, index) => {
+                    const isOpen = openIndex === index;
+                    return (
+                        <div key={index} className={`${styles.item} ${isOpen ? styles.open : ''}`}>
+                            <button className={styles.question} onClick={() => toggle(index)}>
+                                <span>{item.question}</span>
+                                <span className={styles.icon}>{isOpen ? '-' : '+'}</span>
+                            </button>
+                            {isOpen && (
+                                <div className={styles.answer}>
+                                    {item.answer}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
         </section>
     );
 }

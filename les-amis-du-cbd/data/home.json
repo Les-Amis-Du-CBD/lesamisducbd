@@ -34,9 +34,7 @@
       "type": "Marquee",
       "props": {
         "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES • PLUS SIMPLE, MOINS CHER • LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES",
-        "speed": 90,
-        "backgroundColor": "transparent",
-        "textColor": "var(--primary-dark)"
+        "speed": 90
       }
     },
     {
@@ -79,8 +77,7 @@
             "subtitle": "SUPER SKUNK",
             "quoteTitle": "“La Classique”",
             "image": "/images/products/super-skunk.png",
-            "priceInfo": "À partir de 2€ le gramme",
-            "tag": "Bestseller"
+            "priceInfo": "À partir de 2€ le gramme"
           },
           {
             "name": "Amnésia",
@@ -132,6 +129,10 @@
       "props": {
         "items": [
           {
+            "question": "Le CBD est-il légal en France ?",
+            "answer": "Oui. Le CBD est légal en France dès lors qu'il respecte la réglementation en vigueur. Chez Les Amis du CBD, tous nos produits sont strictement conformes aux exigences légales : un taux de THC inférieur ou égal à 0,3 %."
+          },
+          {
             "question": "CBD et THC : quelle est la différence ?",
             "answer": "Le CBD (cannabidiol) est une molécule naturellement présente dans le chanvre. Contrairement au THC, il n'a aucun effet psychotrope et ne provoque pas de sensation de \"planer\". C'est précisément cette différence qui rend le CBD légal et autorisé à la vente en France."
           },
@@ -142,10 +143,6 @@
           {
             "question": "Le CBD provoque-t-il des effets secondaires ?",
             "answer": "Le CBD est généralement bien toléré et ne provoque pas d'effets indésirables majeurs lorsqu'il est consommé dans des doses raisonnables. Comme pour tout produit naturel, certaines personnes peuvent ressentir de légers effets passagers."
-          },
-          {
-            "question": "Le CBD est-il légal en France ?",
-            "answer": "Oui. Le CBD est légal en France dès lors qu'il respecte la réglementation en vigueur. Chez Les Amis du CBD, tous nos produits sont strictement conformes aux exigences légales : un taux de THC inférieur ou égal à 0,3 %."
           }
         ]
       }

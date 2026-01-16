@@ -4,6 +4,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 100px);
+    max-width: 1500px;
     height: 60px;
     background-color: var(--primary-dark);
     border-radius: var(--radius-pill);
@@ -109,4 +110,11 @@
     font-size: 1.1rem;
     letter-spacing: 0.05em;
     font-style: italic;
+}
+
+.logoImage {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }

@@ -9,6 +9,7 @@
       "type": "Header",
       "props": {
         "logoText": "LES AMIS DU CBD",
+        "logoImage": "/images/logo.png",
         "menuItems": [
           {
             "label": "PRODUITS",
@@ -34,7 +35,7 @@
       "type": "Marquee",
       "props": {
         "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES • PLUS SIMPLE, MOINS CHER • LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES",
-        "speed": 90
+        "speed": 50
       }
     },
     {

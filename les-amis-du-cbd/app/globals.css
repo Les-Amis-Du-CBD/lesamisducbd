@@ -35,7 +35,7 @@
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-bricolage), 'Bricolage Grotesque', sans-serif;
   background-color: var(--background-light);
   color: var(--text-main);
   overflow-x: hidden;

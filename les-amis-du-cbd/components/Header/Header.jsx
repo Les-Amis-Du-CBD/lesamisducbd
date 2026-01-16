@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './Header.module.css';
 import { User, Search, ShoppingBag } from 'lucide-react';
 
-export default function Header({ logoText, menuItems }) {
+export default function Header({ logoText, logoImage, menuItems }) {
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -17,7 +17,13 @@ export default function Header({ logoText, menuItems }) {
     return (
         <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
             <div className={styles.container}>
-                <div className={styles.logo}>{logoText}</div>
+                <div className={styles.logo}>
+                    {logoImage ? (
+                        <img src={logoImage} alt={logoText || 'Logo'} className={styles.logoImage} />
+                    ) : (
+                        logoText
+                    )}
+                </div>
                 <nav className={styles.nav}>
                     <ul>
                         {menuItems && menuItems.map((item, index) => (

@@ -9,8 +9,9 @@
     background-color: #1F4B40;
     color: #fff;
     width: 95%;
-    max-width: 1400px;
-    padding: 20px 80px; /* Modifiez ces valeurs pour ajuster l'épaisseur interne (padding) */
+    max-width: 1500px;
+    padding: 20px 80px;
+    /* Modifiez ces valeurs pour ajuster l'épaisseur interne (padding) */
     border-radius: 40px;
     box-sizing: border-box;
 }

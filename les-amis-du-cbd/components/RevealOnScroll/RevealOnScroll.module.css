@@ -1,0 +1,17 @@
+.reveal {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform;
+    /* Performance optimization: Isolate layout and painting */
+    contain: content;
+}
+
+.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    /* Release memory resources after animation */
+    will-change: auto;
+    /* Maintain containment */
+    contain: content;
+}

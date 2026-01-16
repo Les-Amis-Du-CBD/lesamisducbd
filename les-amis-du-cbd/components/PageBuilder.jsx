@@ -7,6 +7,7 @@ import FAQ from './FAQ/FAQ';
 import BentoGrid from './BentoGrid/BentoGrid';
 import Link from 'next/link';
 import Footer from './Footer/Footer';
+import RevealOnScroll from './RevealOnScroll/RevealOnScroll';
 
 const componentMap = {
     Header: Header,
@@ -30,7 +31,17 @@ export default function PageBuilder({ sections }) {
                     console.warn(`No component found for type: ${section.type}`);
                     return null;
                 }
-                return <Component key={index} {...section.props} />;
+
+                // Don't animate Header (it's fixed)
+                if (section.type === 'Header') {
+                    return <Component key={index} {...section.props} />;
+                }
+
+                return (
+                    <RevealOnScroll key={index}>
+                        <Component {...section.props} />
+                    </RevealOnScroll>
+                );
             })}
         </>
     );

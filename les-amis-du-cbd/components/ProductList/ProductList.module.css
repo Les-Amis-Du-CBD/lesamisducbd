@@ -1,6 +1,7 @@
 .section {
     padding: 120px 0;
-    width: calc(100% - 100px);
+    width: 95%;
+    max-width: 1400px;
     margin: 40px auto;
     /* 40px gap, centered */
     border-radius: 40px;
@@ -97,11 +98,11 @@
 
 .badge {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 2%;
+    left: 2%;
     background: #00FFC2;
     color: var(--primary-dark);
-    padding: 8px 20px;
+    padding: 2.5% 6.5%;
     border-radius: 50px;
     font-size: 0.9rem;
     font-weight: 700;

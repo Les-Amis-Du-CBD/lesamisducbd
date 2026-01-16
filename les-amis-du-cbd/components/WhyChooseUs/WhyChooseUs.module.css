@@ -3,7 +3,8 @@
     position: relative;
     background-color: var(--primary-dark);
     color: var(--text-white);
-    width: calc(100% - 100px);
+    width: 95%;
+    max-width: 1400px;
     margin: 40px auto;
     border-radius: 40px;
 }

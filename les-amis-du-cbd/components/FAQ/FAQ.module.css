@@ -1,6 +1,7 @@
 .section {
     padding: 50px 0;
-    width: calc(100% - 100px);
+    width: 95%;
+    max-width: 1400px;
     margin: 40px auto;
     border-radius: 40px;
     background: linear-gradient(90deg, #4AA088 0%, #112924 100%);
@@ -13,8 +14,10 @@
     width: 95%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(2, 40%);
-    gap: 25px 40px;
+    grid-template-columns: repeat(2, 48%);
+    /* Fluid columns */
+    gap: 3% 4%;
+    /* Fluid gap */
     justify-content: center;
 }
 

@@ -1,6 +1,7 @@
 .heroWrapper {
-    width: calc(100% - 90px);
-    margin: 0 auto;
+    width: 95%;
+    max-width: 1400px;
+    margin: 40px auto;
     height: 90vh;
 
     background-size: cover;
@@ -18,13 +19,16 @@
 
 .glassCard {
     position: absolute;
-    top: 60%;
-    left: 80px;
+    top: 50%;
+    left: 5%;
+    /* Fluid left margin */
     transform: translateY(-50%);
 
-    width: 60%;
+    width: 50%;
+    /* Fluid width */
     max-width: 900px;
-    padding: 40px 100px;
+    padding: 3vw 5vw;
+    /* Fluid padding */
     text-align: left;
     display: flex;
     flex-direction: column;

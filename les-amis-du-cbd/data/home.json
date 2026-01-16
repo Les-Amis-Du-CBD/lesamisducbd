@@ -42,8 +42,8 @@
       "type": "Hero",
       "props": {
         "backgroundImage": "/images/hero-flower.png",
-        "title": "Le CBD fiable, testé et accessible.",
-        "description": "Chez Les Amis du CBD, on fait simple : des produits naturels, conformes à la loi, analysés en laboratoire, et expliqués clairement.",
+        "title": "Le CBD fiable, testé<br /> et accessible.",
+        "description": "Chez Les Amis du CBD, on fait simple :<br /> des produits naturels, conformes à la loi, analysés en laboratoire,<br /> et expliqués clairement.",
         "ctaLabel": "Découvrir nos produits",
         "ctaLink": "/boutique"
       }
@@ -53,7 +53,7 @@
       "type": "ProductList",
       "props": {
         "title": "Nos fleurs phares, pour chaque moment.",
-        "description": "Que vous cherchiez à vous détendre, rester concentré ou mieux dormir, nos variétés de CBD sont sélectionnées pour leurs effets précis et naturels. Chaque fleur est cultivée sans chimie, pour un plaisir authentique à chaque utilisation.",
+        "description": "Que vous cherchiez à vous détendre, rester concentré·e ou<br /> mieux dormir, nos variétés de CBD sont sélectionnées pour<br /> leurs effets précis et naturels. Chaque fleur est cultivée sans<br /> chimie, pour un plaisir authentique à chaque utilisation.",
         "linkLabel": "Voir Tout →",
         "linkHref": "/fleurs",
         "products": [

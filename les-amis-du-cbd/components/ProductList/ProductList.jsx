@@ -10,10 +10,8 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
                     <h2 className={styles.title}>
                         {titleParts[0]} <br /> pour {titleParts[1]}
                     </h2>
-                    <div className={styles.centerHeader}>
-                        <p className={styles.description}>{description}</p>
-                    </div>
-                    <div className={styles.rightHeader}>
+                    <div className={styles.descriptionWrapper}>
+                        <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }}></p>
                         <Link href={linkHref} className={styles.viewAll}>
                             {linkLabel}
                         </Link>

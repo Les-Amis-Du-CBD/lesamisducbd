@@ -1,31 +1,72 @@
 .heroWrapper {
-    width: calc(100% - 100px);
+    width: calc(100% - 90px);
     margin: 0 auto;
-    /* Centered but margin top handled by parent or spacer */
-    height: 70vh;
-    border-radius: 40px;
+    height: 90vh;
+
     background-size: cover;
     background-position: center;
+
     position: relative;
     overflow: hidden;
-    /* margin-top handled by main padding */
+
+    border-radius: 40px;
 }
+
+/* =========================
+   GLASS CARD (OPAQUE BLUR)
+   ========================= */
 
 .glassCard {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 80px;
     transform: translateY(-50%);
-    max-width: 800px;
-    padding: 60px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(100px) brightness(70%);
-    -webkit-backdrop-filter: blur(100px) brightness(70%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    width: 60%;
+    max-width: 900px;
+    padding: 40px 100px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    /* Fond clair pour diffusion */
+    background: rgba(0, 0, 0, 0.22);
+
+    /* Flou très fort mais lumineux */
+    backdrop-filter: blur(80px) saturate(110%);
+    -webkit-backdrop-filter: blur(80px) saturate(110%);
+
     border-radius: 40px;
+
+    /* Bord très doux */
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    /* Ombre large pour détacher */
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
     color: white;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+
+    z-index: 2;
 }
+
+/* Diffusion lumineuse interne */
+.glassCard::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 40px;
+    background: radial-gradient(circle at top left,
+            rgba(255, 255, 255, 0.35),
+            rgba(255, 255, 255, 0.05) 70%);
+    pointer-events: none;
+}
+
+/* =========================
+   CONTENT
+   ========================= */
 
 .title {
     font-size: 3rem;
@@ -39,20 +80,68 @@
     font-size: 0.95rem;
     line-height: 1.5;
     margin-bottom: 30px;
+    max-width: 520px;
     opacity: 0.9;
 }
 
+/* =========================
+   CTA
+   ========================= */
+
 .cta {
-    background: white;
-    color: var(--primary-dark);
+    background: #FCFCF7;
+    color: #1C3A13;
     border: none;
-    padding: 12px 24px;
+
+    padding: 21px 28px;
     border-radius: 40px;
+
     font-weight: 600;
+    font-size: 0.9rem;
+
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cta:hover {
     transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 1024px) {
+    .glassCard {
+        left: 40px;
+        padding: 48px;
+        max-width: 90%;
+    }
+
+    .title {
+        font-size: 2.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .heroWrapper {
+        width: calc(100% - 40px);
+        height: auto;
+        min-height: 70vh;
+    }
+
+    .glassCard {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+
+        margin: 40px auto;
+        padding: 40px;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
 }

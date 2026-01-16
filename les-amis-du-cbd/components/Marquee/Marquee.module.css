@@ -8,7 +8,7 @@
     font-size: 2.2rem;
     word-spacing: 0.4rem;
     background-color: transparent;
-    color: #1F4B40;
+    color: var(--primary-dark);
 }
 
 .track {

@@ -5,7 +5,7 @@
     margin: 40px auto;
     /* 40px gap, centered */
     border-radius: 40px;
-    background: linear-gradient(90deg, #4AA088 0%, #112924 100%);
+    background: linear-gradient(45deg, #49B197 0%, #1F4B40 100%);
     color: var(--text-white);
     position: relative;
     overflow: hidden;

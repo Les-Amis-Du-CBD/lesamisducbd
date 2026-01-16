@@ -1,108 +1,130 @@
 .section {
-    padding: 100px 0;
+    padding: 80px 0;
     position: relative;
-    background-color: var(--primary-dark);
-    color: var(--text-white);
-    width: 95%;
-    max-width: 1400px;
-    margin: 40px auto;
-    border-radius: 40px;
+    background-color: #E6F9F5;
+    /* Light mint/cyan background */
+    color: var(--primary-dark);
+    width: 100%;
 }
 
 .container {
     width: 95%;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    gap: 60px;
+    flex-direction: column;
+    /* Stack Title, List, Button vertically */
     align-items: center;
-}
-
-.content {
-    flex: 1;
 }
 
 .title {
     font-size: 2.5rem;
-    color: var(--text-white);
-    margin-bottom: 40px;
-    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 50px;
+    font-weight: 500;
+    text-align: center;
 }
 
 .list {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* 6 columns */
+    gap: 24px;
+    /* Increased gap slightly */
+    width: 100%;
+}
+
+/* Responsiveness for the grid */
+@media (max-width: 1400px) {
+    .list {
+        grid-template-columns: repeat(3, 1fr);
+        /* Wrap to 3 cols */
+    }
+}
+
+@media (max-width: 768px) {
+    .list {
+        grid-template-columns: repeat(2, 1fr);
+        /* Wrap to 2 cols */
+    }
+}
+
+@media (max-width: 480px) {
+    .list {
+        grid-template-columns: 1fr;
+        /* Stack on mobile */
+    }
 }
 
 .item {
-    padding-left: 0;
+    background: linear-gradient(45deg, #49B197 0%, #1F4B40 100%);
+    /* Diagonal: light BL (#49B197) -> dark TR (#1F4B40) */
+    color: #fff;
+    padding: 30px 24px 24px;
+    /* Top padding slightly larger for title spacing */
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center items horizontally */
+    text-align: center;
+    /* Center text */
+    transition: transform 0.3s ease;
+    min-height: auto;
+    aspect-ratio: 1;
+    /* Make cards square */
+    justify-content: flex-start;
+    /* Start content at top */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.item:hover {
+    transform: translateY(-5px);
 }
 
 .itemTitle {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    letter-spacing: 0.05em;
-    color: var(--accent-neon);
-    margin-bottom: 5px;
+    color: #fff;
+    margin-bottom: 0;
+    /* Let description spacing handle the gap */
+    line-height: 1.3;
+    flex-shrink: 0;
+    /* Ensure title doesn't shrink */
 }
 
 .itemDesc {
     font-size: 0.85rem;
-    opacity: 0.8;
+    opacity: 0.9;
     line-height: 1.5;
-    opacity: 0.8;
-    line-height: 1.5;
-    color: var(--text-white);
-    max-width: 90%;
+    color: #fff;
+    margin-top: auto;
+    /* Push to center/bottom */
+    margin-bottom: auto;
+    /* Push to center/top, combined = center in free space */
 }
 
 .cta {
     margin-top: 50px;
     background: white;
-    color: var(--primary-dark);
-    border: 1px solid var(--primary-dark);
+    color: #1C3A13;
+    border: none;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+    /* Even stronger shadow */
     padding: 12px 30px;
     border-radius: 30px;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: 400;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .cta:hover {
-    background: var(--primary-dark);
+    background: #356859;
     color: white;
-}
-
-.collage {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 20px;
-    height: 600px;
-}
-
-.largeImage {
-    grid-column: 1 / 3;
-    grid-row: 1 / 2;
-    background-color: #e0d0c0;
-    /* Placeholder color similar to mockup */
-    border-radius: 24px;
-    overflow: hidden;
-    position: relative;
-}
-
-.smallImage {
-    background-color: #e0d0c0;
-    border-radius: 24px;
-    overflow: hidden;
-    position: relative;
-}
-
-.image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }

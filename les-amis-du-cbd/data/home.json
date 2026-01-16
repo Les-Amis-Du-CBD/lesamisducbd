@@ -97,28 +97,28 @@
         "ctaLabel": "Qui sommes-nous ?",
         "features": [
           {
-            "title": "L'EXPERTISE C'EST LA CLEF",
-            "description": "Tous nos produits sont sélectionnés parmi des récoltes de qualité."
+            "title": "LE NATUREL C'EST GRATUIT.",
+            "description": "Pas de promesses inutiles, juste des choix simples et assumés."
           },
           {
-            "title": "DES PRIX QUI COMPTENT",
-            "description": "Nous faisons tout pour vous offrir un rapport qualité/prix imbattable."
+            "title": "QUALITÉ CONSTANTE, SANS SURCOÛT",
+            "description": "Moins de transformations, moins de frais inutiles, plus de transparence."
           },
           {
-            "title": "PAS DE COMPROMIS",
-            "description": "Tous nos produits respectent des exigences légales et environnementales strictes."
+            "title": "PAS D'ÉCLAIRAGE ARTIFICIEL",
+            "description": "La plante grandit au rythme du soleil, pas sous des lampes."
           },
           {
-            "title": "POUR UN MODE DE VIE SIMPLE",
-            "description": "Le plaisir sans prise de tête, tout simplement."
+            "title": "ZÉRO ENGRAIS CHIMIQUE",
+            "description": "Nos fleurs poussent naturellement, sans produits chimiques ni artifices."
           },
           {
-            "title": "CULTURE 100% NATURE",
-            "description": "Des fleurs respectueuses de l'environnement, cultivées sans artifices."
+            "title": "AUCUN LAVAGE THC",
+            "description": "Pas de traitements pour corriger après coup. Ce que vous voyez est ce que vous consommez."
           },
           {
-            "title": "AVANT TOUT DES PASSIONNÉS",
-            "description": "Nous sommes là pour répondre à toutes vos questions."
+            "title": "CULTURE EN EXTÉRIEUR",
+            "description": "Une croissance naturelle, plus respectueuse du produit et de ses effets."
           }
         ]
       }
@@ -148,90 +148,42 @@
       }
     },
     {
-      "id": "bento-section",
-      "type": "BentoGrid",
-      "props": {
-        "title": "Transparence totale, sécurité maximale :",
-        "quote": {
-          "text": "Nous sommes avant tout des passionnés. Déçus par un marché rempli de produits médiocres et hors de prix, nous avons décidé de faire autrement.",
-          "author": "Nelson – Les Amis du CBD"
-        },
-        "items": [
-          {
-            "image": "/images/bento/bento-1.png",
-            "title": "Un CBD accessible, sans compromis."
-          },
-          {
-            "image": "/images/bento/bento-2.png",
-            "title": "Testé, analysé, vérifiable."
-          },
-          {
-            "image": "/images/bento/bento-3.png",
-            "title": "Zéro lavage chimique."
-          },
-          {
-            "image": "/images/bento/bento-4.png",
-            "title": "Une culture 100% naturelle."
-          }
-        ]
-      }
-    },
-    {
       "id": "main-footer",
       "type": "Footer",
       "props": {
-        "copyright": "©2024 - Les Amis du CBD",
-        "columns": [
+        "columnLinks": [
           {
-            "title": "Informations",
-            "type": "links",
-            "items": [
-              {
-                "label": "À propos",
-                "href": "/about"
-              },
-              {
-                "label": "Blog",
-                "href": "/blog"
-              },
-              {
-                "label": "Politique de confidentialité",
-                "href": "/privacy"
-              },
-              {
-                "label": "Conditions générales",
-                "href": "/terms"
-              },
-              {
-                "label": "Mentions légales",
-                "href": "/legal"
-              }
-            ]
+            "label": "Livraison",
+            "href": "/livraison"
           },
           {
-            "title": "Contactez-nous",
-            "type": "links",
-            "items": [
-              {
-                "label": "Lundi à Vendredi : 9h-18h",
-                "href": "#"
-              },
-              {
-                "label": "2 Allée général Joffres, ...",
-                "href": "#"
-              },
-              {
-                "label": "contact@lesamisducbd.fr",
-                "href": "mailto:contact@lesamisducbd.fr"
-              }
-            ]
+            "label": "CGV",
+            "href": "/cgv"
           },
           {
-            "title": "Newsletter",
-            "type": "newsletter",
-            "text": "Restez informé de nos nouveautés."
+            "label": "Politique de confidentialité",
+            "href": "/privacy"
+          },
+          {
+            "label": "Transparence",
+            "href": "/transparence"
+          },
+          {
+            "label": "Buraliste",
+            "href": "/buraliste"
           }
-        ]
+        ],
+        "contactInfo": {
+          "title": "Les Amis du CBD France",
+          "address": "25 rue principale 07120 Chauzon (FR)",
+          "phone": "06 71 82 42 87",
+          "email": "lesamisducbd@gmail.com"
+        },
+        "newsletter": {
+          "placeholder": "Votre adresse e-mail",
+          "disclaimer": "Vous pouvez vous désinscrire à tout moment. Vous trouverez pour cela nos informations de contact dans les conditions d'utilisation du site."
+        },
+        "copyright": "©2024 - Les Amis du CBD"
       }
     }
   ]

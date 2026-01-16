@@ -1,81 +1,176 @@
-.footer {
-    background-color: var(--primary-dark);
-    color: var(--text-white);
-    padding: 80px 0 40px;
-    margin-top: 80px;
+.wrapper {
+    width: 100%;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
-    width: calc(100% - 100px);
-    margin: 0 auto;
+    background-color: #1F4B40;
+    color: #fff;
+    width: 95%;
+    max-width: 1400px;
+    padding: 20px 80px; /* Modifiez ces valeurs pour ajuster l'épaisseur interne (padding) */
+    border-radius: 40px;
+    box-sizing: border-box;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
-    margin-bottom: 60px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
 }
 
-.column h3 {
-    font-size: 1.1rem;
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--accent-neon);
+    color: #49B197;
+    /* Light Green Title */
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    width: 100%;
 }
 
+/* Links Column */
 .linkList {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
-.link {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.95rem;
-    transition: color 0.3s;
-    text-decoration: none;
-}
-
-.link:hover {
-    color: white;
-}
-
-.newsletterInput {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 12px 16px;
-    border-radius: 4px;
-    color: white;
-    width: 100%;
-    margin-bottom: 10px;
-    font-family: inherit;
-}
-
-.newsletterBtn {
-    background: white;
-    color: var(--primary-dark);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-}
-
-.bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 40px;
+.linkItem {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
 }
 
-.socials {
+.linkItem:hover {
+    opacity: 0.8;
+}
+
+.iconArrow {
+    color: #49B197;
+}
+
+/* Contact Column */
+.contactList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contactTitle {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.iconContact {
+    color: #49B197;
+    flex-shrink: 0;
+}
+
+/* Social & Newsletter Column */
+.socialSection {
+    margin-bottom: 40px;
+}
+
+.socialIcons {
     display: flex;
     gap: 20px;
+}
+
+.socialIcon {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.socialIcon:hover {
+    transform: scale(1.1);
+}
+
+.newsletterForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.inputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+    padding: 12px 20px;
+    padding-right: 40px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #1F4B40;
+}
+
+.input::placeholder {
+    color: #1F4B40;
+    opacity: 0.8;
+}
+
+.inputIcon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #49B197;
+    pointer-events: none;
+}
+
+.disclaimer {
+    font-size: 0.7rem;
+    line-height: 1.4;
+    opacity: 0.7;
+    text-align: justify;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .grid {
+        gap: 40px;
+    }
+
+    .container {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .container {
+        padding: 30px;
+        width: 90%;
+    }
 }

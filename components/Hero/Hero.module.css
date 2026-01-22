@@ -1,6 +1,6 @@
 .heroWrapper {
     width: 98%;
-    max-width: 1800px;
+    max-width: none;
     margin: auto auto;
     height: 90vh;
     min-height: 600px;

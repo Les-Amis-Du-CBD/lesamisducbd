@@ -10,7 +10,7 @@
     background-color: #1F4B40;
     color: #fff;
     width: 98%;
-    max-width: 1800px;
+    max-width: none;
 
     /* Fluid container padding */
     padding: clamp(30px, 5vw, 60px) clamp(20px, 8vw, 80px);

@@ -7,7 +7,7 @@
 
 .outerContainer {
     width: 96%;
-    max-width: 1600px;
+    max-width: none;
     margin: 0 auto;
     border-radius: clamp(20px, 4vw, 40px);
     background: linear-gradient(180deg, #49B197 0%, #173830 100%);
@@ -18,13 +18,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-@media (min-width: 1921px) {
-    .outerContainer {
-        width: 90%;
-        max-width: 2400px;
-    }
 }
 
 .header {

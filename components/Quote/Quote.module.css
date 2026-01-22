@@ -6,16 +6,9 @@
 
 .container {
     width: 96%;
-    max-width: 1600px;
+    max-width: none;
     margin: 0 auto;
     text-align: center;
-}
-
-@media (min-width: 1921px) {
-    .container {
-        width: 90%;
-        max-width: 2400px;
-    }
 }
 
 .quote {

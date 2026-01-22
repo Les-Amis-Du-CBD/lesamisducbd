@@ -6,7 +6,7 @@
 }
 
 .outerContainer {
-    width: 95%;
+    width: 97%;
     max-width: 1600px;
     margin: 0 auto;
     border-radius: clamp(20px, 4vw, 40px);

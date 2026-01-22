@@ -1,6 +1,6 @@
 .heroWrapper {
-    width: 98%;
-    max-width: none;
+    width: 95%;
+    max-width: 1600px;
     margin: auto auto;
     height: 90vh;
     min-height: 600px;
@@ -13,6 +13,13 @@
     overflow: hidden;
 
     border-radius: clamp(20px, 4vw, 40px);
+}
+
+@media (min-width: 1921px) {
+    .heroWrapper {
+        width: 90%;
+        max-width: 2400px;
+    }
 }
 
 /* =========================

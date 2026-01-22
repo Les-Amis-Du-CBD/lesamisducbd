@@ -8,13 +8,20 @@
 }
 
 .container {
-    width: 98%;
-    max-width: none;
+    width: 95%;
+    max-width: 1600px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     /* Stack Title, List, Button vertically */
     align-items: center;
+}
+
+@media (min-width: 1921px) {
+    .container {
+        width: 90%;
+        max-width: 2400px;
+    }
 }
 
 .title {

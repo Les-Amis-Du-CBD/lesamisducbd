@@ -149,6 +149,44 @@
       }
     },
     {
+      "id": "partners-section",
+      "type": "Partners",
+      "props": {
+        "title": "+ de 100",
+        "subtitle": "Buralistes partenaires en<br /> France. Testez gratuitement<br />et rejoignez-nous !",
+        "partners": [
+          {
+            "name": "NOM BUREAU DE TABAC",
+            "role": "Nom Gérant",
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+          },
+          {
+            "name": "NOM BUREAU DE TABAC",
+            "role": "Nom Gérant",
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+          },
+          {
+            "name": "NOM BUREAU DE TABAC",
+            "role": "Nom Gérant",
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+          },
+          {
+            "name": "NOM BUREAU DE TABAC",
+            "role": "Nom Gérant",
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "quote-section",
+      "type": "Quote",
+      "props": {
+        "text": "“Nous sommes avant tout des passionnés.<br />Déçus par un marché rempli de produits médiocres et hors de prix,<br />nous avons décidé de faire autrement.”",
+        "author": "Nelson — Les Amis du CBD"
+      }
+    },
+    {
       "id": "main-footer",
       "type": "Footer",
       "props": {

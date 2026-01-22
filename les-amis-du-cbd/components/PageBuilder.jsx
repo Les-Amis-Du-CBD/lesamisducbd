@@ -8,6 +8,9 @@ import BentoGrid from './BentoGrid/BentoGrid';
 import Link from 'next/link';
 import Footer from './Footer/Footer';
 import RevealOnScroll from './RevealOnScroll/RevealOnScroll';
+import Partners from './Partners/Partners';
+import Quote from './Quote/Quote';
+import ScrollToTop from './ScrollToTop/ScrollToTop';
 
 const componentMap = {
     Header: Header,
@@ -17,6 +20,8 @@ const componentMap = {
     WhyChooseUs: WhyChooseUs,
     FAQ: FAQ,
     BentoGrid: BentoGrid,
+    Partners: Partners,
+    Quote: Quote,
     Footer: Footer
 };
 
@@ -25,6 +30,7 @@ export default function PageBuilder({ sections }) {
 
     return (
         <>
+            <ScrollToTop />
             {sections.map((section, index) => {
                 const Component = componentMap[section.type];
                 if (!Component) {

@@ -1,0 +1,128 @@
+.section {
+    padding: 40px 0;
+    background-color: #E6F9F5;
+    /* Matches other sections */
+    width: 100%;
+}
+
+.outerContainer {
+    width: 95%;
+    max-width: 1500px;
+    margin: 0 auto;
+    border-radius: 40px;
+    background: linear-gradient(180deg, #49B197 0%, #173830 100%);
+    padding: 80px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.title {
+    font-size: 5rem;
+    font-weight: 800;
+    margin: 0;
+    color: #1F4B40;
+    line-height: 1;
+    letter-spacing: -0.06em;
+}
+
+.subtitle {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-top: 5px;
+    color: #1F4B40;
+    line-height: 1.2;
+    max-width: 800px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    /* Subtle glass effect */
+    padding: 40px 20px;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatarPlaceholder {
+    width: 130px;
+    height: 130px;
+    background: #D9D9D9;
+    border-radius: 50%;
+    margin-bottom: 30px;
+}
+
+.partnerName {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.partnerRole {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.partnerQuote {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: white;
+    opacity: 0.85;
+    font-weight: 400;
+}
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .title {
+        font-size: 4rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .outerContainer {
+        padding: 40px 20px;
+        border-radius: 20px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+
+    .avatarPlaceholder {
+        width: 100px;
+        height: 100px;
+    }
+}

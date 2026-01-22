@@ -44,11 +44,13 @@
     border-radius: 40px;
     position: relative;
     z-index: 10;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
 }
 
 .question:hover {
     filter: brightness(1.05);
     transform: translateY(-2px);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
 }
 
 .icon {

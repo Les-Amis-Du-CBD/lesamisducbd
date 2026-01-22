@@ -1,0 +1,102 @@
+.section {
+    padding: clamp(40px, 6vw, 60px) 0;
+    width: 100%;
+}
+
+.container {
+    width: 96%;
+    max-width: none;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 500;
+    margin-bottom: clamp(30px, 4vh, 50px);
+    color: #1F4B40;
+    /* Dark Green outside */
+    line-height: 1.1;
+    text-align: center;
+}
+
+/* The Green Pill Container */
+.pillContainer {
+    width: 100%;
+    /* Gradient similar to mockup */
+    background: linear-gradient(90deg, #49B197 0%, #1F4B40 100%);
+    border-radius: clamp(30px, 5vw, 60px);
+    /* Highly rounded ends */
+    padding: clamp(20px, 3vw, 40px);
+
+    display: flex;
+    justify-content: center;
+    gap: clamp(15px, 2vw, 30px);
+    flex-wrap: wrap;
+    box-shadow: 0 10px 30px rgba(31, 75, 64, 0.15);
+}
+
+.card {
+    /* Darker/Glassy card inside the green pill */
+    background: rgba(31, 75, 64, 0.2);
+    /* Or maybe just transparent dark glass? Mockup shows darkish cards */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: clamp(15px, 2vw, 25px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Responsive sizing */
+    flex: 1;
+    min-width: 140px;
+    max-width: 280px;
+    height: clamp(80px, 10vw, 120px);
+
+    transition: transform 0.3s ease, background 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    background: rgba(31, 75, 64, 0.3);
+}
+
+.logo {
+    max-width: 120%;
+    max-height: 120%;
+    object-fit: contain;
+    /* In case logos need to be white-ified or kept original? Mockup shows white/colored logos. 
+       Usually on dark green background, white logos pop. 
+       If uploaded logos are black text, they might be invisible. 
+       The uploaded logos looked colored. */
+}
+
+@media (max-width: 1024px) {
+    .pillContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
+        border-radius: 30px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .pillContainer {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+}

@@ -146,6 +146,36 @@
     filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
 }
 
+.pillsContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    /* Match CTA width for alignment */
+    margin-bottom: 12px;
+}
+
+.pillLeft,
+.pillRight {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.pillLeft {
+    background-color: #7EE3CB;
+    /* Light Mint/Turquoise similar to image */
+    color: #1F4B40;
+}
+
+.pillRight {
+    background-color: #1F4B40;
+    /* Dark Green */
+    color: #7EE3CB;
+    /* Light text */
+}
+
 .cta {
     background: #FCFCF7;
     color: #1C3A13;

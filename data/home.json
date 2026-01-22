@@ -50,6 +50,14 @@
       }
     },
     {
+      "id": "quality-banner",
+      "type": "QualityBanner",
+      "props": {
+        "title": "Engagement qualité",
+        "subtitle": "100 % satisfait ou remboursé !"
+      }
+    },
+    {
       "id": "featured-products",
       "type": "ProductList",
       "props": {
@@ -64,28 +72,36 @@
             "quoteTitle": "“La Puissante”",
             "image": "/images/products/gorilla-glue.png",
             "priceInfo": "À partir de 2€ le gramme",
-            "tag": "Bestseller"
+            "tag": "Bestseller",
+            "pillLeft": "4G 10€",
+            "pillRight": "10G 20€"
           },
           {
             "name": "Remedy",
             "subtitle": "REMEDY",
             "quoteTitle": "“La Relaxante”",
             "image": "/images/products/remedy.png",
-            "priceInfo": "À partir de 2€ le gramme"
+            "priceInfo": "À partir de 2€ le gramme",
+            "pillLeft": "4G 10€",
+            "pillRight": "10G 20€"
           },
           {
             "name": "Super Skunk",
             "subtitle": "SUPER SKUNK",
             "quoteTitle": "“La Classique”",
             "image": "/images/products/super-skunk.png",
-            "priceInfo": "À partir de 2€ le gramme"
+            "priceInfo": "À partir de 2€ le gramme",
+            "pillLeft": "4G 10€",
+            "pillRight": "10G 20€"
           },
           {
             "name": "Amnésia",
             "subtitle": "AMNÉZIA",
             "quoteTitle": "“La Rêveuse”",
             "image": "/images/products/amnesia.png",
-            "priceInfo": "À partir de 2€ le gramme"
+            "priceInfo": "À partir de 2€ le gramme",
+            "pillLeft": "4G 10€",
+            "pillRight": "10G 20€"
           }
         ]
       }
@@ -174,6 +190,31 @@
             "name": "NOM BUREAU DE TABAC",
             "role": "Nom Gérant",
             "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+          }
+        ]
+      }
+    },
+    {
+      "id": "partners-network",
+      "type": "PartnersNetwork",
+      "props": {
+        "title": "Un réseau de <br />partenaires reconnus.",
+        "partners": [
+          {
+            "image": "/images/partners_network/partner_1.png",
+            "name": "Vapexpo"
+          },
+          {
+            "image": "/images/partners_network/partner_4.png",
+            "name": "Losange"
+          },
+          {
+            "image": "/images/partners_network/partner_2.png",
+            "name": "Confédération"
+          },
+          {
+            "image": "/images/partners_network/partner_3.png",
+            "name": "Union CBD"
           }
         ]
       }

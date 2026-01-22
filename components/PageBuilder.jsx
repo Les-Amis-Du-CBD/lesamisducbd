@@ -12,12 +12,17 @@ import Partners from './Partners/Partners';
 import Quote from './Quote/Quote';
 import ScrollToTop from './ScrollToTop/ScrollToTop';
 
+import QualityBanner from './QualityBanner/QualityBanner';
+import PartnersNetwork from './PartnersNetwork/PartnersNetwork';
+
 const componentMap = {
     Header: Header,
     Marquee: Marquee,
     Hero: Hero,
+    QualityBanner: QualityBanner,
     ProductList: ProductList,
     WhyChooseUs: WhyChooseUs,
+    PartnersNetwork: PartnersNetwork,
     FAQ: FAQ,
     BentoGrid: BentoGrid,
     Partners: Partners,

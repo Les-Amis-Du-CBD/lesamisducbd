@@ -32,6 +32,11 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
                                 <img src={product.image} alt={product.name} className={styles.productImage} />
                             </div>
 
+                            <div className={styles.pillsContainer}>
+                                {product.pillLeft && <span className={styles.pillLeft}>{product.pillLeft}</span>}
+                                {product.pillRight && <span className={styles.pillRight}>{product.pillRight}</span>}
+                            </div>
+
                             <button className={styles.cta}>Découvrir cette variété</button>
 
                             <p className={styles.priceInfo}>{product.priceInfo}</p>

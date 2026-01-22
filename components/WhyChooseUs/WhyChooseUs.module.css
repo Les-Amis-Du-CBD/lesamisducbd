@@ -1,133 +1,247 @@
 .section {
-    padding: clamp(40px, 8vw, 80px) 0;
+    padding: clamp(60px, 8vw, 100px) 0;
     position: relative;
     background-color: #E6F9F5;
-    /* Light mint/cyan background */
-    color: var(--primary-dark);
     width: 100%;
+    overflow: hidden;
 }
 
 .container {
     width: 96%;
     max-width: none;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    /* Stack Title, List, Button vertically */
-    align-items: center;
+
+    /* GRID LAYOUT for precise alignment */
+    display: grid;
+    /* 
+       Left Col (Image): 1fr
+       Right Col (Content): 1.5fr
+    */
+    grid-template-columns: 1fr 1.5fr;
+
+    /* 
+       Rows:
+       1. Title (Auto height)
+       2. List (Auto height - this is where Image aligns)
+       3. CTA (Auto height)
+    */
+    grid-template-rows: auto auto auto;
+
+    /* Named areas for clarity */
+    grid-template-areas:
+        ". title"
+        "image list"
+        ". cta";
+
+    gap: clamp(20px, 3vh, 40px) clamp(40px, 5vw, 80px);
+    /* Row Gap, Column Gap */
 }
 
+/* ==================
+   LEFT COLUMN (Image)
+   ================== */
+.imageCol {
+    grid-area: image;
+    /* Center image relative to the LIST row specifically */
+    align-self: center;
+    justify-self: center;
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    min-width: 300px;
+}
+
+.imageWrapper {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+}
+
+/* Optional glow/blob */
+.imageWrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    background: radial-gradient(circle, #49B197 0%, transparent 70%);
+    opacity: 0.2;
+    filter: blur(40px);
+    z-index: 0;
+}
+
+.scientistImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 20px 40px rgba(31, 75, 64, 0.2));
+    transition: transform 0.4s ease;
+}
+
+/* ==================
+   RIGHT COLUMN ITEMS
+   ================== */
+
 .title {
-    font-size: clamp(2rem, 4vw, 2.5rem);
-    color: var(--primary-dark);
-    margin-bottom: clamp(30px, 5vh, 50px);
-    font-weight: 500;
-    text-align: center;
+    grid-area: title;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    color: #1F4B40;
+    font-weight: 700;
+    text-align: left;
+    line-height: 1.1;
+    margin: 0;
+    /* Let grid gap handle spacing */
+    padding-right: clamp(20px, 4vw, 60px);
 }
 
 .list {
+    grid-area: list;
     display: grid;
-    /* 6 columns on large, reducing with media queries but grid-template-columns can also be responsive without media queries if using minmax, 
-       but keeping existing breakpoint logic for layout shifts is fine, just replacing gaps and padding */
-    grid-template-columns: repeat(6, 1fr);
-    /* 6 columns */
-    gap: clamp(12px, 2vw, 24px);
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(20px, 2.5vw, 30px);
     width: 100%;
-}
-
-/* Responsiveness for the grid layout - keeping milestones but using clamp for seamless transitions? 
-   Actually, changing column count is a discrete step, so media queries are correct here. 
-*/
-@media (max-width: 1500px) {
-    .list {
-        grid-template-columns: repeat(3, 1fr);
-        /* Wrap to 3 cols */
-    }
-}
-
-@media (max-width: 768px) {
-    .list {
-        grid-template-columns: repeat(2, 1fr);
-        /* Wrap to 2 cols */
-    }
-}
-
-@media (max-width: 480px) {
-    .list {
-        grid-template-columns: 1fr;
-        /* Stack on mobile */
-    }
+    padding-right: clamp(20px, 4vw, 60px);
 }
 
 .item {
-    background: linear-gradient(45deg, #49B197 0%, #1F4B40 100%);
-    /* Diagonal: light BL (#49B197) -> dark TR (#1F4B40) */
+    background: linear-gradient(145deg, #49B197, #1F4B40);
     color: #fff;
-
-    /* Fluid padding */
-    padding: clamp(20px, 3vw, 30px) clamp(16px, 2vw, 24px) clamp(16px, 2vw, 24px);
-
-    border-radius: clamp(15px, 2vw, 20px);
+    padding: clamp(25px, 3vw, 35px);
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    /* Center items horizontally */
-    text-align: center;
-    /* Center text */
-    transition: transform 0.3s ease;
-    min-height: auto;
-    aspect-ratio: 1;
-    /* Make cards square */
-    justify-content: flex-start;
-    /* Start content at top */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    align-items: flex-start;
+    text-align: left;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
 }
 
 .item:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .itemTitle {
-    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #fff;
-    margin-bottom: 0;
-    /* Let description spacing handle the gap */
-    line-height: 1.3;
-    flex-shrink: 0;
-    /* Ensure title doesn't shrink */
+    margin-bottom: 12px;
+    line-height: 1.2;
 }
 
 .itemDesc {
-    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
     opacity: 0.9;
     line-height: 1.5;
     color: #fff;
-    margin-top: auto;
-    /* Push to center/bottom */
-    margin-bottom: auto;
-    /* Push to center/top, combined = center in free space */
 }
 
 .cta {
-    margin-top: clamp(30px, 5vh, 50px);
+    grid-area: cta;
+    /* Add extra margin top if user wants separation from list */
+    margin-top: clamp(100px, 2vh, 20px);
     background: white;
     color: #1C3A13;
     border: none;
-    padding: clamp(10px, 1.5vw, 12px) clamp(20px, 3vw, 30px);
-    border-radius: 30px;
+    padding: clamp(12px, 1.5vw, 15px) clamp(30px, 3vw, 40px);
+    border-radius: 50px;
     cursor: pointer;
-    font-weight: 400;
-    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px #00000063;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    justify-self: start;
+    /* Left align in its grid cell */
 }
 
 .cta:hover {
     background: #356859;
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px #00000063;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================
+   RESPONSIVE
+   ================== */
+
+@media (max-width: 1200px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+
+    /* Reset Grid Areas for Flex layout */
+    .imageCol,
+    .title,
+    .list,
+    .cta {
+        grid-area: auto;
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .imageCol {
+        order: 1;
+        /* Image first */
+    }
+
+    .imageWrapper {
+        max-width: 450px;
+    }
+
+    .title {
+        order: 0;
+        /* Or 0 to have Title on top of image? User asked for Left Image / Right Content split, but on Mobile usually Title -> Image -> Content or Image -> Title -> Content */
+        text-align: center;
+        margin-bottom: 20px;
+        order: 2;
+        /* Let's put title after image on mobile for flow? Or before. Standard: Image is visual hook. */
+    }
+
+    /* If we want Title top on mobile: */
+    /* .title { order: 0; } */
+
+    .list {
+        order: 3;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cta {
+        order: 4;
+        align-self: center;
+        /* Center button on mobile */
+        justify-self: center;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 60px 0;
+    }
+
+    .list {
+        grid-template-columns: 1fr;
+        /* Stack cards */
+    }
+
+    .imageWrapper {
+        max-width: 300px;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
 }

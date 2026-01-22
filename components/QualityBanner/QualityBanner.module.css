@@ -1,0 +1,64 @@
+.section {
+    width: 100%;
+    /* Very light mint background to match theme but stay distinct */
+    background-color: #E6F9F5;
+    padding: clamp(30px, 4vw, 50px) 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: clamp(20px, 4vw, 40px);
+    /* Space from Hero */
+    border-radius: clamp(20px, 4vw, 40px);
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    /* Tight grouping */
+}
+
+.title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 900;
+    color: #1F4B40;
+    margin: 0;
+    text-transform: none;
+    /* User requested Sentence case visually like the image */
+    letter-spacing: -0.04em;
+    line-height: 1;
+    /* Gradient Text */
+    background: linear-gradient(90deg, #1F4B40 0%, #49B197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    
+}
+
+.subtitle {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 900;
+
+    /* Gradient Text */
+    background: linear-gradient(90deg, #1F4B40 0%, #49B197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    /* Fallback */
+
+    margin: 0;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 30px 20px;
+    }
+}

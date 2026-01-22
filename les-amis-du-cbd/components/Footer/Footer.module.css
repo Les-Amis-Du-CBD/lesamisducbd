@@ -1,6 +1,7 @@
 .wrapper {
     width: 100%;
-    padding: 40px;
+    /* Fluid wrapper padding */
+    padding: clamp(20px, 4vw, 40px);
     display: flex;
     justify-content: center;
 }
@@ -8,18 +9,20 @@
 .container {
     background-color: #1F4B40;
     color: #fff;
-    width: 95%;
-    max-width: 1500px;
-    padding: 20px 80px;
-    /* Modifiez ces valeurs pour ajuster l'épaisseur interne (padding) */
-    border-radius: 40px;
+    width: 98%;
+    max-width: 1800px;
+
+    /* Fluid container padding */
+    padding: clamp(30px, 5vw, 60px) clamp(20px, 8vw, 80px);
+
+    border-radius: clamp(20px, 4vw, 40px);
     box-sizing: border-box;
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 60px;
+    gap: clamp(30px, 5vw, 60px);
 }
 
 .column {
@@ -28,12 +31,12 @@
 }
 
 .header {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     font-weight: 700;
     color: #49B197;
     /* Light Green Title */
-    margin-bottom: 25px;
-    padding-bottom: 10px;
+    margin-bottom: clamp(15px, 2.5vw, 25px);
+    padding-bottom: clamp(5px, 1vw, 10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     display: inline-block;
     width: 100%;
@@ -43,7 +46,7 @@
 .linkList {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: clamp(10px, 1.5vw, 15px);
 }
 
 .linkItem {
@@ -52,7 +55,7 @@
     gap: 10px;
     color: #fff;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
     transition: opacity 0.2s;
 }
 
@@ -68,12 +71,12 @@
 .contactList {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: clamp(10px, 1.5vw, 15px);
 }
 
 .contactTitle {
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
     margin-bottom: 5px;
 }
 
@@ -81,7 +84,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 0.9rem;
+    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
     line-height: 1.4;
 }
 
@@ -92,7 +95,7 @@
 
 /* Social & Newsletter Column */
 .socialSection {
-    margin-bottom: 40px;
+    margin-bottom: clamp(20px, 4vw, 40px);
 }
 
 .socialIcons {
@@ -128,7 +131,7 @@
     border: none;
     outline: none;
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.2vw, 0.9rem);
     color: #1F4B40;
 }
 
@@ -147,7 +150,7 @@
 }
 
 .disclaimer {
-    font-size: 0.7rem;
+    font-size: clamp(0.65rem, 1vw, 0.75rem);
     line-height: 1.4;
     opacity: 0.7;
     text-align: justify;
@@ -158,20 +161,20 @@
     .grid {
         gap: 40px;
     }
-
-    .container {
-        padding: 40px;
-    }
 }
 
 @media (max-width: 768px) {
     .grid {
         grid-template-columns: 1fr;
-        gap: 50px;
+        gap: 40px;
     }
 
     .container {
-        padding: 30px;
-        width: 90%;
+        padding: 30px 20px;
+        width: 100%;
+    }
+
+    .wrapper {
+        padding: 20px;
     }
 }

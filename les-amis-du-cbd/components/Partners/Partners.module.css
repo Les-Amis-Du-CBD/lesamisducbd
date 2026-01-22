@@ -1,17 +1,20 @@
 .section {
-    padding: 40px 0;
+    padding: clamp(20px, 4vw, 40px) 0;
     background-color: #E6F9F5;
     /* Matches other sections */
     width: 100%;
 }
 
 .outerContainer {
-    width: 95%;
-    max-width: 1500px;
+    width: 98%;
+    max-width: 1800px;
     margin: 0 auto;
-    border-radius: 40px;
+    border-radius: clamp(20px, 4vw, 40px);
     background: linear-gradient(180deg, #49B197 0%, #173830 100%);
-    padding: 80px 40px;
+
+    /* Fluid padding */
+    padding: clamp(40px, 6vw, 80px) clamp(20px, 3vw, 40px);
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,11 +22,12 @@
 
 .header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: clamp(30px, 5vh, 60px);
 }
 
 .title {
-    font-size: 5rem;
+    /* Fluid font size for title */
+    font-size: clamp(3rem, 7vw, 5rem);
     font-weight: 800;
     margin: 0;
     color: #1F4B40;
@@ -32,7 +36,8 @@
 }
 
 .subtitle {
-    font-size: 2rem;
+    /* Fluid font size for subtitle */
+    font-size: clamp(1.2rem, 3vw, 2rem);
     font-weight: 500;
     margin-top: 5px;
     color: #1F4B40;
@@ -45,15 +50,15 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: clamp(10px, 2vw, 20px);
     width: 100%;
 }
 
 .card {
     background: rgba(255, 255, 255, 0.08);
     /* Subtle glass effect */
-    padding: 40px 20px;
-    border-radius: 20px;
+    padding: clamp(20px, 4vw, 40px) clamp(10px, 2vw, 20px);
+    border-radius: clamp(10px, 2vw, 20px);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -61,15 +66,15 @@
 }
 
 .avatarPlaceholder {
-    width: 130px;
-    height: 130px;
+    width: clamp(80px, 10vw, 130px);
+    height: clamp(80px, 10vw, 130px);
     background: #D9D9D9;
     border-radius: 50%;
-    margin-bottom: 30px;
+    margin-bottom: clamp(15px, 3vh, 30px);
 }
 
 .partnerName {
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
     font-weight: 800;
     text-transform: uppercase;
     color: white;
@@ -77,7 +82,7 @@
 }
 
 .partnerRole {
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
     font-weight: 500;
     color: white;
     margin-bottom: 15px;
@@ -85,7 +90,7 @@
 }
 
 .partnerQuote {
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
     line-height: 1.4;
     color: white;
     opacity: 0.85;
@@ -97,32 +102,10 @@
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    .title {
-        font-size: 4rem;
-    }
-
-    .subtitle {
-        font-size: 1.5rem;
-    }
 }
 
 @media (max-width: 768px) {
-    .outerContainer {
-        padding: 40px 20px;
-        border-radius: 20px;
-    }
-
     .grid {
         grid-template-columns: 1fr;
-    }
-
-    .title {
-        font-size: 3rem;
-    }
-
-    .avatarPlaceholder {
-        width: 100px;
-        height: 100px;
     }
 }

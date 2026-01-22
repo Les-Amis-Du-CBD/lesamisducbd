@@ -1,39 +1,37 @@
 .section {
-    padding: 100px 0;
+    padding: clamp(60px, 10vw, 100px) 0;
     background-color: #E6F9F5;
     width: 100%;
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
+    width: 98%;
+    max-width: 1800px;
     margin: 0 auto;
     text-align: center;
 }
 
 .quote {
-    font-size: 2.2rem;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 40px;
+    margin-bottom: clamp(25px, 4vh, 40px);
     color: #1F4B40;
 }
 
 .author {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 2vw, 1.3rem);
     font-weight: 600;
     font-style: normal;
     color: #1F4B40;
     opacity: 0.9;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-    .quote {
-        font-size: 1.6rem;
-    }
-
-    .section {
-        padding: 60px 0;
-    }
+/* Responsiveness 
+   With clamp, we barely need media queries, but we can keep them for layout shifts if needed.
+   In this simple centered component, clamp() handles almost everything.
+*/
+.quote br {
+    /* Optional: hide line breaks on very small screens if they break flow? 
+       For now, we trust the clamp to make text small enough to fit. */
 }

@@ -131,11 +131,11 @@
         "items": [
           {
             "question": "Le CBD est-il légal en France ?",
-            "answer": "Oui. Le CBD est légal en France dès lors qu'il respecte la réglementation en vigueur. Chez Les Amis du CBD, tous nos produits sont strictement conformes aux exigences légales : un taux de THC inférieur ou égal à 0,3 %."
+            "answer": "<b>Oui.</b><br /><br />Le CBD est légal en France dès lors qu'il respecte la réglementation en vigueur.<br /><br />Chez Les Amis du CBD, tous nos produits sont strictement conformes aux exigences légales :<br />– un taux de THC inférieur ou égal à 0,3 %<br />– une origine issue de variétés de Cannabis sativa L. autorisées<br />– des analyses réalisées par un laboratoire indépendant certifiant leur conformité"
           },
           {
             "question": "CBD et THC : quelle est la différence ?",
-            "answer": "Le CBD (cannabidiol) est une molécule naturellement présente dans le chanvre. Contrairement au THC, il n'a aucun effet psychotrope et ne provoque pas de sensation de \"planer\". C'est précisément cette différence qui rend le CBD légal et autorisé à la vente en France."
+            "answer": "Le CBD (cannabidiol) est une molécule naturellement présente dans le chanvre.<br />Contrairement au THC, il n'a aucun effet psychotrope et ne provoque pas de sensation de \"planer\".<br />C'est précisément cette différence qui rend le CBD légal et autorisé à la vente en France."
           },
           {
             "question": "Quel taux de TVA appliquons-nous ?",
@@ -143,7 +143,7 @@
           },
           {
             "question": "Le CBD provoque-t-il des effets secondaires ?",
-            "answer": "Le CBD est généralement bien toléré et ne provoque pas d'effets indésirables majeurs lorsqu'il est consommé dans des doses raisonnables. Comme pour tout produit naturel, certaines personnes peuvent ressentir de légers effets passagers."
+            "answer": "Le CBD est généralement bien toléré et ne provoque pas d'effets indésirables majeurs lorsqu'il est consommé dans des doses raisonnables.<br />Comme pour tout produit naturel, certaines personnes peuvent ressentir de légers effets passagers (fatigue, bouche sèche).<br />En cas de traitement médical ou de doute, il est recommandé de demander l'avis d'un professionnel de santé."
           }
         ]
       }

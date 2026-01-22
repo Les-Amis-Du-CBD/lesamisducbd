@@ -1,5 +1,5 @@
 .section {
-    padding: 80px 0;
+    padding: clamp(40px, 8vw, 80px) 0;
     position: relative;
     background-color: #E6F9F5;
     /* Light mint/cyan background */
@@ -8,8 +8,8 @@
 }
 
 .container {
-    width: 95%;
-    max-width: 1500px;
+    width: 98%;
+    max-width: 1800px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -18,23 +18,26 @@
 }
 
 .title {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 4vw, 2.5rem);
     color: var(--primary-dark);
-    margin-bottom: 50px;
+    margin-bottom: clamp(30px, 5vh, 50px);
     font-weight: 500;
     text-align: center;
 }
 
 .list {
     display: grid;
+    /* 6 columns on large, reducing with media queries but grid-template-columns can also be responsive without media queries if using minmax, 
+       but keeping existing breakpoint logic for layout shifts is fine, just replacing gaps and padding */
     grid-template-columns: repeat(6, 1fr);
     /* 6 columns */
-    gap: 24px;
-    /* Increased gap slightly */
+    gap: clamp(12px, 2vw, 24px);
     width: 100%;
 }
 
-/* Responsiveness for the grid */
+/* Responsiveness for the grid layout - keeping milestones but using clamp for seamless transitions? 
+   Actually, changing column count is a discrete step, so media queries are correct here. 
+*/
 @media (max-width: 1500px) {
     .list {
         grid-template-columns: repeat(3, 1fr);
@@ -60,9 +63,11 @@
     background: linear-gradient(45deg, #49B197 0%, #1F4B40 100%);
     /* Diagonal: light BL (#49B197) -> dark TR (#1F4B40) */
     color: #fff;
-    padding: 30px 24px 24px;
-    /* Top padding slightly larger for title spacing */
-    border-radius: 20px;
+
+    /* Fluid padding */
+    padding: clamp(20px, 3vw, 30px) clamp(16px, 2vw, 24px) clamp(16px, 2vw, 24px);
+
+    border-radius: clamp(15px, 2vw, 20px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,7 +88,7 @@
 }
 
 .itemTitle {
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -96,7 +101,7 @@
 }
 
 .itemDesc {
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
     opacity: 0.9;
     line-height: 1.5;
     color: #fff;
@@ -107,15 +112,15 @@
 }
 
 .cta {
-    margin-top: 50px;
+    margin-top: clamp(30px, 5vh, 50px);
     background: white;
     color: #1C3A13;
     border: none;
-    padding: 12px 30px;
+    padding: clamp(10px, 1.5vw, 12px) clamp(20px, 3vw, 30px);
     border-radius: 30px;
     cursor: pointer;
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px #00000063;
 }

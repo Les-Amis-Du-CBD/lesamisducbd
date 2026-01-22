@@ -1,8 +1,10 @@
 .heroWrapper {
-    width: 95%;
-    max-width: 1500px;
+    width: 98%;
+    max-width: 1800px;
     margin: auto auto;
     height: 90vh;
+    min-height: 600px;
+    /* Prevent it from being too small vertically on landscape mobile */
 
     background-size: cover;
     background-position: center;
@@ -10,7 +12,7 @@
     position: relative;
     overflow: hidden;
 
-    border-radius: 40px;
+    border-radius: clamp(20px, 4vw, 40px);
 }
 
 /* =========================
@@ -20,33 +22,30 @@
 .glassCard {
     position: absolute;
     top: 50%;
-    left: 5%;
-    /* Fluid left margin */
+    /* Fluid left position: 3% on very small screens, up to 5% on desktop */
+    left: clamp(3%, 5vw, 5%);
     transform: translateY(-50%);
 
-    width: 50%;
-    /* Fluid width */
+    /* Scale width between 90% (mobile) and 50% (desktop) */
+    width: clamp(300px, 90%, 50%);
     max-width: 900px;
-    padding: 3vw 5vw;
-    /* Fluid padding */
+
+    /* Fluid padding: 20px min, 50px max */
+    padding: clamp(20px, 5vw, 50px);
+
     text-align: left;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
-    /* Fond clair pour diffusion */
     background: rgba(0, 0, 0, 0.22);
 
-    /* Flou très fort mais lumineux */
     backdrop-filter: blur(80px) saturate(110%);
     -webkit-backdrop-filter: blur(80px) saturate(110%);
 
-    border-radius: 40px;
-
-    /* Bord très doux */
+    border-radius: clamp(20px, 4vw, 40px);
     border: 1px solid rgba(255, 255, 255, 0.18);
 
-    /* Ombre large pour détacher */
     box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.35),
         inset 0 1px 0 rgba(255, 255, 255, 0.25);
@@ -61,7 +60,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: 40px;
+    border-radius: clamp(20px, 4vw, 40px);
     background: radial-gradient(circle at top left,
             rgba(255, 255, 255, 0.35),
             rgba(255, 255, 255, 0.05) 70%);
@@ -73,17 +72,19 @@
    ========================= */
 
 .title {
-    font-size: 3rem;
+    /* Scale font from 2rem to 3.5rem */
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 600;
     line-height: 1.1;
-    margin-bottom: 20px;
+    margin-bottom: clamp(15px, 3vh, 30px);
     letter-spacing: -0.02em;
 }
 
 .description {
-    font-size: 0.95rem;
+    /* Scale from 0.85rem to 1rem */
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     line-height: 1.5;
-    margin-bottom: 30px;
+    margin-bottom: clamp(20px, 4vh, 40px);
     max-width: 520px;
     opacity: 0.9;
 }
@@ -97,11 +98,12 @@
     color: #1C3A13;
     border: none;
 
-    padding: 21px 28px;
+    padding: clamp(15px, 2vw, 21px) clamp(20px, 3vw, 28px);
     border-radius: 40px;
 
     font-weight: 600;
-    font-size: 0.9rem;
+    /* Scale button text */
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
 
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -113,39 +115,28 @@
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (Layout changes only)
    ========================= */
-
-@media (max-width: 1024px) {
-    .glassCard {
-        left: 40px;
-        padding: 48px;
-        max-width: 90%;
-    }
-
-    .title {
-        font-size: 2.4rem;
-    }
-}
+/* With clamp, we need fewer media queries for sizing, mostly just for layout switching (e.g. mobile stacking) */
 
 @media (max-width: 768px) {
-    .heroWrapper {
-        width: calc(100% - 40px);
-        height: auto;
-        min-height: 70vh;
-    }
-
     .glassCard {
+        /* On mobile, we might still want to position it differently or stack */
         position: relative;
         top: auto;
         left: auto;
         transform: none;
-
-        margin: 40px auto;
-        padding: 40px;
+        width: 100%;
+        /* Full width inside wrapper */
+        margin: 40px 0;
     }
 
-    .title {
-        font-size: 2rem;
+    .heroWrapper {
+        height: auto;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
     }
 }

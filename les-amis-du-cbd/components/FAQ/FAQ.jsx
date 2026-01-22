@@ -21,9 +21,10 @@ export default function FAQ({ items }) {
                                 <span className={styles.icon}>{isOpen ? '-' : '+'}</span>
                             </button>
                             {isOpen && (
-                                <div className={styles.answer}>
-                                    {item.answer}
-                                </div>
+                                <div
+                                    className={styles.answer}
+                                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                                />
                             )}
                         </div>
                     );

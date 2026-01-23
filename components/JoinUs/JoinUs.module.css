@@ -1,0 +1,78 @@
+.wrapper {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    /* Small space before footer */
+}
+
+.container {
+    background-color: #1F4B40;
+    /* Same as Footer */
+    color: #fff;
+    width: 96%;
+    max-width: none;
+    margin: 0 auto;
+
+    /* Fluid padding - Reduced vertical to minimal */
+    padding: clamp(20px, 3vw, 35px) clamp(25px, 6vw, 50px);
+
+    border-radius: clamp(20px, 4vw, 40px);
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Left align */
+    text-align: center;
+    /* Left align text */
+    gap: 20px;
+}
+
+.title {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    color: #7EE3CB;
+    margin: 0;
+    line-height: 1.2;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 25px;
+}
+
+.button {
+    background: #FCFCF7;
+    /* Slightly off-white */
+    color: #1F4B40;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    align-self: center;
+    /* Ensure button doesn't stretch */
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    background: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.text {
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 40px 20px;
+    }
+}

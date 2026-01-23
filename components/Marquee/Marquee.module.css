@@ -1,6 +1,7 @@
 .marqueeContainer {
     width: 100%;
-    overflow: hidden;
+    max-width: 100vw;
+    overflow-x: hidden;
     white-space: nowrap;
     padding: 5px 0 25px 0;
     font-weight: 900;

@@ -238,6 +238,8 @@
 @media (max-width: 600px) {
     .grid {
         grid-template-columns: 1fr;
+        /* Force 1 column */
+        gap: 25px;
     }
 
     .descriptionWrapper {

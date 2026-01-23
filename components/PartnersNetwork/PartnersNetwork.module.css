@@ -40,7 +40,7 @@
 
 .card {
     /* Darker/Glassy card inside the green pill */
-    background: rgba(31, 75, 64, 0.2);
+    background: #ffffff14;
     /* Or maybe just transparent dark glass? Mockup shows darkish cards */
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -91,7 +91,8 @@
 
 @media (max-width: 600px) {
     .pillContainer {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for compact logo view */
         padding: 20px;
     }
 

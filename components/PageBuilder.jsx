@@ -14,6 +14,7 @@ import ScrollToTop from './ScrollToTop/ScrollToTop';
 
 import QualityBanner from './QualityBanner/QualityBanner';
 import PartnersNetwork from './PartnersNetwork/PartnersNetwork';
+import JoinUs from './JoinUs/JoinUs';
 
 const componentMap = {
     Header: Header,
@@ -23,6 +24,7 @@ const componentMap = {
     ProductList: ProductList,
     WhyChooseUs: WhyChooseUs,
     PartnersNetwork: PartnersNetwork,
+    JoinUs: JoinUs,
     FAQ: FAQ,
     BentoGrid: BentoGrid,
     Partners: Partners,

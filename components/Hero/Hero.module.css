@@ -120,23 +120,36 @@
 /* With clamp, we need fewer media queries for sizing, mostly just for layout switching (e.g. mobile stacking) */
 
 @media (max-width: 768px) {
+    .heroWrapper {
+        height: auto;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
     .glassCard {
-        /* On mobile, we might still want to position it differently or stack */
         position: relative;
         top: auto;
         left: auto;
         transform: none;
         width: 100%;
-        /* Full width inside wrapper */
-        margin: 40px 0;
+        max-width: 400px;
+        margin: 0;
+        align-items: center;
+        text-align: center;
     }
 
-    .heroWrapper {
-        height: auto;
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+    .title {
+        text-align: center;
+        font-size: 2.5rem;
+    }
+
+    .description {
+        text-align: center;
+        font-size: 1rem;
     }
 }

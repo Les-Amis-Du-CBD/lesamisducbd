@@ -34,8 +34,8 @@
       "id": "promo-marquee",
       "type": "Marquee",
       "props": {
-        "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES • PLUS SIMPLE, MOINS CHER • LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES",
-        "speed": 50
+        "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES • PLUS SIMPLE, MOINS CHER",
+        "speed": 25
       }
     },
     {
@@ -225,6 +225,16 @@
       "props": {
         "text": "“Nous sommes avant tout des passionnés.<br />Déçus par un marché rempli de produits médiocres et hors de prix,<br />nous avons décidé de faire autrement.”",
         "author": "Nelson — Les Amis du CBD"
+      }
+    },
+    {
+      "id": "join-us-section",
+      "type": "JoinUs",
+      "props": {
+        "title": "Nous rejoindre",
+        "buttonLabel": "Venez par ici",
+        "buttonLink": "/recrutement",
+        "text": "Aucun poste ouvert pour le moment ? Les candidatures spontanées sont toujours les bienvenues."
       }
     },
     {

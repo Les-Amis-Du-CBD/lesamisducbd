@@ -1,41 +1,130 @@
 .header {
     position: fixed;
     top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 96%;
-    max-width: none;
+    left: 0;
+    width: 100%;
+    /* Full viewport width */
     height: 60px;
-    background-color: var(--primary-dark);
-    border-radius: var(--radius-pill);
+    display: flex;
+    justify-content: center;
+    /* Center the inner container */
     z-index: 1000;
+    pointer-events: none;
+    /* Let clicks pass through the full width wrapper.. wait no, buttons need clicks */
+    pointer-events: auto;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    padding: 0 2%;
+    /* Gap from edges */
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: var(--primary-dark);
     color: var(--text-white);
-    padding: 0 40px;
+    border-radius: var(--radius-pill);
+    width: 100%;
+    max-width: 1800px;
+    /* Optional max width */
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    padding: 0 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* Moving style to container */
+}
+
+.mobileToggle {
+    display: none;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+@media (max-width: 1024px) {
+    .header {
+        padding: 5px;
+        width: 100%;
+        /* Ensure full width wrapper */
+        left: 0;
+    }
+
+    .container {
+        /* Allow container to fill the available space minus padding */
+        width: 100%;
+    }
+
+    .mobileToggle {
+        display: block;
+        padding: 5px;
+        /* Ensure click area */
+        margin-right: 10px;
+        /* Space from logo if needed */
+    }
+
+    .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #1F4B40;
+        /* Dark Green bg */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+    }
+
+    .navOpen {
+        transform: translateX(0);
+    }
+
+    .nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .nav a {
+        font-size: 1.5rem;
+    }
 }
 
 @keyframes slideDown {
     from {
         opacity: 0;
-        transform: translate(-50%, -40px);
+        transform: translateY(-40px);
     }
 
     to {
         opacity: 1;
-        transform: translate(-50%, 0);
+        transform: translateY(0);
     }
 }
 
-.header.scrolled {
+/* Scrolled state affects the CONTAINER, not the wrapper */
+.header.scrolled .container {
     height: 50px;
+    /* Reduce height of container */
+    background-color: rgba(17, 41, 36, 1);
+    backdrop-filter: none;
+    /* No need for blur if opaque */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.header.scrolled {
     top: 10px;
-    background-color: rgba(17, 41, 36, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* Adjust wrapper position */
+    height: 50px;
+    /* Adjust wrapper height */
+    box-shadow: none;
+    /* Remove shadow from wrapper */
 }
 
 .container {
@@ -45,12 +134,14 @@
     width: 100%;
 }
 
-.nav ul {
+/* ... Header Styles ... */
+
+.desktopNav ul {
     display: flex;
     gap: 30px;
 }
 
-.nav a {
+.desktopNav a {
     font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -61,13 +152,13 @@
     display: inline-block;
 }
 
-.nav a:hover {
+.desktopNav a:hover {
     opacity: 1;
     transform: translateY(-2px);
     letter-spacing: 0.08em;
 }
 
-.nav a::after {
+.desktopNav a::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -78,8 +169,54 @@
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav a:hover::after {
+.desktopNav a:hover::after {
     width: 100%;
+}
+
+/* Mobile Nav Overlay (Portaled) */
+.mobileNavOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #1F4B40;
+    /* Dark Green bg matches header */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    /* Below Header (1000) so Header stays visible */
+    padding-top: 80px;
+    /* Offset for header */
+}
+
+.mobileNavOverlay ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.mobileNavOverlay a {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.mobileNavOverlay a:hover {
+    color: #49B197;
+}
+
+@media (max-width: 1024px) {
+    .desktopNav {
+        display: none;
+    }
 }
 
 .actions {

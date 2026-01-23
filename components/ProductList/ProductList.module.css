@@ -237,9 +237,26 @@
 
 @media (max-width: 600px) {
     .grid {
-        grid-template-columns: 1fr;
-        /* Force 1 column */
-        gap: 25px;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding-bottom: 20px;
+        /* Space for scrollbar/bounce */
+        -webkit-overflow-scrolling: touch;
+        /* Hide scrollbar for cleaner look */
+        scrollbar-width: none;
+    }
+
+    .grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card {
+        flex: 0 0 85%;
+        /* Shows a peek of the next card */
+        max-width: 85%;
+        scroll-snap-align: center;
     }
 
     .descriptionWrapper {

@@ -233,8 +233,30 @@
     }
 
     .list {
-        grid-template-columns: 1fr;
-        /* Stack cards */
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        width: 100vw;
+        /* Extend to full edge */
+        margin-left: -20px;
+        /* Offset parent padding */
+        padding: 0 20px 20px 20px;
+        /* Padding for scroll */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .item {
+        flex: 0 0 80%;
+        /* Carousel item width */
+        min-height: 150px;
+        /* Ensure content fits */
+        scroll-snap-align: center;
     }
 
     .imageWrapper {

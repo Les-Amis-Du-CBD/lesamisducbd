@@ -102,10 +102,25 @@
 /* Responsiveness - Simple stack for mobile */
 @media (max-width: 768px) {
     .grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        /* Allow auto height for stacked cards */
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
         gap: 20px;
+        padding-bottom: 20px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card {
+        flex: 0 0 85%;
+        aspect-ratio: 4/5;
+        /* Taller for mobile */
+        height: auto;
+        scroll-snap-align: center;
     }
 
     .card {

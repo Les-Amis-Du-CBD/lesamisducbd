@@ -91,9 +91,29 @@
 
 @media (max-width: 600px) {
     .pillContainer {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 columns for compact logo view */
-        padding: 20px;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding: 20px 20px 30px 20px;
+        /* Extra bottom padding */
+        border-radius: 30px;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        /* Align start to allow scrolling */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .pillContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card {
+        flex: 0 0 45%;
+        /* Show ~2 cards + peek */
+        min-width: 140px;
+        scroll-snap-align: center;
     }
 
     .title {

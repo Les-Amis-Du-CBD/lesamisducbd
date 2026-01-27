@@ -47,10 +47,18 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
 }
 
-.question:hover {
-    filter: brightness(1.05);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
+@media (hover: hover) {
+    .question:hover {
+        filter: brightness(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
+    }
+}
+
+.question:active {
+    filter: brightness(0.95);
+    transform: scale(0.99);
+    transition-duration: 0.1s;
 }
 
 .icon {

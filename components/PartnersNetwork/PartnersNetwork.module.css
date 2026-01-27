@@ -60,9 +60,17 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    background: rgba(31, 75, 64, 0.3);
+@media (hover: hover) {
+    .card:hover {
+        transform: translateY(-5px);
+        background: rgba(31, 75, 64, 0.3);
+    }
+}
+
+.card:active {
+    transform: scale(0.98);
+    background: rgba(31, 75, 64, 0.4);
+    transition-duration: 0.1s;
 }
 
 .logo {
@@ -95,7 +103,6 @@
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         gap: 15px;
-        padding: 20px 20px 30px 20px;
         /* Extra bottom padding */
         border-radius: 30px;
         flex-wrap: nowrap;

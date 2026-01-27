@@ -236,10 +236,18 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.iconBtn:hover {
-    opacity: 1;
-    transform: scale(1.2) rotate(5deg);
+@media (hover: hover) {
+    .iconBtn:hover {
+        opacity: 1;
+        transform: scale(1.2) rotate(5deg);
+        color: #00FFC2;
+    }
+}
+
+.iconBtn:active {
     color: #00FFC2;
+    transform: scale(0.95);
+    transition-duration: 0.1s;
 }
 
 .logo {

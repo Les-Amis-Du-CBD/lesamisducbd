@@ -61,9 +61,15 @@
     transition: all 0.3s ease;
 }
 
-.viewAll:hover {
-    opacity: 1;
-    border-bottom-color: var(--text-white);
+@media (hover: hover) {
+    .viewAll:hover {
+        opacity: 1;
+        border-bottom-color: var(--text-white);
+    }
+}
+
+.viewAll:active {
+    opacity: 0.6;
 }
 
 .grid {
@@ -86,12 +92,21 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     text-align: center;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+@media (hover: hover) {
+    .card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.card:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.15);
+    transition-duration: 0.1s;
 }
 
 .badge {
@@ -192,9 +207,17 @@
     margin-bottom: 10px;
 }
 
-.cta:hover {
-    transform: scale(1.02);
-    background: #f8f8f8;
+@media (hover: hover) {
+    .cta:hover {
+        transform: scale(1.02);
+        background: #f8f8f8;
+    }
+}
+
+.cta:active {
+    transform: scale(0.95);
+    background: #e0e0e0;
+    transition-duration: 0.1s;
 }
 
 .priceInfo {
@@ -203,8 +226,10 @@
     margin: 0;
 }
 
-.cta:hover {
-    transform: scale(1.05);
+@media (hover: hover) {
+    .cta:hover {
+        transform: scale(1.05);
+    }
 }
 
 /* Responsiveness */
@@ -236,13 +261,22 @@
 }
 
 @media (max-width: 600px) {
+    .container {
+        width: 100%;
+    }
+
+    .header {
+        padding: 0 20px;
+        /* Maintain alignment for text */
+    }
+
     .grid {
         display: flex;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         gap: 20px;
-        padding-bottom: 20px;
-        /* Space for scrollbar/bounce */
+        padding: 20px;
+        /* Space for shadows on all sides */
         -webkit-overflow-scrolling: touch;
         /* Hide scrollbar for cleaner look */
         scrollbar-width: none;

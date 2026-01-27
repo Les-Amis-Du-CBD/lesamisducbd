@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Header.module.css';
-import { User, Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { User, ShoppingBag, Menu, X } from 'lucide-react';
 
 export default function Header({ logoText, logoImage, menuItems }) {
     const [scrolled, setScrolled] = useState(false);
@@ -62,7 +62,7 @@ export default function Header({ logoText, logoImage, menuItems }) {
 
                     <div className={styles.actions}>
                         <button className={styles.iconBtn} aria-label="Compte"><User size={20} /></button>
-                        <button className={styles.iconBtn} aria-label="Recherche"><Search size={20} /></button>
+
                         <button className={styles.iconBtn} aria-label="Panier"><ShoppingBag size={20} /></button>
                     </div>
                 </div>

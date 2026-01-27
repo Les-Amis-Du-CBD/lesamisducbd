@@ -62,8 +62,15 @@
     transition: opacity 0.2s;
 }
 
-.linkItem:hover {
-    opacity: 0.8;
+@media (hover: hover) {
+    .linkItem:hover {
+        opacity: 0.8;
+    }
+}
+
+.linkItem:active {
+    opacity: 0.5;
+    transition-duration: 0.1s;
 }
 
 .iconArrow {
@@ -111,8 +118,15 @@
     transition: transform 0.2s;
 }
 
-.socialIcon:hover {
-    transform: scale(1.1);
+@media (hover: hover) {
+    .socialIcon:hover {
+        transform: scale(1.1);
+    }
+}
+
+.socialIcon:active {
+    transform: scale(0.95);
+    transition-duration: 0.1s;
 }
 
 .newsletterForm {
@@ -174,10 +188,5 @@
 
     .container {
         padding: 30px 20px;
-        width: 100%;
-    }
-
-    .wrapper {
-        padding: 20px;
     }
 }

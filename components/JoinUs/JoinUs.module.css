@@ -56,10 +56,18 @@
     /* Ensure button doesn't stretch */
 }
 
-.button:hover {
-    transform: translateY(-2px);
-    background: #fff;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+@media (hover: hover) {
+    .button:hover {
+        transform: translateY(-2px);
+        background: #fff;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.button:active {
+    transform: scale(0.95);
+    background: #e0e0e0;
+    transition-duration: 0.1s;
 }
 
 .text {

@@ -1,0 +1,228 @@
+.container {
+    background: linear-gradient(180deg, #49B197, #1F4B40);
+    border-radius: 40px;
+    padding: 3rem;
+    color: white;
+    width: 100%;
+    /* Extended to full length */
+    max-width: none;
+    /* Remove constraint to fill container */
+    margin: 0 auto;
+    margin: 0 auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+}
+
+.contentWrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 900px) {
+    .contentWrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 6rem;
+        /* Increased gap for better spacing on full width */
+        align-items: start;
+    }
+}
+
+.inputsColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sliderGroup {
+    margin-bottom: 0;
+}
+
+.labelRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.label {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.valueBox {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    min-width: 70px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+}
+
+.rangeInput {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.rangeInput::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: -4.5px;
+    /* Adjusted to center thumb: from -8px (too high) */
+}
+
+.rangeInput {
+    accent-color: #34d399;
+}
+
+.rangeLabels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+
+.subText {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+
+
+.resultsCard {
+    background-color: rgba(20, 50, 40, 0.5);
+    /* Dark semi-transparent green */
+    border-radius: 20px;
+    padding: 3rem;
+    /* Increased padding */
+    color: white;
+}
+
+.resultRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resultRow:last-child {
+    border-bottom: none;
+}
+
+.resultLabel {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.resultValue {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.savingsTitle {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.savingsAmount {
+    font-size: 4rem;
+    /* Larger font size */
+    font-weight: 800;
+    margin-bottom: 2rem;
+    line-height: 1;
+}
+
+.cardFooter {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cardFooter h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.benefitsList {
+    list-style: none;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.benefitsList li {
+    margin-bottom: 0.25rem;
+}
+
+.ctaButton {
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Dark button per image */
+    color: var(--primary-dark);
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.ctaButton:hover {
+    background-color: rgba(26, 68, 55, 1);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .title {
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+    }
+
+    .resultsCard {
+        padding: 1.5rem;
+    }
+
+    .savingsAmount {
+        font-size: 3rem;
+    }
+
+    .contentWrapper {
+        gap: 2rem;
+    }
+}

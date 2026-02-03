@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import Link from 'next/link';
 import styles from './Header.module.css';
 import { User, ShoppingBag, Menu, X } from 'lucide-react';
 
@@ -44,11 +45,13 @@ export default function Header({ logoText, logoImage, menuItems }) {
                     </button>
 
                     <div className={styles.logo}>
-                        {logoImage ? (
-                            <img src={logoImage} alt={logoText || 'Logo'} className={styles.logoImage} />
-                        ) : (
-                            logoText
-                        )}
+                        <Link href="/">
+                            {logoImage ? (
+                                <img src={logoImage} alt={logoText || 'Logo'} className={styles.logoImage} />
+                            ) : (
+                                logoText
+                            )}
+                        </Link>
                     </div>
 
                     {/* Desktop Nav */}

@@ -1,15 +1,15 @@
 import Image from 'next/image';
 import styles from './WhyChooseUs.module.css';
 
-export default function WhyChooseUs({ title, features, ctaLabel }) {
+export default function WhyChooseUs({ title, features, ctaLabel, imageSrc = "/images/whychooseus/Scientist.png", imageAlt = "Expert Les Amis du CBD", isReversed = false }) {
     return (
-        <section className={styles.section}>
-            <div className={styles.container}>
+        <section className={`${styles.section} ${isReversed ? styles.reversed : ''}`}>
+            <div className={`${styles.container} ${isReversed ? styles.containerReversed : ''}`}>
                 <div className={styles.imageCol}>
                     <div className={styles.imageWrapper}>
                         <Image
-                            src="/images/whychooseus/Scientist.png"
-                            alt="Expert Les Amis du CBD"
+                            src={imageSrc}
+                            alt={imageAlt}
                             width={800}
                             height={1000}
                             className={styles.scientistImage}
@@ -27,7 +27,7 @@ export default function WhyChooseUs({ title, features, ctaLabel }) {
                         </div>
                     ))}
                 </div>
-                <button className={styles.cta}>{ctaLabel}</button>
+                {ctaLabel && <button className={styles.cta}>{ctaLabel}</button>}
             </div>
         </section>
     );

@@ -247,7 +247,8 @@
 
 @media (max-width: 768px) {
     .section {
-        padding: 60px 0;
+        padding: 20px 0;
+        /* Reduced from 60px to bring sections closer */
     }
 
     .container {
@@ -260,10 +261,19 @@
         gap: 10px 0;
         align-items: center;
         padding: 0 10px;
-        /* Minimal side padding */
         width: 100%;
-        /* Use full width for this layout style */
     }
+
+    /* ... other existing styles ... */
+
+    .containerReversed .imageWrapper {
+        margin-left: 0;
+        margin-right: -20px;
+        /* Adjusted for larger size */
+        width: 100%;
+        /* Enlarged from 130% */
+    }
+
 
     .title {
         grid-area: title;
@@ -353,5 +363,127 @@
         justify-self: center;
         margin-top: 10px;
         order: unset;
+    }
+}
+
+/* ==================
+   REVERSED VARIANT
+   ================== */
+
+.containerReversed {
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-areas:
+        "title ."
+        "list image"
+        "cta .";
+}
+
+.containerReversed .title,
+.containerReversed .list {
+    padding-right: 0;
+    padding-left: clamp(20px, 4vw, 60px);
+    text-align: right;
+    /* Align right for desktop variation? Or keep left? Let's check user intent. Usually zig-zag implies alternating alignment. */
+}
+
+.containerReversed .list {
+    /* If list grid */
+    direction: rtl;
+    /* Trick to make grid items flow right to left? No, let's just swap padding. */
+    direction: ltr;
+    text-align: left;
+    /* Keep text left aligned inside cards */
+}
+
+/* Reset text align for title/items */
+.containerReversed .title {
+    text-align: left;
+    /* Keep left aligned text usually better for reading, just positioned on right? No, area is on left now. */
+    padding-left: 0;
+    /* Align with left edge of container */
+    padding-right: clamp(20px, 4vw, 60px);
+    /* Wait? Current Desktop: Image(Left) Title(Right). Reversed: Title(Left) Image(Right). */
+}
+
+/* Wait, Original Desktop:
+   grid-template-areas:
+        ". title"    (Title in col 2)
+        "image list" (Image col 1, List col 2)
+   Reversed Desktop:
+        "title ."    (Title in col 1)
+        "list image" (List col 1, Image col 2)
+*/
+
+.containerReversed .title {
+    padding-left: 0;
+    padding-right: clamp(20px, 4vw, 60px);
+}
+
+.containerReversed .list {
+    padding-left: 0;
+    padding-right: clamp(20px, 4vw, 60px);
+}
+
+.containerReversed .cta {
+    justify-self: start;
+    /* Align left */
+}
+
+@media (max-width: 1200px) {
+    .containerReversed {
+        /* Stacked on tablet usually, so order matters */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .containerReversed .imageCol {
+        order: 2;
+        /* Image below text? or Above? User said "Sens inverse on mobile" specifically? */
+    }
+
+    /* ... Logic for 1200px ... */
+}
+
+@media (max-width: 768px) {
+    .containerReversed {
+        display: grid;
+        grid-template-columns: 65% 35%;
+        grid-template-areas:
+            "title title"
+            "list image"
+            "cta cta";
+    }
+
+    .containerReversed .title {
+        text-align: center;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .containerReversed .imageCol {
+        margin-left: 0;
+        margin-right: 20px;
+        /* Mirrored */
+        justify-content: center;
+    }
+
+    .containerReversed .imageWrapper {
+        margin-left: 0;
+        margin-right: -20px;
+        /* Pull more right to compensate for size */
+        width: 150%;
+        /* Truly Enlarged to 150% specifically */
+    }
+
+    .containerReversed .list {
+        /* Increased padding to avoid text cutoff visually */
+        padding: 10px 60px 20px 20px;
+
+        /* Tighter gradient to ensure text remains visible longer */
+        mask-image: linear-gradient(to left, transparent 0%, black 10%, black 100%);
+        -webkit-mask-image: linear-gradient(to left, transparent 0%, black 10%, black 100%);
+
+        /* REVERSE FLOW: Items start from the right (Woman) and scroll left */
+        flex-direction: row-reverse;
     }
 }

@@ -86,7 +86,6 @@
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin-top: -4.5px;
     /* Adjusted to center thumb: from -8px (too high) */
 }
 
@@ -141,6 +140,12 @@
 .resultValue {
     font-size: 1.2rem;
     font-weight: 600;
+    white-space: nowrap;
+    /* Prevent wrapping */
+    flex-shrink: 0;
+    /* Don't squeeze */
+    margin-left: 1rem;
+    /* Ensure separation */
 }
 
 .savingsTitle {

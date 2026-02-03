@@ -1,8 +1,11 @@
 'use client';
 import { useState, useMemo } from 'react';
 import styles from './OfferComparator.module.css';
+import ContactModal from '@/components/ContactModal/ContactModal';
 
 export default function OfferComparator() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [grammage, setGrammage] = useState(2);
     const [prixAchat, setPrixAchat] = useState(5);
     const [ventesMensuelles, setVentesMensuelles] = useState(100);
@@ -166,13 +169,21 @@ export default function OfferComparator() {
                                 <li>Présentoirs et PLV offertes</li>
                                 <li><span style={{ textDecoration: 'underline' }}>Satisfait ou remboursé !</span></li>
                             </ul>
-                            <button className={styles.ctaButton}>
+                            <button
+                                className={styles.ctaButton}
+                                onClick={() => setIsModalOpen(true)}
+                            >
                                 Contactez un conseillé sympa
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <ContactModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </div>
     );
 }

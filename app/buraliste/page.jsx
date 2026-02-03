@@ -70,23 +70,28 @@ export default function BuralistePage() {
                     <div className={styles.heroContainer}>
                         <div className={styles.heroContent}>
                             <span className={styles.newBadge}>Nous rejoindre ?</span>
+                            <div className={styles.heroImageWrapper}>
+                                <img
+                                    src="/images/buraliste/header-illustration.png"
+                                    alt="Partenariat Buraliste"
+                                    className={styles.heroIllustration}
+                                />
+                            </div>
                             <h1 className={styles.heroTitle}>
                                 CBD accessible et pas cher pour buralistes : <br />
                                 devenez partenaire des Amis du CBD.
                             </h1>
-                            <p className={styles.heroText}>
-                                Les Amis du CBD est la seule marque recommandée par les professionnels.
-                                Nous vous offrons les meilleurs tarifs pour maximiser vos marges tout en satisfaisant vos clients.
-                            </p>
+                            <div className={styles.heroText}>
+                                <strong>Cher Buraliste,</strong>
+                                <br /><br />
+                                Les Amis du CBD est une marque française pensée pour les bureaux de tabac : du CBD naturel, légal, accessible en prix et simple à commercialiser.
+                                <br /><br />
+                                Notre ambition est claire : démocratiser le CBD de qualité, sans promesses floues ni prix excessifs.
+                                <br /><br />
+                                Votre bureau de tabac est le lieu idéal pour proposer un CBD pas cher, fiable et conforme à la réglementation, à une clientèle de plus en plus demandeuse.
+                            </div>
                         </div>
                         {/* Wrapper for Desktop Illustration - Hidden on mobile via CSS ideally, or just kept if not conflicting */}
-                        <div className={styles.heroImageWrapper}>
-                            <img
-                                src="/images/buraliste/header-illustration.png"
-                                alt="Partenariat Buraliste"
-                                className={styles.heroIllustration}
-                            />
-                        </div>
                     </div>
                 </section>
 

@@ -63,7 +63,7 @@
       "props": {
         "title": "Nos fleurs phares, pour chaque moment.",
         "description": "Que vous cherchiez à vous détendre, rester concentré·e ou<br /> mieux dormir, nos variétés de CBD sont sélectionnées pour<br /> leurs effets précis et naturels. Chaque fleur est cultivée sans<br /> chimie, pour un plaisir authentique à chaque utilisation.",
-        "linkLabel": "Voir Tout →",
+        "linkLabel": "Voir Tout",
         "linkHref": "/fleurs",
         "products": [
           {
@@ -192,6 +192,14 @@
             "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
           }
         ]
+      }
+    },
+    {
+      "id": "interactive-map",
+      "type": "InteractiveMap",
+      "props": {
+        "title": "Où nous retrouver ?",
+        "description": "Les Amis du CBD, c'est une marque proche de vous. Retrouvez nos produits dans une sélection de points de vente partenaires partout en France : bureaux de tabac, shops spécialisés et adresses de confiance."
       }
     },
     {

@@ -25,9 +25,12 @@
 }
 
 .newBadge {
-    color: var(--primary-dark);
+    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
     position: relative;
     display: inline-block;
@@ -60,8 +63,9 @@
 .heroText {
     color: var(--primary-dark);
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.5;
     max-width: 600px;
+    font-weight: 500;
     margin: 0 auto 3rem auto;
 }
 
@@ -307,12 +311,13 @@
     }
 
     .heroSection {
-        padding-top: 100px;
+        padding-top: 30px;
         padding-bottom: 40px;
     }
 
     .heroTitle {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
+        font-weight: 600;
     }
 
     .stepsSection {

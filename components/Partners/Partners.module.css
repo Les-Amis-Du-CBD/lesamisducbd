@@ -1,6 +1,6 @@
 .section {
     padding: clamp(20px, 4vw, 40px) 0;
-    background-color: #E6F9F5;
+    background-color: #E3FFF8;
     /* Matches other sections */
     width: 100%;
 }

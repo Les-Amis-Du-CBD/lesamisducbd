@@ -50,13 +50,19 @@ export default function BuralistePage() {
     };
 
     const whyChooseUsFeatures1 = [
-        { title: "Sérénité & Conformité", description: "Pas de stress. Produits 100% légaux, analyses labo fournies." },
-        { title: "Marges Garanties", description: "Achetez mieux, vendez mieux. Nos prix sont étudiés pour vous." }
+        { title: "Sécurité & légalité avant tout", description: "Produits conformes à la législation française, avec moins de 0,3 % de THC." },
+        { title: "Produits testés et traçables", description: "Analyses par des laboratoires indépendants et vente sous scellé de protection." },
+        { title: "Zéro risque en bureau de tabac", description: "Une gamme pensée pour une vente simple, claire et sans mauvaise surprise." },
+        { title: "CBD 100 % naturel, sans lavage chimique", description: "Fleurs cultivées naturellement, sans traitements artificiels, pour une qualité constante." },
+        { title: "Prix public ultra accessible", description: "Des fleurs entre 1,50 € et 2 € le gramme, adaptées à une forte demande." }
     ];
 
     const whyChooseUsFeatures2 = [
-        { title: "Produits Premium", description: "Fleurs naturelles, sans ajout, cultivées avec soin." },
-        { title: "Accompagnement Sur-Mesure", description: "PLV offerte, formation et conseils pour booster vos ventes." }
+        { title: "Gain de temps au quotidien", description: "Commandes rapides et gestion simplifiée pour se concentrer sur les ventes." },
+        { title: "Accompagnement clé en main", description: "Présentoirs adaptés, supports pédagogiques et outils d'aide à la vente inclus." },
+        { title: "Différenciation en point de vente", description: "Une offre CBD claire qui vous démarque de la concurrence." },
+        { title: "Marge attractive pour le buraliste", description: "Un produit accessible qui reste rentable et compétitif." },
+        { title: "Excellent rapport qualité / prix", description: "Un positionnement rare sur le marché, apprécié par les clients exigeants." }
     ];
 
     return (

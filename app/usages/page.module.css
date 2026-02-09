@@ -1,0 +1,243 @@
+/* Page Wrapper */
+.pageWrapper {
+    width: 100%;
+    overflow-x: hidden;
+    background: #E3FFF8;
+    /* Light mint background from mockup */
+}
+
+/* HERO SECTION */
+.heroSection {
+    padding: 60px 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.heroTitle {
+    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+}
+
+.heroImageWrapper {
+    width: 96%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.heroImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* INTRO SECTION */
+.introSection {
+    padding: 40px 0;
+    text-align: center;
+    max-width: 800px;
+    width: 96%;
+    margin: 0 auto;
+}
+
+.introTitle {
+    font-size: 1.8rem;
+    color: #1F4B40;
+    font-weight: 500;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.introText {
+    font-size: 1rem;
+    color: #1f4b40;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* CAROUSEL SECTION */
+.carouselSection {
+    padding: 40px 0;
+}
+
+.carouselTitle {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #1F4B40;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* WARNING SECTION */
+.warningSection {
+    padding: 0;
+    text-align: left;
+    max-width: 900px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* Shared Typography for both titles */
+.warningTitle,
+.responsibleTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 40px;
+    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.responsibleTitle {
+    background: linear-gradient(300deg, #1f4b40 0%, #49b197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.responsibleSection {
+    text-align: right;
+    margin-top: 40px;
+}
+
+
+/* ESSENTIAL INFO BOX */
+.essentialSection {
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    width: 96%;
+}
+
+.essentialBox {
+    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(31, 75, 64, 0.3);
+}
+
+.essentialTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.essentialList {
+    list-style: disc;
+    padding-left: 20px;
+    font-weight: 100;
+}
+
+.essentialList li {
+    margin-bottom: 5px;
+    line-height: 1.2;
+    opacity: 0.9;
+}
+
+
+
+/* DESKTOP ADAPTATION */
+@media (min-width: 1024px) {
+
+    /* Hero: Row Layout */
+    .heroSection {
+        flex-direction: row;
+        justify-content: center;
+        text-align: left;
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 60px;
+    }
+
+    .heroTitle {
+        flex: 1;
+        font-size: 3.5rem;
+        /* Larger on desktop */
+        margin-bottom: 0;
+        text-align: right;
+        /* Creative choice: Title on left or right? 
+                              Mockup has text top, image below. 
+                              Side-by-side: Title Left, Image Right is standard. 
+                              Let's try Title Left big, Image Right. 
+                           */
+        text-align: left;
+        max-width: 400px;
+    }
+
+    .heroImageWrapper {
+        flex: 1.5;
+        margin: 0;
+    }
+
+    /* Intro: Wider */
+    .introSection {
+        max-width: 1000px;
+        padding: 80px 20px;
+    }
+
+    .introTitle {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+
+    .introText {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto 30px;
+    }
+
+    /* Warning: Side by Side */
+    .warningSection {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        max-width: 1200px;
+        text-align: left;
+    }
+
+    .warningTitle,
+    .responsibleTitle {
+        font-size: 2.2rem;
+        margin-bottom: 0;
+    }
+
+    .responsibleSection {
+        text-align: left;
+        margin-top: 0;
+        border-left: 4px solid #1F4B40;
+        padding-left: 40px;
+    }
+
+    /* Essential Box: Two Columns */
+    .essentialBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 60px;
+    }
+
+    .essentialList {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px 40px;
+        text-align: left;
+        margin-top: 20px;
+    }
+}

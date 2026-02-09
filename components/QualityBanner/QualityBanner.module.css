@@ -1,7 +1,7 @@
 .section {
     width: 100%;
     /* Very light mint background to match theme but stay distinct */
-    background-color: #E6F9F5;
+    background-color: #E3FFF8;
     padding: clamp(30px, 4vw, 50px) 0;
     display: flex;
     justify-content: center;
@@ -37,7 +37,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    
+
 }
 
 .subtitle {

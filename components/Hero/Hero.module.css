@@ -86,7 +86,6 @@
     line-height: 1.5;
     margin-bottom: clamp(20px, 4vh, 40px);
     max-width: 520px;
-    opacity: 0.9;
 }
 
 /* =========================

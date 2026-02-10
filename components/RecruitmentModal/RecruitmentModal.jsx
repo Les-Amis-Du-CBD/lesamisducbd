@@ -39,7 +39,7 @@ export default function RecruitmentModal({ onClose }) {
                         <input
                             type="text"
                             className={styles.input}
-                            placeholder="Nom & Prénom"
+                            placeholder="Ex: Marie Martin"
                             required
                         />
                     </div>
@@ -49,7 +49,7 @@ export default function RecruitmentModal({ onClose }) {
                         <input
                             type="email"
                             className={styles.input}
-                            placeholder="Votre adresse email"
+                            placeholder="Ex: marie.martin@email.com"
                             required
                         />
                     </div>
@@ -74,7 +74,7 @@ export default function RecruitmentModal({ onClose }) {
                         <label className={styles.label}>Dites-nous tout...</label>
                         <textarea
                             className={styles.textarea}
-                            placeholder="Pourquoi Les Amis du CBD ? Vos motivations, vos idées..."
+                            placeholder="Ex: Passionné(e) par le CBD, je souhaite rejoindre une équipe dynamique..."
                             required
                         ></textarea>
                     </div>

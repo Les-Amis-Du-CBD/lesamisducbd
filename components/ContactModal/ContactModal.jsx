@@ -59,17 +59,17 @@ export default function ContactModal({ isOpen, onClose }) {
                 <form className={styles.form} onClick={() => setShowCountryDropdown(false)} onSubmit={(e) => e.preventDefault()}>
                     <div className={styles.inputGroup}>
                         <label className={styles.label}>Prénom et nom *</label>
-                        <input type="text" className={styles.input} required />
+                        <input type="text" className={styles.input} required placeholder="Ex : Jean Dupont" />
                     </div>
 
                     <div className={styles.inputGroup}>
                         <label className={styles.label}>Société *</label>
-                        <input type="text" className={styles.input} required />
+                        <input type="text" className={styles.input} required placeholder="Ex : Vaposhop Paris" />
                     </div>
 
                     <div className={styles.inputGroup}>
                         <label className={styles.label}>Email *</label>
-                        <input type="email" className={styles.input} required />
+                        <input type="email" className={styles.input} required placeholder="Ex : contact@vaposhop.com" />
                     </div>
 
                     <div className={styles.inputGroup}>

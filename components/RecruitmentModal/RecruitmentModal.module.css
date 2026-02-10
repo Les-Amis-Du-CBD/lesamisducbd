@@ -114,18 +114,23 @@
     padding: 15px 20px;
     border-radius: 15px;
     border: 2px solid #E3FFF8;
-    background: white;
+    background: #1f4b40;
     font-family: inherit;
     font-size: 1rem;
-    color: #1F4B40;
+    color: white;
     transition: all 0.2s ease;
     outline: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .input:focus,
 .textarea:focus {
     border-color: #49B197;
-    box-shadow: 0 0 0 4px rgba(73, 177, 151, 0.1);
+    box-shadow: 0 0 0 4px rgba(73, 177, 151, 0.2);
 }
 
 .textarea {

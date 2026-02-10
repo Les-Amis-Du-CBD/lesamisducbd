@@ -169,6 +169,9 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.192);
     justify-self: start;
     /* Left align in its grid cell */
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
 @media (hover: hover) {

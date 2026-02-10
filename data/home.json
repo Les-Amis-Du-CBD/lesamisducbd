@@ -112,6 +112,7 @@
       "props": {
         "title": "Pourquoi nous choisir :",
         "ctaLabel": "Qui sommes-nous ?",
+        "ctaLink": "/qui-sommes-nous",
         "features": [
           {
             "title": "LE NATUREL C'EST GRATUIT.",

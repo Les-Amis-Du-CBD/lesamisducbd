@@ -57,16 +57,21 @@
 }
 
 .cardTitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: var(--primary-dark, #1F4B40);
+    background: linear-gradient(145deg, #1f4b40 20%, #49b197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .cardText {
-    font-size: 0.9rem;
-    color: var(--text-secondary, #475569);
+    font-size: 1rem;
+    color: var(--primary-dark);
     line-height: 1.5;
+    text-align: center;
 }
 
 @media (max-width: 768px) {

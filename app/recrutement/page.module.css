@@ -1,0 +1,142 @@
+.pageWrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #E3FFF8;
+    overflow-x: hidden;
+}
+
+/* HERO SECTION */
+.heroSection {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.pageTitle {
+    letter-spacing: -0.05em;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 40px;
+}
+
+.heroImageWrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    position: relative;
+    /* For glow effect if needed, mocked image has clear background */
+}
+
+.heroImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* CONTENT SECTION */
+.contentSection {
+    padding: 0 20px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    color: #1F4B40;
+}
+
+.mainTitle {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    letter-spacing: -0.05em;
+}
+
+.textBlock {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 300px;
+    margin: 0 auto 20px auto;
+}
+
+/* CONTACT CARD (Green Box) */
+.contactCardSection {
+    padding: 0 20px 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.contactCard {
+    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    border-radius: 20px;
+    padding: 40px 20px;
+    text-align: center;
+    color: white;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(31, 75, 64, 0.3);
+}
+
+.cardTitle {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.cardText {
+    font-size: 0.95rem;
+    font-weight: 200;
+    max-width: 310px;
+    margin: 0 auto 30px auto;
+    line-height: 1.5;
+}
+
+.contactButton {
+    display: inline-block;
+    background-color: white;
+    color: #1F4B40;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.contactButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    .pageTitle {
+        font-size: 2.5rem;
+    }
+
+    .mainTitle {
+        font-size: 3rem;
+    }
+
+    .heroImageWrapper {
+        max-width: 600px;
+    }
+
+    .contactCard {
+        padding: 60px 40px;
+    }
+
+    .cardTitle {
+        font-size: 2.2rem;
+    }
+}

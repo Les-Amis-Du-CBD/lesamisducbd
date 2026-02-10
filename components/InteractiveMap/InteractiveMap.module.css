@@ -35,14 +35,12 @@
     width: 100%;
     max-width: 800px;
     background-color: #1A2E35;
-    /* Dark background from screenshot */
     border-radius: 30px;
     padding: 40px;
     position: relative;
     box-shadow: 0 20px 40px rgba(26, 46, 53, 0.2);
     overflow: hidden;
     aspect-ratio: 16/10;
-    /* Roughly the map ratio */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +55,6 @@
 
 .francePath {
     fill: #243B42;
-    /* Slightly lighter than bg */
     stroke: #2F4F4F;
     stroke-width: 0.5;
     transition: all 0.3s ease;

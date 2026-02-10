@@ -53,24 +53,24 @@ export default function UsagesPage() {
             image: "/images/usages/detente.png"
         },
         {
-            title: "Cuisine et Alimentation",
-            description: "Intégrez le CBD à vos recettes préférées. Huiles, infusions ou plats cuisinés, il existe de nombreuses façons de profiter de ses bienfaits en cuisine.",
-            image: "/images/usages/cuisine.png"
+            title: "Sommeil et routines nocturnes",
+            description: "Certaines personnes intègrent le CBD à leur rituel du coucher. Il ne s'agit pas d'un somnifère, mais d'un complément qui peut aider à préparer un sommeil plus serein.\n\nUne bonne hygiène de sommeil reste essentielle : horaires réguliers, environnement calme et réduction des écrans.",
+            image: "/images/usages/sommeil.png"
         },
         {
-            title: "Récupération Sportive",
-            description: "De nombreux sportifs utilisent le CBD pour la récupération musculaire et la relaxation après l'effort. Il s'intègre parfaitement à une routine sportive équilibrée.",
+            title: "Concentration et focus",
+            description: "Le CBD peut accompagner certains moments de concentration, que ce soit pour le travail, les études ou les projets créatifs.\n\nIl s'agit d'un usage complémentaire, qui vise à favoriser un état calme et attentif sans stimuler artificiellement.",
+            image: "/images/usages/cosmetique.png"
+        },
+        {
+            title: "Récupération physique",
+            description: "Le CBD est parfois utilisé après l'effort pour soutenir la récupération naturelle.\n\nIl peut s'intégrer à une routine de récupération incluant repos, hydratation et étirements, mais il ne remplace pas les fondamentaux de la récupération physique.",
             image: "/images/usages/sport.png"
         },
         {
             title: "Bien-être au quotidien",
-            description: "Que ce soit sous forme d'huiles ou de cosmétiques, le CBD peut faire partie de votre routine bien-être quotidienne pour prendre soin de vous.",
-            image: "/images/usages/cosmetique.png"
-        },
-        {
-            title: "Sommeil et routines",
-            description: "Certaines personnes utilisent le CBD à leur rituel du soir. Il ne s'agit pas d'un somnifère mais d'un complément pour favoriser un apaisement avant le coucher.",
-            image: "/images/usages/sommeil.png"
+            description: "Le CBD peut être intégré à des petites routines de bien-être au quotidien : pauses relaxantes, moments personnels ou rituels simples.\n\nL'important reste la régularité, l'écoute de soi et le respect des dosages conseillés.",
+            image: "/images/usages/cuisine.png"
         }
     ];
 

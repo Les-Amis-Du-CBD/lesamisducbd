@@ -1,47 +1,46 @@
 .wrapper {
     width: 100%;
     padding: 0;
-    /* Remove padding to align with other components 96% width */
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
-    /* Add some bottom spacing if needed */
+    margin-bottom: 20px;
 }
 
 .container {
     background-color: #1F4B40;
     color: #fff;
     width: 96%;
-    max-width: none;
+    max-width: 500px;
+    /* Constrain width to look like the mobile reference */
     margin: 0 auto;
-
-    /* Fluid container padding */
-    padding: clamp(30px, 5vw, 60px) clamp(20px, 8vw, 80px);
-
-    border-radius: clamp(20px, 4vw, 40px);
+    padding: 40px 30px;
+    border-radius: 30px;
     box-sizing: border-box;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: clamp(30px, 5vw, 60px);
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1200px;
+        /* Allow wider on desktop if needed, or keep narrow if user wants exact match */
+        /* Assuming user wants the "mobile stack" look even on desktop based on "ressemble à ça" */
+    }
 }
 
-.column {
+.grid {
     display: flex;
     flex-direction: column;
+    gap: 30px;
 }
 
+/* Header Styles */
 .header {
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: 1.4rem;
     font-weight: 700;
     color: #49B197;
-    /* Light Green Title */
-    margin-bottom: clamp(15px, 2.5vw, 25px);
-    padding-bottom: clamp(5px, 1vw, 10px);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    display: inline-block;
+    display: block;
     width: 100%;
 }
 
@@ -49,7 +48,7 @@
 .linkList {
     display: flex;
     flex-direction: column;
-    gap: clamp(10px, 1.5vw, 15px);
+    gap: 12px;
 }
 
 .linkItem {
@@ -58,19 +57,13 @@
     gap: 10px;
     color: #fff;
     text-decoration: none;
-    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    font-size: 0.95rem;
+    font-weight: 400;
     transition: opacity 0.2s;
 }
 
-@media (hover: hover) {
-    .linkItem:hover {
-        opacity: 0.8;
-    }
-}
-
-.linkItem:active {
-    opacity: 0.5;
-    transition-duration: 0.1s;
+.linkItem:hover {
+    opacity: 0.8;
 }
 
 .iconArrow {
@@ -81,12 +74,12 @@
 .contactList {
     display: flex;
     flex-direction: column;
-    gap: clamp(10px, 1.5vw, 15px);
+    gap: 15px;
 }
 
 .contactTitle {
     font-weight: 700;
-    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    font-size: 1rem;
     margin-bottom: 5px;
 }
 
@@ -94,8 +87,9 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    font-size: 0.95rem;
     line-height: 1.4;
+    font-weight: 400;
 }
 
 .iconContact {
@@ -103,36 +97,31 @@
     flex-shrink: 0;
 }
 
-/* Social & Newsletter Column */
-.socialSection {
-    margin-bottom: clamp(20px, 4vw, 40px);
-}
-
+/* Social Section */
 .socialIcons {
     display: flex;
     gap: 20px;
 }
 
 .socialIcon {
+    color: #fff;
     cursor: pointer;
     transition: transform 0.2s;
 }
 
-@media (hover: hover) {
-    .socialIcon:hover {
-        transform: scale(1.1);
-    }
+.socialIcon:hover {
+    transform: scale(1.1);
 }
 
-.socialIcon:active {
-    transform: scale(0.95);
-    transition-duration: 0.1s;
+/* Newsletter Section */
+.newsletterSection {
+    margin-bottom: 10px;
 }
 
 .newsletterForm {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 .inputWrapper {
@@ -142,24 +131,27 @@
 
 .input {
     width: 100%;
-    padding: 12px 20px;
-    padding-right: 40px;
-    border-radius: 5px;
+    padding: 15px 20px;
+    padding-right: 45px;
+    border-radius: 50px;
+    /* Fully rounded */
     border: none;
     outline: none;
     font-family: inherit;
-    font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+    font-size: 0.95rem;
     color: #1F4B40;
+    background-color: #ffffff;
+    font-weight: 500;
 }
 
 .input::placeholder {
     color: #1F4B40;
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 .inputIcon {
     position: absolute;
-    right: 15px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
     color: #49B197;
@@ -167,26 +159,16 @@
 }
 
 .disclaimer {
-    font-size: clamp(0.65rem, 1vw, 0.75rem);
-    line-height: 1.4;
-    opacity: 0.7;
-    text-align: justify;
+    display: none;
+    /* Hide disclaimer to match the clean look of the reference */
 }
 
-/* Responsiveness */
-@media (max-width: 1024px) {
-    .grid {
-        gap: 40px;
-    }
-}
-
-@media (max-width: 768px) {
-    .grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
+/* Desktop Adjustment - If user wants grid on desktop, uncomment below */
+@media (min-width: 768px) {
     .container {
-        padding: 30px 20px;
+        /* max-width: 100%; */
+        /* Keeps it somewhat contained like a card */
     }
+
+    /* Optional: Keep layout vertical to strictly match "exactement ça" */
 }

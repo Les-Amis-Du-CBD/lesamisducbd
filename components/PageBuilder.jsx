@@ -4,18 +4,18 @@ import Hero from './Hero/Hero';
 import ProductList from './ProductList/ProductList';
 import WhyChooseUs from './WhyChooseUs/WhyChooseUs';
 import FAQ from './FAQ/FAQ';
-import BentoGrid from './BentoGrid/BentoGrid';
+
 import Link from 'next/link';
 import Footer from './Footer/Footer';
-import RevealOnScroll from './RevealOnScroll/RevealOnScroll';
+
 import Partners from './Partners/Partners';
 import Quote from './Quote/Quote';
-import ScrollToTop from './ScrollToTop/ScrollToTop';
 
 import QualityBanner from './QualityBanner/QualityBanner';
 import PartnersNetwork from './PartnersNetwork/PartnersNetwork';
 import JoinUs from './JoinUs/JoinUs';
 import InteractiveMap from './InteractiveMap/InteractiveMap';
+import ScrollReveal from './ScrollReveal/ScrollReveal';
 
 const componentMap = {
     Header: Header,
@@ -28,8 +28,9 @@ const componentMap = {
     InteractiveMap: InteractiveMap,
     JoinUs: JoinUs,
     FAQ: FAQ,
-    BentoGrid: BentoGrid,
+
     Partners: Partners,
+
     Quote: Quote,
     Footer: Footer
 };
@@ -39,7 +40,6 @@ export default function PageBuilder({ sections }) {
 
     return (
         <>
-            <ScrollToTop />
             {sections.map((section, index) => {
                 const Component = componentMap[section.type];
                 if (!Component) {
@@ -52,10 +52,15 @@ export default function PageBuilder({ sections }) {
                     return <Component key={index} {...section.props} />;
                 }
 
+                // Optimization: Don't animate Hero to preserve LCP
+                if (section.type === 'Hero') {
+                    return <Component key={index} {...section.props} />;
+                }
+
                 return (
-                    <RevealOnScroll key={index}>
+                    <ScrollReveal key={index} animation="fade-up" duration={700} delay={100}>
                         <Component {...section.props} />
-                    </RevealOnScroll>
+                    </ScrollReveal>
                 );
             })}
         </>

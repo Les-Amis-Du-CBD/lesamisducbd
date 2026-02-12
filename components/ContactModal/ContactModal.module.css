@@ -290,3 +290,61 @@
 .submitButton:active {
     transform: scale(0.98);
 }
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 20px;
+        width: 95%;
+        max-height: 85dvh;
+        /* Use dynamic viewport height for mobile browsers */
+        border-radius: 20px;
+    }
+
+    .title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        max-width: 80%;
+        margin-inline: auto;
+    }
+
+    .benefitsList {
+        font-size: 0.8rem;
+        margin-bottom: 20px;
+        display: none;
+        /* Hide benefits on very small screens if needed, or keep small */
+    }
+
+    .form {
+        gap: 12px;
+    }
+
+    .input,
+    .phoneInputContainer,
+    .textarea {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+    }
+
+    .textarea {
+        min-height: 60px;
+    }
+
+    .label {
+        font-size: 0.8rem;
+        margin-left: 5px;
+    }
+
+    .submitButton {
+        padding: 12px;
+        font-size: 1rem;
+        margin-top: 5px;
+    }
+
+    .closeButton {
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+    }
+}

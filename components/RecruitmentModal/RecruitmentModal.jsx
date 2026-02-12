@@ -4,8 +4,20 @@ import React, { useState } from 'react';
 import styles from './RecruitmentModal.module.css';
 import { X, Upload, Paperclip } from 'lucide-react';
 
+import { createPortal } from 'react-dom';
+import useLockBodyScroll from '@/hooks/useLockBodyScroll';
+
 export default function RecruitmentModal({ onClose }) {
+    useLockBodyScroll(true);
     const [fileName, setFileName] = useState(null);
+    const [mounted, setMounted] = useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
+    if (!mounted) return null;
 
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -20,7 +32,7 @@ export default function RecruitmentModal({ onClose }) {
         onClose();
     };
 
-    return (
+    return createPortal(
         <div className={styles.backdrop} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
@@ -84,6 +96,7 @@ export default function RecruitmentModal({ onClose }) {
                     </button>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

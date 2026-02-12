@@ -10,6 +10,8 @@ import UsagesCarousel from '@/components/UsagesCarousel/UsagesCarousel';
 import Quote from '@/components/Quote/Quote';
 import JoinUs from '@/components/JoinUs/JoinUs';
 
+import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
+
 export default function UsagesPage() {
 
     // --- Mocks ---
@@ -92,63 +94,75 @@ export default function UsagesPage() {
                 </section>
 
                 {/* INTRO */}
-                <section className={styles.introSection}>
-                    <h2 className={styles.introTitle}>CBD : usages courants,<br />limites et bonnes pratiques.</h2>
-                    <p className={styles.introText}>
-                        Le CBD est utilisé par de nombreuses personnes dans la vie quotidienne.
-                        Cette page présente 5 usages fréquents, avec leurs limites et bonnes pratiques.
-                        Le CBD n'est pas un médicament et ne remplace jamais un avis médical.
-                    </p>
-                </section>
+                <ScrollReveal animation="fade-up">
+                    <section className={styles.introSection}>
+                        <h2 className={styles.introTitle}>CBD : usages courants,<br />limites et bonnes pratiques.</h2>
+                        <p className={styles.introText}>
+                            Le CBD est utilisé par de nombreuses personnes dans la vie quotidienne.
+                            Cette page présente 5 usages fréquents, avec leurs limites et bonnes pratiques.
+                            Le CBD n'est pas un médicament et ne remplace jamais un avis médical.
+                        </p>
+                    </section>
+                </ScrollReveal>
 
                 {/* CAROUSEL */}
-                <section className={styles.carouselSection}>
-                    <h2 className={styles.carouselTitle}>Usages du CBD<br />au quotidien :</h2>
-                    <UsagesCarousel items={usagesItems} />
-                </section>
+                <ScrollReveal animation="fade-up" delay={200}>
+                    <section className={styles.carouselSection}>
+                        <h2 className={styles.carouselTitle}>Usages du CBD<br />au quotidien :</h2>
+                        <UsagesCarousel items={usagesItems} />
+                    </section>
+                </ScrollReveal>
 
                 {/* WARNING */}
-                <section className={styles.warningSection}>
-                    <h2 className={styles.warningTitle}>
-                        Le CBD :<br />
-                        n'est pas un médicament, ne guérit aucune maladie, ne remplace pas un traitement médical.<br />
-                        En cas de doute, de traitement en cours ou de condition particulière, consultez un professionnel de santé.
-                    </h2>
+                <ScrollReveal animation="fade-up">
+                    <section className={styles.warningSection}>
+                        <h2 className={styles.warningTitle}>
+                            Le CBD :<br />
+                            n'est pas un médicament, ne guérit aucune maladie, ne remplace pas un traitement médical.<br />
+                            En cas de doute, de traitement en cours ou de condition particulière, consultez un professionnel de santé.
+                        </h2>
 
-                    <div className={styles.responsibleSection}>
-                        <h3 className={styles.responsibleTitle}>
-                            Pour une utilisation responsable :<br />
-                            produits analysés en laboratoire, origine claire, taux de THC conforme, information transparente
-                        </h3>
-                    </div>
-                </section>
+                        <div className={styles.responsibleSection}>
+                            <h3 className={styles.responsibleTitle}>
+                                Pour une utilisation responsable :<br />
+                                produits analysés en laboratoire, origine claire, taux de THC conforme, information transparente
+                            </h3>
+                        </div>
+                    </section>
+                </ScrollReveal>
 
                 {/* ESSENTIAL BOX */}
-                <section className={styles.essentialSection}>
-                    <div className={styles.essentialBox}>
-                        <h3 className={styles.essentialTitle}>L'essentiel sur les usages du CBD :</h3>
-                        <ul className={styles.essentialList}>
-                            <li>Le CBD s'inscrit dans une démarche de bien-être</li>
-                            <li>Les usages varient selon les individus</li>
-                            <li>Il ne s'agit jamais d'un traitement médical</li>
-                            <li>La qualité et la transparence sont essentielles</li>
-                        </ul>
-                    </div>
-                </section>
+                <ScrollReveal animation="fade-up">
+                    <section className={styles.essentialSection}>
+                        <div className={styles.essentialBox}>
+                            <h3 className={styles.essentialTitle}>L'essentiel sur les usages du CBD :</h3>
+                            <ul className={styles.essentialList}>
+                                <li>Le CBD s'inscrit dans une démarche de bien-être</li>
+                                <li>Les usages varient selon les individus</li>
+                                <li>Il ne s'agit jamais d'un traitement médical</li>
+                                <li>La qualité et la transparence sont essentielles</li>
+                            </ul>
+                        </div>
+                    </section>
+                </ScrollReveal>
 
                 {/* FOOTER QUERY */}
-                <Quote
-                    text={`"Découvrir le CBD en toute responsabilité.<br/>Explorez nos produits.<br/>Lire nos guides pédagogiques."`}
-                    author="Nelson — Les Amis du CBD"
-                />
+                <ScrollReveal animation="fade-up">
+                    <Quote
+                        text={`"Découvrir le CBD en toute responsabilité.<br/>Explorez nos produits.<br/>Lire nos guides pédagogiques."`}
+                        author="Nelson — Les Amis du CBD"
+                    />
+                </ScrollReveal>
 
                 {/* JOIN US */}
-                <JoinUs
-                    title="Nous rejoindre"
-                    buttonLabel="Venez par ici"
-                    buttonLink="/recrutement"
-                    text="Aucun poste ouvert pour le moment ? Les candidatures spontanées sont toujours les bienvenues."
-                />
+                <ScrollReveal animation="fade-up">
+                    <JoinUs
+                        title="Nous rejoindre"
+                        buttonLabel="Venez par ici"
+                        buttonLink="/recrutement"
+                        text="Aucun poste ouvert pour le moment ? Les candidatures spontanées sont toujours les bienvenues."
+                    />
+                </ScrollReveal>
 
             </main>
 

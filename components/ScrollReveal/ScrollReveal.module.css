@@ -1,0 +1,41 @@
+.revealItem {
+    opacity: 0;
+    will-change: transform, opacity, filter;
+    transition-property: transform, opacity, filter;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Smooth ease-out */
+}
+
+.isVisible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+/* Animations */
+
+/* Fade Up (Classic) */
+.fade-up {
+    transform: translateY(0px);
+}
+
+/* Blur In (Modern & Trendy) */
+.blur-in {
+    transform: scale(0.98);
+    filter: blur(10px);
+}
+
+/* Scale Up (Impactful) */
+.scale-up {
+    transform: scale(0.8);
+}
+
+/* Slide In Right */
+.slide-in-right {
+    transform: translateX(-50px);
+}
+
+/* Slide In Left */
+.slide-in-left {
+    transform: translateX(50px);
+}

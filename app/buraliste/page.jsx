@@ -14,9 +14,14 @@ import OfferComparator from '@/components/OfferComparator/OfferComparator';
 // Icons
 import { ArrowRight, CheckCircle, TrendingUp, Truck } from 'lucide-react';
 
-export default function BuralistePage() {
+import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 
-    // --- Data Mocks (from home.json) ---
+export default function BuralistePage() {
+    // ... (keep data mocks)
+
+    // Helper to reduce repetition in return
+    // (Actually better to just wrap in return directly to keep file structure clear)
+
     const headerProps = {
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.png",
@@ -71,7 +76,7 @@ export default function BuralistePage() {
             <Header {...headerProps} />
 
             <main>
-                {/* HERO SECTION */}
+                {/* HERO SECTION - No Reveal for LCP */}
                 <section className={styles.heroSection}>
                     <div className={styles.heroContainer}>
                         <div className={styles.heroContent}>
@@ -97,76 +102,80 @@ export default function BuralistePage() {
                                 Votre bureau de tabac est le lieu idéal pour proposer un CBD pas cher, fiable et conforme à la réglementation, à une clientèle de plus en plus demandeuse.
                             </div>
                         </div>
-                        {/* Wrapper for Desktop Illustration - Hidden on mobile via CSS ideally, or just kept if not conflicting */}
                     </div>
                 </section>
 
                 {/* CALCULATOR SECTION */}
-                <section className={styles.calculatorSection}>
-                    <div className={styles.calculatorContainer}>
-                        <OfferComparator />
-                    </div>
-                </section>
+                <ScrollReveal animation="fade-up">
+                    <section className={styles.calculatorSection}>
+                        <div className={styles.calculatorContainer}>
+                            <OfferComparator />
+                        </div>
+                    </section>
+                </ScrollReveal>
 
                 {/* WHY CHOOSE US - Section 1 (Scientist) */}
-                <WhyChooseUs
-                    title="Pourquoi choisir Les Amis du CBD pour votre Bureau de Tabac ?"
-                    features={whyChooseUsFeatures1}
-                    ctaLabel=""
-                    imageSrc="/images/whychooseus/Scientist.png"
-                    imageAlt="Expert Buraliste"
-                />
+                <ScrollReveal animation="fade-up" delay={200}>
+                    <WhyChooseUs
+                        title="Pourquoi choisir Les Amis du CBD pour votre Bureau de Tabac ?"
+                        features={whyChooseUsFeatures1}
+                        ctaLabel=""
+                        imageSrc="/images/whychooseus/Scientist.png"
+                        imageAlt="Expert Buraliste"
+                    />
+                </ScrollReveal>
 
                 {/* WHY CHOOSE US - Section 2 (Woman, Reversed) */}
-                <WhyChooseUs
-                    title="" // No title for second part to merge visually or use a continuation title? User didn't specify, standard practice is implied continuation or blank.
-                    features={whyChooseUsFeatures2}
-                    ctaLabel="" // Only one CTA usually? Or both. Screenshot shows button on first, maybe not second. I'll hide button if ctaLabel empty.
-                    imageSrc="/images/whychooseus/Woman.png"
-                    imageAlt="Partenaire satisfaite"
-                    isReversed={true}
-                />
+                <ScrollReveal animation="fade-up" delay={200}>
+                    <WhyChooseUs
+                        title=""
+                        features={whyChooseUsFeatures2}
+                        ctaLabel=""
+                        imageSrc="/images/whychooseus/Woman.png"
+                        imageAlt="Partenaire satisfaite"
+                        isReversed={true}
+                    />
+                </ScrollReveal>
 
                 {/* STEPS SECTION */}
-                <section className={styles.stepsSection}>
-                    <div className={styles.stepsContainer}>
-                        {/* Woman image moved to WhyChooseUs section above */}
+                <ScrollReveal animation="fade-up" delay={200}>
+                    <section className={styles.stepsSection}>
+                        <div className={styles.stepsContainer}>
+                            <h2 className={styles.stepsTitle}>Comment devenir partenaire Les Amis du CBD ?</h2>
 
-                        <h2 className={styles.stepsTitle}>Comment devenir partenaire Les Amis du CBD ?</h2>
-
-                        <div className={styles.stepsGrid}>
-                            <div className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
-                                <div className={styles.stepHeader}>CONTACTEZ NOTRE ÉQUIPE COMMERCIALE</div>
-                                <p className={styles.stepText}>
-                                    Notre équipe est disponible pour répondre à vos questions et vous accompagner dans la mise en place.<br />
-                                    06 71 82 42 87
-                                </p>
-                            </div>
-                            <div className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
-                                <div className={styles.stepHeader}>DEMANDEZ VOTRE KIT DE DÉMARRAGE</div>
-                                <p className={styles.stepText}>
-                                    Vous souhaitez tester le potentiel du CBD dans votre boutique ?<br /><br />
-                                    Demandez votre kit de démarrage gratuit, incluant une sélection de nos produits phares, pour évaluer rapidement les ventes.
-                                </p>
-                            </div>
-                            <div className={styles.stepCard}>
-                                <div className={styles.stepHeader} style={{ textTransform: 'none', fontSize: '1.5rem', lineHeight: '1.2' }}>
-                                    Prenez une longueur d'avance sur vos concurrents
+                            <div className={styles.stepsGrid}>
+                                <div className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
+                                    <div className={styles.stepHeader}>CONTACTEZ NOTRE ÉQUIPE COMMERCIALE</div>
+                                    <p className={styles.stepText}>
+                                        Notre équipe est disponible pour répondre à vos questions et vous accompagner dans la mise en place.<br />
+                                        06 71 82 42 87
+                                    </p>
                                 </div>
-                                <div className={styles.stepText} style={{ marginTop: '1rem', textAlign: 'left' }}>
-                                    Transformez votre bureau de tabac en un point de référence du CBD accessible et pas cher, tout en rassurant votre clientèle sur la qualité et la légalité des produits.
-                                    <br /><br />
-                                    Les Amis du CBD, c'est le CBD bien fait, bien expliqué, et bien vendu.
-                                    Nous serons ravis de vous accompagner dans cette aventure.
-                                    <br /><br />
-                                    Amicalement,<br />
-                                    Les Amis du CBD
+                                <div className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
+                                    <div className={styles.stepHeader}>DEMANDEZ VOTRE KIT DE DÉMARRAGE</div>
+                                    <p className={styles.stepText}>
+                                        Vous souhaitez tester le potentiel du CBD dans votre boutique ?<br /><br />
+                                        Demandez votre kit de démarrage gratuit, incluant une sélection de nos produits phares, pour évaluer rapidement les ventes.
+                                    </p>
+                                </div>
+                                <div className={styles.stepCard}>
+                                    <div className={styles.stepHeader} style={{ textTransform: 'none', fontSize: '1.5rem', lineHeight: '1.2' }}>
+                                        Prenez une longueur d'avance sur vos concurrents
+                                    </div>
+                                    <div className={styles.stepText} style={{ marginTop: '1rem', textAlign: 'left' }}>
+                                        Transformez votre bureau de tabac en un point de référence du CBD accessible et pas cher, tout en rassurant votre clientèle sur la qualité et la légalité des produits.
+                                        <br /><br />
+                                        Les Amis du CBD, c'est le CBD bien fait, bien expliqué, et bien vendu.
+                                        Nous serons ravis de vous accompagner dans cette aventure.
+                                        <br /><br />
+                                        Amicalement,<br />
+                                        Les Amis du CBD
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
+                    </section>
+                </ScrollReveal>
 
             </main>
 

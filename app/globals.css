@@ -1,28 +1,17 @@
 /* Global Design Tokens */
 :root {
   --primary-dark: #1F4B40;
-  /* Deep Forest Green */
-  --primary-light: #2D5C50;
-  --accent-mint: #C4F5D6;
-  /* Soft Mint */
   --accent-neon: #00FF94;
-  /* Neon Pop */
-
   --background-light: #E3FFF8;
-  /* Fresh Mint - More visible */
   --surface-white: #FFFFFF;
 
-  --text-main: #0F172A;
-  --text-secondary: #475569;
   --text-white: #FFFFFF;
 
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
   --blur-amount: 12px;
 
-  --radius-sm: 8px;
   --radius-md: 16px;
-  --radius-lg: 24px;
   --radius-pill: 9999px;
 
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);

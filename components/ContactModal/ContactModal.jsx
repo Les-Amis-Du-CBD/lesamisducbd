@@ -4,7 +4,11 @@ import styles from './ContactModal.module.css';
 import { X, ChevronDown, Globe } from 'lucide-react';
 import { COUNTRIES } from './countries';
 
+import { createPortal } from 'react-dom';
+import useLockBodyScroll from '@/hooks/useLockBodyScroll';
+
 export default function ContactModal({ isOpen, onClose }) {
+    useLockBodyScroll(isOpen);
     // Default to France
     const defaultCountry = COUNTRIES.find(c => c.code === 'FR') || COUNTRIES[0];
 
@@ -13,8 +17,14 @@ export default function ContactModal({ isOpen, onClose }) {
     // Derived state for the currently detected country
     const [detectedCountry, setDetectedCountry] = useState(defaultCountry);
     const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
-    if (!isOpen) return null;
+    React.useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
+    if (!isOpen || !mounted) return null;
 
     // Helper to find country by verifying if phone starts with dial code
     const findCountryByPhone = (phone) => {
@@ -39,7 +49,7 @@ export default function ContactModal({ isOpen, onClose }) {
         setShowCountryDropdown(false);
     };
 
-    return (
+    return createPortal(
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
@@ -140,6 +150,7 @@ export default function ContactModal({ isOpen, onClose }) {
                     </button>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

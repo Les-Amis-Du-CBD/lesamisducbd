@@ -12,7 +12,7 @@ import UsagesCarousel from '@/components/UsagesCarousel/UsagesCarousel';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 
-export default function QuiSommesNousPage() {
+export default function EssentielPage() {
     const headerProps = {
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.png",
@@ -48,17 +48,17 @@ export default function QuiSommesNousPage() {
     const legalItems = [
         {
             title: "Le CBD est-il légal en France ?",
-            description: "Oui, le CBD est légal en France, à condition de respecter un cadre réglementaire strict.\nPour être autorisé à la vente et à la consommation, un produit à base de CBD doit impérativement :\n• contenir un taux de THC inférieur ou égal à 0,3 %\n• être issu de variétés de Cannabis sativa L. autorisées\n• faire l'objet d'analyses réalisées par un laboratoire indépendant\nCes règles visent à garantir la sécurité des consommateurs et la conformité des produits sur le marché français.",
+            description: "Oui, le CBD est légal en France, à condition de respecter un cadre réglementaire strict.\\nPour être autorisé à la vente et à la consommation, un produit à base de CBD doit impérativement :\\n• contenir un taux de THC inférieur ou égal à 0,3 %\\n• être issu de variétés de Cannabis sativa L. autorisées\\n• faire l'objet d'analyses réalisées par un laboratoire indépendant\\nCes règles visent à garantir la sécurité des consommateurs et la conformité des produits sur le marché français.",
             image: "/images/about/legal.png"
         },
         {
             title: "Pourquoi les analyses en laboratoire sont essentielles ?",
-            description: "Les analyses de laboratoire ne sont pas un argument marketing.\nElles sont une garantie.\nChaque analyse permet de vérifier :\n• le taux réel de THC\n• la conformité légale du produit\n• l'absence d'anomalies majeures\nUn CBD sans analyse claire est un CBD sans preuve.\nChez Les Amis du CBD, chaque lot est analysé par un laboratoire indépendant en France, afin d'assurer une transparence totale.",
+            description: "Les analyses de laboratoire ne sont pas un argument marketing.\\nElles sont une garantie.\\nChaque analyse permet de vérifier :\\n• le taux réel de THC\\n• la conformité légale du produit\\n• l'absence d'anomalies majeures\\nUn CBD sans analyse claire est un CBD sans preuve.\\nChez Les Amis du CBD, chaque lot est analysé par un laboratoire indépendant en France, afin d'assurer une transparence totale.",
             image: "/images/about/analysis.png"
         },
         {
             title: "CBD et THC : deux molécules, deux effets très différents :",
-            description: "Le CBD (cannabidiol) et le THC (tétrahydrocannabinol) sont deux molécules naturellement présentes dans le chanvre, mais leurs effets sont très différents.\n\nLe CBD :\n• n'est pas psychotrope\n• ne provoque pas d'euphorie\n• est autorisé à la vente\n\nLe THC :\n• est psychotrope\n• peut entraîner des effets planants\n• est strictement réglementé\n\nC'est cette distinction fondamentale qui explique pourquoi le CBD est légal, contrairement au THC.",
+            description: "Le CBD (cannabidiol) et le THC (tétrahydrocannabinol) sont deux molécules naturellement présentes dans le chanvre, mais leurs effets sont très différents.\\n\\nLe CBD :\\n• n'est pas psychotrope\\n• ne provoque pas d'euphorie\\n• est autorisé à la vente\\n\\nLe THC :\\n• est psychotrope\\n• peut entraîner des effets planants\\n• est strictement réglementé\\n\\nC'est cette distinction fondamentale qui explique pourquoi le CBD est légal, contrairement au THC.",
             image: "/images/about/molecules.png"
         }
     ];
@@ -66,17 +66,17 @@ export default function QuiSommesNousPage() {
     const cultureItems = [
         {
             title: "Culture naturelle : ce que cela change vraiment :",
-            description: "La manière dont une plante est cultivée influence directement sa qualité finale.\n\nUne culture naturelle permet :\n• de préserver les arômes d'origine\n• d'éviter les résidus chimiques\n• de respecter le rythme naturel de la plante\n\nNos fleurs sont cultivées en serre, sur sol vivant, sans engrais chimiques, sans pesticides et sous lumière naturelle.",
+            description: "La manière dont une plante est cultivée influence directement sa qualité finale.\\n\\nUne culture naturelle permet :\\n• de préserver les arômes d'origine\\n• d'éviter les résidus chimiques\\n• de respecter le rythme naturel de la plante\\n\\nNos fleurs sont cultivées en serre, sur sol vivant, sans engrais chimiques, sans pesticides et sous lumière naturelle.",
             image: "/images/about/culture_1.png"
         },
         {
             title: "Le \"lavage\" du CBD : une pratique méconnue.",
-            description: "Lorsque certaines fleurs dépassent le seuil légal de THC, elles peuvent être \"lavées\" chimiquement afin de réduire artificiellement leur taux de THC.\n\nCette pratique permet la mise en conformité, mais elle peut :\n• altérer les arômes\n• modifier la couleur\n• appauvrir le profil naturel de la fleur\n\nDes fleurs naturellement conformes n'ont pas besoin de subir ce traitement.",
+            description: "Lorsque certaines fleurs dépassent le seuil légal de THC, elles peuvent être \"lavées\" chimiquement afin de réduire artificiellement leur taux de THC.\\n\\nCette pratique permet la mise en conformité, mais elle peut :\\n• altérer les arômes\\n• modifier la couleur\\n• appauvrir le profil naturel de la fleur\\n\\nDes fleurs naturellement conformes n'ont pas besoin de subir ce traitement.",
             image: "/images/about/culture_2.png"
         },
         {
             title: "CBD pas cher : ce que cela veut vraiment dire.",
-            description: "Un prix bas n'est pas forcément synonyme de mauvaise qualité. Mais un prix incohérent cache souvent des compromis.\n\nLe prix d'un CBD dépend :\n• du mode de culture\n• des coûts énergétiques\n• des traitements post-récolte\n• des marges appliquées\n\nUne production simple, naturelle et maîtrisée permet de proposer un CBD accessible, sans sacrifier la qualité.",
+            description: "Un prix bas n'est pas forcément synonyme de mauvaise qualité. Mais un prix incohérent cache souvent des compromis.\\n\\nLe prix d'un CBD dépend :\\n• du mode de culture\\n• des coûts énergétiques\\n• des traitements post-récolte\\n• des marges appliquées\\n\\nUne production simple, naturelle et maîtrisée permet de proposer un CBD accessible, sans sacrifier la qualité.",
             image: "/images/about/culture_3.png"
         }
     ];
@@ -84,11 +84,10 @@ export default function QuiSommesNousPage() {
     return (
         <div className={styles.pageWrapper}>
             <Header {...headerProps} />
-
             <main>
                 {/* HERO */}
                 <section className={styles.heroSection}>
-                    <h1 className={styles.pageTitle}>Qui sommes - nous ?</h1>
+                    <h1 className={styles.pageTitle}>L'Essentiel</h1>
                     <div className={styles.heroImageWrapper}>
                         <img
                             src="/images/about/team.png"
@@ -142,7 +141,7 @@ export default function QuiSommesNousPage() {
                 </ScrollReveal>
 
                 {/* ESSENTIAL BOX */}
-                <ScrollReveal animation="scale-up" delay={100} duration={800}>
+                <ScrollReveal animation="scale-up" duration={800}>
                     <section className={styles.essentialSection}>
                         <div className={styles.essentialBox}>
                             <h3 className={styles.essentialTitle}>L'essentiel à retenir<br />sur le CBD :</h3>
@@ -177,6 +176,6 @@ export default function QuiSommesNousPage() {
             </main>
 
             <Footer {...footerProps} />
-        </div>
+        </div >
     );
 }

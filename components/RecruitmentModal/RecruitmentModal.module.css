@@ -34,7 +34,24 @@
     animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.1s;
     border: 1px solid rgba(255, 255, 255, 0.8);
     overflow-y: auto;
-    max-height: 90vh;
+    max-height: 85dvh;
+}
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 20px;
+        width: 95%;
+        border-radius: 20px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .closeButton {
+        top: 10px;
+        right: 10px;
+    }
 }
 
 @keyframes popIn {

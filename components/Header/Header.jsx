@@ -4,10 +4,12 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import styles from './Header.module.css';
 import { User, ShoppingBag, Menu, X } from 'lucide-react';
+import LoginModal from '../LoginModal/LoginModal';
 
 export default function Header({ logoText, logoImage, menuItems }) {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -24,6 +26,8 @@ export default function Header({ logoText, logoImage, menuItems }) {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
+            // Only potential conflict is with LoginModal which handles its own lock, 
+            // but since modals stack or mutually exclude usually, strict handling here is fine for menu
             document.body.style.overflow = '';
         }
         return () => { document.body.style.overflow = ''; };
@@ -64,7 +68,13 @@ export default function Header({ logoText, logoImage, menuItems }) {
                     </nav>
 
                     <div className={styles.actions}>
-                        <button className={styles.iconBtn} aria-label="Compte"><User size={20} /></button>
+                        <button
+                            className={styles.iconBtn}
+                            aria-label="Compte"
+                            onClick={() => setIsLoginOpen(true)}
+                        >
+                            <User size={20} />
+                        </button>
 
                         <button className={styles.iconBtn} aria-label="Panier"><ShoppingBag size={20} /></button>
                     </div>
@@ -86,6 +96,9 @@ export default function Header({ logoText, logoImage, menuItems }) {
                 </nav>,
                 document.body
             )}
+
+            {/* Login Modal */}
+            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
         </>
     );
 }

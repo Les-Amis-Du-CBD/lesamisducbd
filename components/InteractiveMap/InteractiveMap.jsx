@@ -95,9 +95,24 @@ const generateStablePoints = (totalPoints = 350) => {
 };
 
 // Markers generated ONCE
-const STABLE_MARKERS = generateStablePoints(380);
+const STABLE_MARKERS = generateStablePoints(150);
 
 export default function InteractiveMap() {
+    // Memoize the marker elements to prevent re-rendering during zoom/pan
+    const markers = useMemo(() => (
+        STABLE_MARKERS.map((point, index) => (
+            <Marker key={index} coordinates={point.coordinates}>
+                <circle
+                    r={1.5}
+                    className={styles.marker}
+                    style={{
+                        animationDelay: `${Math.random() * 4}s`
+                    }}
+                />
+            </Marker>
+        ))
+    ), []);
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
@@ -135,11 +150,7 @@ export default function InteractiveMap() {
                                 }
                             </Geographies>
 
-                            {STABLE_MARKERS.map((point, index) => (
-                                <Marker key={index} coordinates={point.coordinates}>
-                                    <circle r={1.5} className={styles.marker} />
-                                </Marker>
-                            ))}
+                            {markers}
                         </ZoomableGroup>
                     </ComposableMap>
 

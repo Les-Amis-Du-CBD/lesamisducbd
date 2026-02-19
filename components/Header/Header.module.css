@@ -263,3 +263,39 @@
     object-fit: contain;
     display: block;
 }
+
+/* Cart Badge & Button */
+.cartBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #FFD700;
+    color: #1F4B40;
+    font-size: 0.65rem;
+    font-weight: 800;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}

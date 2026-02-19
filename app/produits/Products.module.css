@@ -1,0 +1,212 @@
+.main {
+    background-color: var(--background-light);
+    min-height: 100vh;
+}
+
+.hero {
+    background: var(--background-gradient);
+    padding: 80px 20px;
+    text-align: center;
+    color: white;
+    margin: 20px auto 40px;
+    width: 96%;
+    max-width: 1400px;
+    border-radius: 40px;
+    /* Full rounded "bubble" */
+    position: relative;
+    overflow: hidden;
+}
+
+.heroContent h1 {
+    font-size: 4rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+    color: white;
+    /* Footer text color */
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.heroContent p {
+    font-size: 1.2rem;
+    color: white;
+    /* Footer subtext color approx or lighter */
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 100px;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+.filterBtn {
+    padding: 12px 24px;
+    border-radius: 99px;
+    border: 1px solid rgba(31, 75, 64, 0.1);
+    background: transparent;
+    color: #1F4B40;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filterBtn:hover {
+    background: rgba(31, 75, 64, 0.05);
+}
+
+.filterBtn.active {
+    background: #1F4B40;
+    color: #00FF94;
+    border-color: #1F4B40;
+    box-shadow: 0 8px 20px -5px rgba(31, 75, 64, 0.3);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px 30px;
+}
+
+.card {
+    background: var(--background-gradient);
+    border-radius: 32px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+}
+
+.imageLink {
+    display: block;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+}
+
+.imageWrapper {
+    height: 320px;
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .imageWrapper {
+    transform: scale(1.05);
+}
+
+.image {
+    margin-top: 20px;
+    object-fit: contain;
+    padding: 20px;
+}
+
+.tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #00FF94;
+    color: #1F4B40;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 99px;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cardContent {
+    padding: 20px 10px 10px;
+}
+
+.cardHeader {
+    margin-bottom: 20px;
+}
+
+.productName {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+}
+
+.productSubtitle {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.priceInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.priceLabel {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 700;
+}
+
+.priceValue {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+}
+
+.addBtn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    color: #1F4B40;
+    border: none;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.addBtn:hover {
+    transform: scale(1.15) rotate(90deg);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hero {
+        padding: 70px 20px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .imageWrapper {
+        height: 260px;
+    }
+}

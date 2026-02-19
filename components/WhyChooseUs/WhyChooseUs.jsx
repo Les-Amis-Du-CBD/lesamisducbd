@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './WhyChooseUs.module.css';
 
-export default function WhyChooseUs({ title, features, ctaLabel, ctaLink = "/qui-sommes-nous", imageSrc = "/images/whychooseus/Scientist.png", imageAlt = "Expert Les Amis du CBD", isReversed = false }) {
+export default function WhyChooseUs({ title, features, ctaLabel, ctaLink = "/qui-sommes-nous", imageSrc = "/images/whychooseus/Scientist.webp", imageAlt = "Expert Les Amis du CBD", isReversed = false }) {
     return (
         <section className={`${styles.section} ${isReversed ? styles.reversed : ''}`}>
             <div className={`${styles.container} ${isReversed ? styles.containerReversed : ''}`}>

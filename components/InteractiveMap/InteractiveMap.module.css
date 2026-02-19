@@ -89,7 +89,6 @@
     transition: opacity 0.3s ease;
     transform-box: fill-box;
     transform-origin: center;
-    animation: breathe 4s infinite ease-in-out;
     will-change: opacity, transform;
 }
 

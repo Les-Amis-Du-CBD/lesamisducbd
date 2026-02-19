@@ -6,13 +6,15 @@
     min-height: 600px;
     /* Prevent it from being too small vertically on landscape mobile */
 
-    background-size: cover;
-    background-position: center;
-
     position: relative;
     overflow: hidden;
 
     border-radius: clamp(20px, 4vw, 40px);
+}
+
+.heroImage {
+    object-fit: cover;
+    z-index: -1;
 }
 
 /* =========================

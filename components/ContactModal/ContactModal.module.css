@@ -295,7 +295,7 @@
     .modal {
         padding: 20px;
         width: 95%;
-        max-height: 85dvh;
+        max-height: 80svh;
         /* Use dynamic viewport height for mobile browsers */
         border-radius: 20px;
         overflow-y: auto;

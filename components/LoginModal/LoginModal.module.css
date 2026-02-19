@@ -25,7 +25,7 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     animation: slideUp 0.3s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.5);
-    max-height: 85dvh;
+    max-height: 80svh;
     overflow-y: auto;
 }
 

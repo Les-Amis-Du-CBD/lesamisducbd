@@ -8,6 +8,16 @@ async function getData() {
   return JSON.parse(fileContents);
 }
 
+import { SHARED_TITLE, SHARED_DESCRIPTION } from './shared-metadata';
+
+export const metadata = {
+  title: SHARED_TITLE.default,
+  description: SHARED_DESCRIPTION,
+  alternates: {
+    canonical: '/',
+  },
+};
+
 export default async function Home() {
   const data = await getData();
 

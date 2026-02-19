@@ -5,12 +5,16 @@ import Link from 'next/link';
 import styles from './Header.module.css';
 import { User, ShoppingBag, Menu, X } from 'lucide-react';
 import LoginModal from '../LoginModal/LoginModal';
+import { useCart } from '@/context/CartContext';
 
 export default function Header({ logoText, logoImage, menuItems }) {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+
+    // Cart Context
+    const { setIsCartOpen, cartCount } = useCart();
 
     useEffect(() => {
         setMounted(true);
@@ -26,8 +30,6 @@ export default function Header({ logoText, logoImage, menuItems }) {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
-            // Only potential conflict is with LoginModal which handles its own lock, 
-            // but since modals stack or mutually exclude usually, strict handling here is fine for menu
             document.body.style.overflow = '';
         }
         return () => { document.body.style.overflow = ''; };
@@ -62,7 +64,9 @@ export default function Header({ logoText, logoImage, menuItems }) {
                     <nav className={styles.desktopNav}>
                         <ul>
                             {menuItems && menuItems.map((item, index) => (
-                                <li key={index}><a href={item.href}>{item.label}</a></li>
+                                <li key={index}>
+                                    <Link href={item.href}>{item.label}</Link>
+                                </li>
                             ))}
                         </ul>
                     </nav>
@@ -76,7 +80,16 @@ export default function Header({ logoText, logoImage, menuItems }) {
                             <User size={20} />
                         </button>
 
-                        <button className={styles.iconBtn} aria-label="Panier"><ShoppingBag size={20} /></button>
+                        <button
+                            className={`${styles.iconBtn} ${styles.cartBtn}`}
+                            aria-label="Panier"
+                            onClick={() => setIsCartOpen(true)}
+                        >
+                            <ShoppingBag size={20} />
+                            {mounted && cartCount > 0 && (
+                                <span className={styles.badge}>{cartCount}</span>
+                            )}
+                        </button>
                     </div>
                 </div>
             </header>
@@ -87,9 +100,9 @@ export default function Header({ logoText, logoImage, menuItems }) {
                     <ul>
                         {menuItems && menuItems.map((item, index) => (
                             <li key={index}>
-                                <a href={item.href} onClick={() => setIsMenuOpen(false)}>
+                                <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
                                     {item.label}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>

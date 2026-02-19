@@ -15,6 +15,8 @@
   --radius-pill: 9999px;
 
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  --background-gradient: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
 }
 
 * {

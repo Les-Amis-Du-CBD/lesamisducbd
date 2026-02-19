@@ -1,0 +1,278 @@
+/* Products Page - Premium Design */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #1F4B40;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.addButton {
+    background-color: #1F4B40;
+    color: #00FF94;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    /* Pill shape */
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px -10px rgba(31, 75, 64, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.addButton:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 15px 35px -10px rgba(31, 75, 64, 0.6);
+    background-color: #16382f;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(31, 75, 64, 0.05);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.1);
+    border-color: #00FF94;
+}
+
+.imageWrapper {
+    position: relative;
+    height: 240px;
+    background: #f8fcfb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+    transform: scale(1.05);
+}
+
+.tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #00FF94;
+    color: #1F4B40;
+    padding: 6px 12px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 255, 148, 0.3);
+}
+
+.content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F4B40;
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1F4B40;
+    margin-top: auto;
+    margin-bottom: 1.5rem;
+}
+
+.deleteButton {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #fee2e2;
+    color: #ef4444;
+    background: #fffafa;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deleteButton:hover {
+    background: #fee2e2;
+    border-color: #fecaca;
+}
+
+/* Modal Styling */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(31, 75, 64, 0.6);
+    /* Brand color Dark overlay */
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 32px;
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal h2 {
+    font-size: 1.8rem;
+    color: #1F4B40;
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.formGroup label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1F4B40;
+    margin-left: 5px;
+}
+
+.formGroup input,
+.formGroup textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #f9fafb;
+    transition: all 0.2s;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #00FF94;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(0, 255, 148, 0.1);
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cancelButton {
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.submitButton {
+    background-color: #1F4B40;
+    color: #00FF94;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 0.2s;
+}
+
+.submitButton:hover {
+    transform: scale(1.02);
+}
+
+.submitButton:disabled {
+    opacity: 0.7;
+    cursor: default;
+    transform: none;
+}

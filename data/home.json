@@ -42,11 +42,11 @@
       "id": "hero-home",
       "type": "Hero",
       "props": {
-        "backgroundImage": "/images/hero-flower.png",
+        "backgroundImage": "/images/hero.png",
         "title": "Le CBD fiable, testé<br /> et accessible.",
         "description": "Chez Les Amis du CBD, on fait simple :<br /> des produits naturels, conformes à la loi, analysés en laboratoire,<br /> et expliqués clairement.",
         "ctaLabel": "Découvrir nos produits",
-        "ctaLink": "/boutique"
+        "ctaLink": "/produits"
       }
     },
     {
@@ -64,44 +64,59 @@
         "title": "Nos fleurs phares, pour chaque moment.",
         "description": "Que vous cherchiez à vous détendre, rester concentré·e ou<br /> mieux dormir, nos variétés de CBD sont sélectionnées pour<br /> leurs effets précis et naturels. Chaque fleur est cultivée sans<br /> chimie, pour un plaisir authentique à chaque utilisation.",
         "linkLabel": "Voir Tout",
-        "linkHref": "/fleurs",
+        "linkHref": "/produits",
         "products": [
           {
             "name": "Gorilla Glue",
-            "subtitle": "GORILLA GLUE",
+            "slug": "gorilla-glue",
+            "subtitle": "",
             "quoteTitle": "“La Puissante”",
-            "image": "/images/products/gorilla-glue.png",
-            "priceInfo": "À partir de 2€ le gramme",
-            "tag": "Bestseller",
-            "pillLeft": "4G 10€",
-            "pillRight": "10G 20€"
-          },
-          {
-            "name": "Remedy",
-            "subtitle": "REMEDY",
-            "quoteTitle": "“La Relaxante”",
-            "image": "/images/products/remedy.png",
-            "priceInfo": "À partir de 2€ le gramme",
-            "pillLeft": "4G 10€",
-            "pillRight": "10G 20€"
-          },
-          {
-            "name": "Super Skunk",
-            "subtitle": "SUPER SKUNK",
-            "quoteTitle": "“La Classique”",
-            "image": "/images/products/super-skunk.png",
-            "priceInfo": "À partir de 2€ le gramme",
-            "pillLeft": "4G 10€",
-            "pillRight": "10G 20€"
+            "image": "/images/uploads/bca7851a-f4e6-469f-8a1d-e7bd3935b9c9-gorilla-glue.png",
+            "price": "10",
+            "pricePerGram": "2.50",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4g écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nAvoir des fleurs de CBD Gorilla Glue, c'est comme avoir un ami gorille géant qui vous fait un câlin réconfortant.\n\nTHC < 0,3 %",
+            "tag": "Classique",
+            "priceInfo": "À partir de 2.50 le gramme"
           },
           {
             "name": "Amnésia",
-            "subtitle": "AMNÉZIA",
-            "quoteTitle": "“La Rêveuse”",
-            "image": "/images/products/amnesia.png",
-            "priceInfo": "À partir de 2€ le gramme",
+            "slug": "amnesia",
+            "subtitle": "",
+            "quoteTitle": "“La Rêveuse ”",
+            "image": "/images/uploads/86d2b9bc-1ec8-480e-9bd6-e639bf2a6072-amnesia.png",
+            "price": "10",
+            "pricePerGram": "2.50",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4G écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nTHC < 0,3 %",
+            "tag": "",
+            "priceInfo": "À partir de 2.50 le gramme"
+          },
+          {
+            "name": "Super-Skunk",
+            "slug": "super-skunk",
+            "subtitle": "",
+            "quoteTitle": "“La Classique”",
+            "image": "/images/uploads/a9852208-dd82-4918-bc59-c6f4777a56e2-super-skunk.png",
+            "price": "10",
+            "pricePerGram": "2.50",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4 g écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nTHC < 0,3 %",
+            "tag": "BESTSELLER",
             "pillLeft": "4G 10€",
-            "pillRight": "10G 20€"
+            "pillRight": "10G 20€",
+            "priceInfo": "À partir de 2.50 le gramme"
+          },
+          {
+            "name": "Remedy",
+            "slug": "remedy",
+            "subtitle": "",
+            "quoteTitle": "“La Relaxante”",
+            "image": "/images/uploads/087921f7-d6bf-461b-a6d5-ef95c7af42ce-remedy.png",
+            "price": "10",
+            "pricePerGram": "2.50",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4G écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nTHC < 0,3 %",
+            "tag": "",
+            "pillLeft": "4G 10€",
+            "pillRight": "10G 20€",
+            "priceInfo": "À partir de 2.50 le gramme"
           }
         ]
       }
@@ -200,7 +215,8 @@
       "type": "InteractiveMap",
       "props": {
         "title": "Où nous retrouver ?",
-        "description": "Les Amis du CBD, c'est une marque proche de vous. Retrouvez nos produits dans une sélection de points de vente partenaires partout en France : bureaux de tabac, shops spécialisés et adresses de confiance."
+        "description": "Les Amis du CBD, c'est une marque proche de vous. Retrouvez nos produits dans une sélection de points de vente partenaires partout en France : bureaux de tabac, shops spécialisés et adresses de confiance.",
+        "markersCount": 50
       }
     },
     {
@@ -210,19 +226,19 @@
         "title": "Un réseau de <br />partenaires reconnus.",
         "partners": [
           {
-            "image": "/images/partners_network/partner_1.png",
+            "image": "/images/partners_network/partner_1.webp",
             "name": "Vapexpo"
           },
           {
-            "image": "/images/partners_network/partner_4.png",
+            "image": "/images/partners_network/partner_4.webp",
             "name": "Losange"
           },
           {
-            "image": "/images/partners_network/partner_2.png",
+            "image": "/images/partners_network/partner_2.webp",
             "name": "Confédération"
           },
           {
-            "image": "/images/partners_network/partner_3.png",
+            "image": "/images/partners_network/partner_3.webp",
             "name": "Union CBD"
           }
         ]

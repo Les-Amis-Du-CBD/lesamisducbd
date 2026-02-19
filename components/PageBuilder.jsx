@@ -13,8 +13,8 @@ import Quote from './Quote/Quote';
 
 import QualityBanner from './QualityBanner/QualityBanner';
 import PartnersNetwork from './PartnersNetwork/PartnersNetwork';
+import InteractiveMapWrapper from './InteractiveMap/InteractiveMapWrapper';
 import JoinUs from './JoinUs/JoinUs';
-import InteractiveMap from './InteractiveMap/InteractiveMap';
 import ScrollReveal from './ScrollReveal/ScrollReveal';
 
 const componentMap = {
@@ -25,7 +25,7 @@ const componentMap = {
     ProductList: ProductList,
     WhyChooseUs: WhyChooseUs,
     PartnersNetwork: PartnersNetwork,
-    InteractiveMap: InteractiveMap,
+    InteractiveMap: InteractiveMapWrapper,
     JoinUs: JoinUs,
     FAQ: FAQ,
 

@@ -7,8 +7,6 @@ export default function Marquee({ text, speed }) {
                 {/* Duplicate text to create infinite effect */}
                 <span className={styles.content}>{text} &nbsp; • &nbsp; </span>
                 <span className={styles.content}>{text} &nbsp; • &nbsp; </span>
-                <span className={styles.content}>{text} &nbsp; • &nbsp; </span>
-                <span className={styles.content}>{text} &nbsp; • &nbsp; </span>
             </div>
         </div>
     );

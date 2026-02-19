@@ -95,7 +95,7 @@ const generateStablePoints = (totalPoints = 350) => {
 };
 
 // Markers generated ONCE
-const STABLE_MARKERS = generateStablePoints(150);
+const STABLE_MARKERS = generateStablePoints(50); // Reduced for mobile performance check
 
 export default function InteractiveMap() {
     // Memoize the marker elements to prevent re-rendering during zoom/pan
@@ -103,11 +103,9 @@ export default function InteractiveMap() {
         STABLE_MARKERS.map((point, index) => (
             <Marker key={index} coordinates={point.coordinates}>
                 <circle
-                    r={1.5}
+                    r={2}
+                    fill="#F5A623"
                     className={styles.marker}
-                    style={{
-                        animationDelay: `${Math.random() * 4}s`
-                    }}
                 />
             </Marker>
         ))

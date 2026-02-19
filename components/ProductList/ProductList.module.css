@@ -140,7 +140,7 @@
 .pillsContainer {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 80px;
     margin-bottom: 15px;
     width: 100%;
 }
@@ -165,6 +165,20 @@
     color: #7EE3CB;
 }
 
+.mainPrice {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mainPrice small {
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-left: 5px;
+}
+
 .cta {
     background: white;
     color: #1F4B40;
@@ -186,7 +200,9 @@
 .priceInfo {
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.7);
-    margin: 0;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
 }
 
 /* Footer Link */
@@ -265,10 +281,13 @@
         font-size: 1.1rem;
     }
 
+    .pillsContainer {
+        gap: 40px;
+    }
+
     .pillLeft,
     .pillRight {
         padding: 4px 8px;
-        /* Compact pills */
         font-size: 0.7rem;
     }
 

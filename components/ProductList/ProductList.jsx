@@ -25,7 +25,7 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
                                 {product.tag && <span className={styles.badge}>{product.tag}</span>}
 
                                 <div className={styles.topInfo}>
-                                    <div className={styles.subtitlePill}>{product.subtitle}</div>
+                                    <div className={styles.subtitlePill}>{product.name}</div>
                                     <h3 className={styles.quoteTitle}>{product.quoteTitle}</h3>
                                 </div>
 
@@ -34,13 +34,13 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
                                 </div>
 
                                 <div className={styles.pillsContainer}>
-                                    {product.pillLeft && <span className={styles.pillLeft}>{product.pillLeft}</span>}
-                                    {product.pillRight && <span className={styles.pillRight}>{product.pillRight}</span>}
+                                    <span className={styles.pillLeft}>{product.pillLeft || '4G 10€'}</span>
+                                    <span className={styles.pillRight}>{product.pillRight || '10G 20€'}</span>
                                 </div>
 
-                                <button className={styles.cta}>Découvrir cette variété</button>
-
-                                <p className={styles.priceInfo}>{product.priceInfo}</p>
+                                <Link href={`/produit/${product.slug}`} className={styles.ctaLink}>
+                                    <button className={styles.cta}>Découvrir cette variété</button>
+                                </Link>
                             </div>
                         ))}
                     </div>

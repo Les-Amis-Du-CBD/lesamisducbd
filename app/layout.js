@@ -2,6 +2,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import { CartProvider } from "@/context/CartContext";
+import { ToastProvider } from "@/context/ToastContext";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -71,12 +72,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={bricolage.className} suppressHydrationWarning>
-        <CartProvider>
-          <JsonLd />
-          <ScrollToTop />
-          {children}
-          <CartDrawer />
-        </CartProvider>
+        <ToastProvider>
+          <CartProvider>
+            <JsonLd />
+            <ScrollToTop />
+            {children}
+            <CartDrawer />
+          </CartProvider>
+        </ToastProvider>
       </body>
     </html>
   );

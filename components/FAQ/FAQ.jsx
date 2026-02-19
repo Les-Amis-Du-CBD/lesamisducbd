@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import styles from './FAQ.module.css';
 
-export default function FAQ({ items }) {
+export default function FAQ({ items, title }) {
     const [openIndex, setOpenIndex] = useState(null);
 
     const toggle = (index) => {
@@ -11,6 +11,7 @@ export default function FAQ({ items }) {
 
     return (
         <section className={styles.section}>
+            {title && <h2 className={styles.title}>{title}</h2>}
             <div className={styles.container}>
                 {items.map((item, index) => {
                     const isOpen = openIndex === index;

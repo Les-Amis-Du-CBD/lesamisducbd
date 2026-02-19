@@ -282,12 +282,12 @@
     }
 
     .pillsContainer {
-        gap: 40px;
+        gap: 20px;
     }
 
     .pillLeft,
     .pillRight {
-        padding: 4px 8px;
+        padding: 6px 8px;
         font-size: 0.7rem;
     }
 

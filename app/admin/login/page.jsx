@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AdminLogin() {
     const [password, setPassword] = useState('');
@@ -99,6 +100,17 @@ export default function AdminLogin() {
                     boxShadow: '0 10px 25px -5px rgba(0, 255, 148, 0.4)',
                     transition: 'transform 0.2s'
                 }}>Se connecter</button>
+
+                <Link href="/" style={{
+                    textAlign: 'center',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    textDecoration: 'none',
+                    fontSize: '0.9rem',
+                    marginTop: '1rem',
+                    transition: 'color 0.2s'
+                }} className="hover:text-white">
+                    ← Revenir au site
+                </Link>
             </form>
         </div>
     );

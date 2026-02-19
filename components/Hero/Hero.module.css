@@ -136,8 +136,28 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 60px 20px;
+        padding: 0;
         text-align: center;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        position: relative;
+        /* Fix for mobile clipping */
+        isolation: isolate;
+
+        /* Standardize mobile spacing (10px each side) */
+        width: calc(100% - 20px);
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+
+    .heroImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+        /* Push image down to hide transparent bottom pixels */
+        transform: scale(1.05);
+        transform-origin: top center;
     }
 
     .glassCard {
@@ -145,9 +165,9 @@
         top: auto;
         left: auto;
         transform: none;
-        width: 100%;
+        width: 90%;
         max-width: 400px;
-        margin: 0;
+        margin: 20px;
         align-items: center;
         text-align: center;
     }

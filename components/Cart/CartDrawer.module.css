@@ -17,6 +17,8 @@
     max-width: 450px;
     background: #E3FFF8;
     height: 100vh;
+    /* Fallback */
+    height: 100dvh;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -192,6 +194,7 @@
 
 .footer {
     padding: 24px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
     border-top: 1px solid rgba(31, 75, 64, 0.1);
     background: white;
 }

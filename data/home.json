@@ -35,7 +35,7 @@
       "type": "Marquee",
       "props": {
         "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES • PLUS SIMPLE, MOINS CHER",
-        "speed": 25
+        "speed": 15
       }
     },
     {
@@ -160,6 +160,7 @@
       "id": "faq-section",
       "type": "FAQ",
       "props": {
+        "title": "Le CBD, expliqué simplement",
         "items": [
           {
             "question": "Le CBD est-il légal en France ?",

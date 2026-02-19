@@ -4,10 +4,21 @@
     max-width: none;
     margin: clamp(20px, 4vw, 40px) auto;
     border-radius: clamp(20px, 4vw, 40px);
-    background: linear-gradient(45deg, #49B197 0%, #1F4B40 100%);
     color: var(--text-white);
     position: relative;
+
+    position: relative;
     overflow: hidden;
+}
+
+.title {
+    text-align: center;
+    font-size: clamp(1.559rem, 5vw, 2rem);
+    font-weight: 400;
+    margin-bottom: clamp(30px, 4vw, 50px);
+    color: #1F4B40;
+    font-family: var(--font-bricolage), sans-serif;
+    padding: 0 20px;
 }
 
 .container {
@@ -28,10 +39,8 @@
 .question {
     width: 100%;
     padding: clamp(12px, 2vw, 18px) clamp(20px, 3vw, 30px);
-    background: #2CEDBE;
-    /* Bright Cyan highlight */
+    background: #7EE3CB;
     color: #1F4B40;
-    /* Deep Forest text for contrast on Cyan */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -68,23 +77,20 @@
 
 .answer {
     padding: clamp(20px, 3vw, 30px);
-    padding-top: clamp(40px, 5vw, 50px);
-    /* Offset for the pill overlap */
+    padding-top: clamp(50px, 5vw, 50px);
     background: rgba(255, 255, 255, 0.08);
-    /* Premium Glassmorphism */
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    /* Consitent with Hero/ProductList/Partners */
+    color: #1F4B40;
     font-size: clamp(0.9rem, 1.5vw, 1rem);
     line-height: 1.6;
-    border-radius: 0 0 clamp(20px, 3vw, 30px) clamp(20px, 3vw, 30px);
+    border-radius: clamp(20px, 3vw, 30px);
     margin-top: -35px;
-    /* Tucked under the pill */
     position: relative;
     z-index: 1;
     animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.158);
 }
 
 .answer b {
@@ -94,7 +100,6 @@
 .item.open .question {
     border-radius: 30px 30px 0 0;
     background: #1F4B40;
-    /* Darker when open to distinguish? Or keep cyan? Let's keep cyan for primary focus */
     color: white;
 }
 

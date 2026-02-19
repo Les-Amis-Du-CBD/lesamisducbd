@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.previewContainer {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f0f0f0;
+    position: relative;
+    border: 2px dashed #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.uploadBtn {
+    background: #1F4B40;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.uploadBtn:hover {
+    background: #00FF94;
+    color: #1F4B40;
+}

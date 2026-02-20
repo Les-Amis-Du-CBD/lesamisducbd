@@ -1,20 +1,41 @@
 import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { kv } from '@vercel/kv';
 
 // Force dynamic execution to prevent caching content
 export const dynamic = 'force-dynamic';
 
 const dataFilePath = path.join(process.cwd(), 'data', 'home.json');
+const KV_KEY = 'home_content';
 
-// GET: Retrieve the full home.json content
-export async function GET() {
+// Helper function to get initial data from file
+async function getInitialData() {
     try {
         const fileContent = await fs.readFile(dataFilePath, 'utf8');
-        const data = JSON.parse(fileContent);
+        return JSON.parse(fileContent);
+    } catch (error) {
+        console.error('Error reading initial home.json:', error);
+        return { sections: [] }; // Fallback
+    }
+}
+
+// GET: Retrieve the full home content
+export async function GET() {
+    try {
+        // Try to get data from KV first
+        let data = await kv.get(KV_KEY);
+
+        // If KV is empty (first time), load from local file and populate KV
+        if (!data) {
+            console.log('KV empty, loading initial data from local file');
+            data = await getInitialData();
+            await kv.set(KV_KEY, data);
+        }
+
         return NextResponse.json(data);
     } catch (error) {
-        console.error('Error reading home.json:', error);
+        console.error('Error reading content:', error);
         return NextResponse.json(
             { error: 'Failed to load content' },
             { status: 500 }
@@ -35,11 +56,19 @@ export async function POST(request) {
             );
         }
 
-        // 1. Read current file
-        const fileContent = await fs.readFile(dataFilePath, 'utf8');
-        const data = JSON.parse(fileContent);
+        // 1. Read current data from KV
+        let data = await kv.get(KV_KEY);
+
+        // Fallback if KV was somehow cleared but we are trying to update
+        if (!data) {
+            data = await getInitialData();
+        }
 
         // 2. Find and update the section
+        if (!data || !data.sections) {
+            return NextResponse.json({ error: 'Data structure invalid' }, { status: 500 });
+        }
+
         const sectionIndex = data.sections.findIndex(s => s.id === sectionId);
 
         if (sectionIndex === -1) {
@@ -49,7 +78,7 @@ export async function POST(request) {
             );
         }
 
-        // Merge new props deeply or shallowly? 
+        // Merge new props deeply or shallowly?
         // For safety and simplicity, let's do a shallow merge of the props object,
         // so we don't accidentally delete unmentioned props if the UI sends partial data.
         // However, for lists (like FAQ items), the UI should send the *entire* new list.
@@ -58,8 +87,8 @@ export async function POST(request) {
             ...newProps
         };
 
-        // 3. Write back to file
-        await fs.writeFile(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+        // 3. Write back to KV
+        await kv.set(KV_KEY, data);
 
         return NextResponse.json({
             success: true,
@@ -67,7 +96,7 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error('Error updating home.json:', error);
+        console.error('Error updating content:', error);
         return NextResponse.json(
             { error: 'Failed to update content' },
             { status: 500 }

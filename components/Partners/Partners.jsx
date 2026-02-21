@@ -30,7 +30,11 @@ export default function Partners({ title, subtitle, partners }) {
                 <div className={styles.grid}>
                     {partners.map((partner, index) => (
                         <div key={index} className={styles.card}>
-                            <div className={styles.avatarPlaceholder}></div>
+                            {partner.imageLogo ? (
+                                <img src={partner.imageLogo} alt={`Logo ${partner.name}`} className={styles.avatarPlaceholder} style={{ objectFit: 'contain', background: '#fff', border: '1px solid #eaeaea' }} />
+                            ) : (
+                                <div className={styles.avatarPlaceholder}></div>
+                            )}
                             <h3 className={styles.partnerName}>{partner.name}</h3>
                             <p className={styles.partnerRole}>{partner.role}</p>
                             <p className={styles.partnerQuote} dangerouslySetInnerHTML={{ __html: `"${partner.quote}"` }}></p>

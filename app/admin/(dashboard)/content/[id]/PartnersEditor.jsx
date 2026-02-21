@@ -7,6 +7,7 @@ export default function PartnersEditor({ section, onSave }) {
     const [subtitle, setSubtitle] = useState(section.props.subtitle || '');
     const [partners, setPartners] = useState(section.props.partners || []);
     const [saving, setSaving] = useState(false);
+    const [uploadingImageFor, setUploadingImageFor] = useState(null);
 
     const handlePartnerChange = (index, field, value) => {
         const newPartners = [...partners];
@@ -22,6 +23,34 @@ export default function PartnersEditor({ section, onSave }) {
         if (confirm('Supprimer ce témoignage ?')) {
             const newPartners = partners.filter((_, i) => i !== index);
             setPartners(newPartners);
+        }
+    };
+
+    const handleImageUpload = async (index, file) => {
+        if (!file) return;
+
+        setUploadingImageFor(index);
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('/api/admin/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Upload failed');
+            }
+
+            const data = await response.json();
+            handlePartnerChange(index, 'imageLogo', data.url);
+        } catch (error) {
+            console.error("Erreur lors de l'upload de l'image:", error);
+            alert("Erreur lors de l'upload de l'image.");
+        } finally {
+            setUploadingImageFor(null);
         }
     };
 
@@ -89,6 +118,23 @@ export default function PartnersEditor({ section, onSave }) {
                                 rows={3}
                                 placeholder="Citation"
                             />
+
+                            <div style={{ marginTop: '10px' }}>
+                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Logo du Partenaire</label>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    {partner.imageLogo && (
+                                        <img src={partner.imageLogo} alt="Logo" style={{ width: '50px', height: '50px', objectFit: 'contain', background: '#fff', border: '1px solid #ddd', borderRadius: '4px' }} />
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => handleImageUpload(index, e.target.files[0])}
+                                        disabled={uploadingImageFor === index}
+                                        style={{ fontSize: '0.9rem' }}
+                                    />
+                                    {uploadingImageFor === index && <span style={{ fontSize: '0.8rem', color: '#666' }}>Upload en cours...</span>}
+                                </div>
+                            </div>
 
                             <button type="button" onClick={() => removeItem(index)} style={{
                                 marginTop: '10px',

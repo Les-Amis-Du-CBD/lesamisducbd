@@ -10,25 +10,31 @@
     word-spacing: 0.4rem;
     background-color: transparent;
     color: var(--primary-dark);
+    display: flex;
 }
 
-.track {
-    display: inline-block;
+.marqueeContent {
+    display: flex;
     white-space: nowrap;
     animation: scroll linear infinite;
 }
 
-.content {
-    display: inline-block;
+.track {
+    white-space: nowrap;
     padding-right: 20px;
 }
 
 @keyframes scroll {
-    from {
+
+    /* 
+       Le conteneur scroll jusqu'à -50% (car la taille totale est de 200% via les span doublés), 
+       ce qui ramène visuellement le début du 2ème span exactement là où le 1er span avait commencé.
+    */
+    0% {
         transform: translateX(0);
     }
 
-    to {
+    100% {
         transform: translateX(-50%);
     }
 }

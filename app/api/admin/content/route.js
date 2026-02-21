@@ -26,10 +26,14 @@ export async function GET() {
         // Try to get data from KV first
         let data = await kv.get(KV_KEY);
 
-        // If KV is empty (first time), load from local file and populate KV
-        if (!data) {
-            console.log('KV empty, loading initial data from local file');
-            data = await getInitialData();
+        // If KV is empty (first time) or malformed, load from local file and populate KV
+        if (!data || !data.sections) {
+            console.log('KV empty or malformed, loading initial data from local file');
+            const initialData = await getInitialData();
+
+            // Fix: If for some reason KV had an array instead of { sections: [] }
+            data = initialData.sections ? initialData : { sections: Array.isArray(initialData) ? initialData : [] };
+
             await kv.set(KV_KEY, data);
         }
 

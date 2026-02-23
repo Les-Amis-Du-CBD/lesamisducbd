@@ -38,7 +38,7 @@ export async function GET() {
     } catch (error) {
         console.error('Error reading content:', error);
         return NextResponse.json(
-            { error: 'Failed to load content' },
+            { error: 'Failed to load content', details: error.message, stack: error.stack },
             { status: 500 }
         );
     }

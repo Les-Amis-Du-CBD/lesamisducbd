@@ -30,6 +30,9 @@ export async function POST(request) {
         return NextResponse.json({ url: uploadResult.secure_url }, { status: 200 });
     } catch (error) {
         console.error('Upload Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error during file upload' }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Internal Server Error during file upload', details: error.message, stack: error.stack },
+            { status: 500 }
+        );
     }
 }

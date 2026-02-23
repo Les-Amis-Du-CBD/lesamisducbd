@@ -1,19 +1,16 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
 import { kv } from '@vercel/kv';
+import homeData from '@/data/home.json';
 
 // Force dynamic execution to prevent caching content
 export const dynamic = 'force-dynamic';
 
-const dataFilePath = path.join(process.cwd(), 'data', 'home.json');
 const KV_KEY = 'home_content';
 
 // Helper function to get initial data from file
 async function getInitialData() {
     try {
-        const fileContent = await fs.readFile(dataFilePath, 'utf8');
-        return JSON.parse(fileContent);
+        return homeData;
     } catch (error) {
         console.error('Error reading initial home.json:', error);
         return { sections: [] }; // Fallback
@@ -27,7 +24,7 @@ export async function GET() {
         let data = await kv.get(KV_KEY);
 
         // If KV is empty (first time) or malformed, load from local file and populate KV
-        if (!data || !data.sections) {
+        if (!data || !data.sections || data.sections.length === 0) {
             console.log('KV empty or malformed, loading initial data from local file');
             const initialData = await getInitialData();
 

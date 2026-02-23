@@ -1,24 +1,21 @@
 import PageBuilder from '@/components/PageBuilder';
-import { promises as fs } from 'fs';
-import path from 'path';
 import { kv } from '@vercel/kv';
+import homeData from '@/data/home.json';
 
 export const dynamic = 'force-dynamic';
 
 async function getData() {
   try {
     const data = await kv.get('home_content');
-    if (data && data.sections) {
+    if (data && data.sections && data.sections.length > 0) {
       return data;
     }
   } catch (error) {
     console.error("Error reading from Vercel KV:", error);
   }
 
-  // Fallback to local JSON if KV is empty or an error occurs
-  const filePath = path.join(process.cwd(), 'data', 'home.json');
-  const fileContents = await fs.readFile(filePath, 'utf8');
-  return JSON.parse(fileContents);
+  // Fallback to local JSON if KV is empty, malformed, or an error occurs
+  return homeData;
 }
 import { SHARED_TITLE, SHARED_DESCRIPTION } from './shared-metadata';
 

@@ -48,8 +48,11 @@ const ANALYSES = [
     { src: '/images/transparence/gorillaglue.jpg', alt: 'Analyse GORILLA GLUE CBD', label: 'GORILLA GLUE CBD = 10%' },
 ];
 
+import useLockBodyScroll from '@/hooks/useLockBodyScroll';
+
 export default function TransparenceClient({ globalContent }) {
     const [selectedImage, setSelectedImage] = useState(null);
+    useLockBodyScroll(!!selectedImage);
 
     const footerProps = {
         ...FOOTER_PROPS,
@@ -180,7 +183,7 @@ export default function TransparenceClient({ globalContent }) {
 
             {/* Lightbox / Modal for viewing full document */}
             {selectedImage && (
-                <div className={styles.modalOverlay} onClick={() => setSelectedImage(null)}>
+                <div className={styles.modalOverlay}>
                     <button
                         className={styles.modalClose}
                         onClick={() => setSelectedImage(null)}

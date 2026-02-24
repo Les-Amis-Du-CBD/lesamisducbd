@@ -12,6 +12,14 @@ const bricolage = Bricolage_Grotesque({
 
 import { SITE_URL, SHARED_TITLE, SHARED_DESCRIPTION, SHARED_KEYWORDS } from './shared-metadata';
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#1F4B40',
+};
+
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: SHARED_TITLE,

@@ -116,7 +116,7 @@ export default function LoginModal({ isOpen, onClose }) {
     if (!mounted || !isOpen) return null;
 
     return createPortal(
-        <div className={styles.overlay} onClick={onClose}>
+        <div className={styles.overlay}>
             <div className={styles.modal} onClick={e => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose} aria-label="Fermer">
                     <X size={24} />

@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 70px 20px;
     animation: fadeIn 0.3s ease-out;
 }
 
@@ -20,13 +20,13 @@
     border-radius: 20px;
     padding: 30px 25px;
     width: 100%;
-    max-width: 380px;
+    max-width: 450px;
     position: relative;
     margin: auto;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     animation: slideUp 0.3s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.5);
-    max-height: 85vh;
+    max-height: calc(100vh - 140px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -38,12 +38,12 @@
         width: 95%;
         max-width: 360px;
         border-radius: 16px;
-        max-height: 85vh;
+        max-height: calc(100svh - 140px);
         margin: auto;
     }
 
     .overlay {
-        padding: 10px;
+        padding: 70px 10px;
     }
 
     .title {

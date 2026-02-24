@@ -60,6 +60,41 @@ const CITIES = [
     { name: "Calais", coords: [1.85, 50.95], weight: 5 }
 ];
 
+// Helper to check if a point is strictly inside France's main hexagonal shape
+const isWithinFrance = (lon, lat) => {
+    // Basic bounds (Metropolitan France)
+    if (lon < -4.8 || lon > 8.2 || lat < 41.3 || lat > 51.1) return false;
+
+    // -- Detailed Coastline Trimming --
+
+    // North West (Bretagne / Normandie / Manche)
+    if (lon < -2.0 && lat > 48.8) return false; // North of Bretagne
+    if (lon < -3.0 && lat < 47.7) return false; // South of Bretagne
+    if (lon > -2.0 && lon < 1.0 && lat > 49.8) return false; // Manche coast
+    if (lon > 1.0 && lon < 2.5 && lat > 50.3) return false; // Hauts de France coast
+
+    // West (Vendée / Aquitaine / Golfe de Gascogne)
+    if (lon < -1.5 && lat > 46.0 && lat < 47.5) return false; // Vendée coast
+    if (lon < -1.1 && lat > 44.0 && lat <= 46.0) return false; // Gironde/Landes coast
+    if (lon < -1.7 && lat <= 44.0) return false; // Pays Basque coast
+
+    // South (Pyrénées / Spain border)
+    if (lat < 43.0 && lon < 1.0) return false;
+    if (lat < 42.5 && lon < 3.0) return false;
+
+    // South East & Mediterranean Coast
+    if (lon > 3.0 && lon < 4.5 && lat < 43.4) return false; // Golfe du Lion
+    if (lon >= 4.5 && lon < 7.0 && lat < 43.1) return false; // Marseille/Toulon coast
+    if (lon >= 7.0 && lat < 43.5) return false; // Nice/Monaco coast
+
+    // East (Alps / Jura / Rhine border)
+    if (lon > 7.5 && lat < 48.0) return false; // Alsace/Jura border
+    if (lon > 6.5 && lat < 46.0) return false; // Alps border (Italy/Swiss)
+    if (lon > 7.0 && lat < 44.5) return false; // Southern Alps border
+
+    return true;
+};
+
 // Generate deterministic points clustered around cities
 const generateStablePoints = (totalPoints = 350) => {
     const random = mulberry32(123456); // Fixed seed for identical results every render
@@ -69,25 +104,29 @@ const generateStablePoints = (totalPoints = 350) => {
     const totalWeight = CITIES.reduce((acc, city) => acc + city.weight, 0);
 
     CITIES.forEach(city => {
-        // Calculate number of points for this city based on weight share
-        const count = Math.floor((city.weight / totalWeight) * totalPoints) + 1; // +1 to ensure coverage
+        // Calculate number of points for this city
+        const count = Math.floor((city.weight / totalWeight) * totalPoints) + 1;
 
-        for (let i = 0; i < count; i++) {
-            // Gaussian-like distribution (Box-Muller transform approximation or just simple centralized random)
-            // Using simpler logic: random offset decreasing with distance
-            // Spread factor: stricter for some to keep shape
-            const spread = 0.4; // degrees (~20-30km radius visual spread)
+        let added = 0;
+        let attempts = 0;
 
-            // Random offset
+        while (added < count && attempts < count * 10) {
+            attempts++;
+            const spread = 0.45; // Tighter spread to prevent spilling into water
+
             const u = random();
             const v = random();
-            // Use something roughly normal distributed
             const offsetX = (u - 0.5) * spread * 2;
-            const offsetY = (v - 0.5) * spread * 1.5; // Correction for aspect ratio of lat/lon
+            const offsetY = (v - 0.5) * spread * 1.5;
 
-            points.push({
-                coordinates: [city.coords[0] + offsetX, city.coords[1] + offsetY]
-            });
+            const lon = city.coords[0] + offsetX;
+            const lat = city.coords[1] + offsetY;
+
+            // Only add if it falls roughly inside land (France)
+            if (isWithinFrance(lon, lat)) {
+                points.push({ coordinates: [lon, lat] });
+                added++;
+            }
         }
     });
 
@@ -95,9 +134,28 @@ const generateStablePoints = (totalPoints = 350) => {
 };
 
 // Markers generated ONCE
-const STABLE_MARKERS = generateStablePoints(50); // Reduced for mobile performance check
+// We use 320 points to look dense but stay performing (SVG handles < 500 nodes easily at 120fps)
+const STABLE_MARKERS = generateStablePoints(320);
 
 export default function InteractiveMap() {
+    const [center, setCenter] = useState([2.83, 46.5]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                // Mobile: lower latitude to move map higher on screen
+                setCenter([2.83, 45.2]);
+            } else {
+                // Desktop: standard center
+                setCenter([2.83, 46.5]);
+            }
+        };
+
+        handleResize(); // Init on mount
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Memoize the marker elements to prevent re-rendering during zoom/pan
     const markers = useMemo(() => (
         STABLE_MARKERS.map((point, index) => (
@@ -130,7 +188,7 @@ export default function InteractiveMap() {
                         }}
                         className={styles.mapSvg}
                     >
-                        <ZoomableGroup center={[2.83, 44.77]} zoom={1} minZoom={1} maxZoom={4}>
+                        <ZoomableGroup center={center} zoom={1} minZoom={1} maxZoom={4}>
                             <Geographies geography={GEO_URL}>
                                 {({ geographies }) =>
                                     geographies.map((geo) => (

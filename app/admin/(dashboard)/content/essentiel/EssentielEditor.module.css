@@ -168,3 +168,33 @@
 .removeBtn:hover {
     background: #fff0f0;
 }
+
+/* ─── Mobile Responsiveness ─────────── */
+@media (max-width: 768px) {
+    .section {
+        padding: 1rem;
+    }
+
+    .saveBtn {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .sectionTabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+    }
+
+    .tab {
+        white-space: nowrap;
+        padding: 0.5rem;
+    }
+
+    .field input,
+    .field textarea {
+        font-size: 1rem;
+        /* Prevent iOS zoom */
+    }
+}

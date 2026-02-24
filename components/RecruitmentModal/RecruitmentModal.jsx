@@ -58,7 +58,7 @@ export default function RecruitmentModal({ onClose }) {
     };
 
     return createPortal(
-        <div className={styles.backdrop} onClick={onClose}>
+        <div className={styles.backdrop}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
                     <X size={20} />

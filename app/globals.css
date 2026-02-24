@@ -27,11 +27,19 @@
   padding: 0;
 }
 
+html,
+body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  /* Prevent horizontal swipe to go back/forward on mobile browsers */
+}
+
 body {
   font-family: var(--font-bricolage), 'Bricolage Grotesque', sans-serif;
   background-color: var(--background-light);
   color: var(--text-main);
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 

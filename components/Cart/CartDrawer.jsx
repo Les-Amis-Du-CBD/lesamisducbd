@@ -40,7 +40,7 @@ export default function CartDrawer() {
     };
 
     return (
-        <div className={styles.overlay} onClick={() => setIsCartOpen(false)}>
+        <div className={styles.overlay}>
             <div className={styles.drawer} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
                     <h2>Mon Panier</h2>

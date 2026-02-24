@@ -44,8 +44,77 @@
 }
 
 @media (max-width: 900px) {
+    .container {
+        padding: 0.5rem;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
     .layout {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .panel {
+        padding: 0.8rem;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .catalogItem {
+        padding: 0.5rem;
+        flex-wrap: wrap;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .vitrineItem {
+        padding: 0.5rem;
+        flex-wrap: wrap;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .vitrineInfo,
+    .catalogInfo {
+        width: 100%;
+        flex-basis: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .badgeSelect {
+        width: 100%;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    .vitrineInfo strong,
+    .catalogInfo strong {
+        white-space: normal;
+        word-break: break-all;
+        display: block;
+        width: 100%;
+    }
+
+    .vitrineOrder,
+    .catalogOrderCtrl {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 8px;
+    }
+
+    .unpinBtn,
+    .pinBtn,
+    .pinnedBtn {
+        margin-left: auto;
+        margin-top: 5px;
     }
 }
 

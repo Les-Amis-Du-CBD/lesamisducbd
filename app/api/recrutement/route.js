@@ -3,15 +3,17 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
     try {
-        const data = await req.json();
+        const formData = await req.formData();
 
-        const { name, company, email, phone, message } = data;
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
+        const file = formData.get('file');
 
-        if (!name || !company || !email || !phone) {
+        if (!name || !email || !message) {
             return NextResponse.json({ error: 'Champs obligatoires manquants' }, { status: 400 });
         }
 
-        // Pour configurer cet envoi, il faut ajouter EMAIL_USER et EMAIL_PASS dans .env.local
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -20,32 +22,20 @@ export async function POST(req) {
             }
         });
 
-        // EMAIL_TO définit l'adresse de réception. Sinon on utilise ninoprime@hotmail.com pour les tests.
         const recipient = process.env.EMAIL_TO || 'ninoprime@hotmail.com';
 
         const mailOptions = {
             from: process.env.EMAIL_USER || '"Les Amis du CBD" <no-reply@lesamisducbd.fr>',
             to: recipient,
             replyTo: email,
-            subject: `🔥 Nouveau prospect Buraliste : ${company}`,
-            text: `
-Nouveau prospect Buraliste !
-
-Nom : ${name}
-Société : ${company}
-Email : ${email}
-Téléphone : ${phone}
-
-Message :
-${message || 'Aucun message.'}
-            `,
+            subject: `🤝 Nouvelle Candidature : ${name}`,
             html: `
             <!DOCTYPE html>
             <html lang="fr">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Nouveau prospect Buraliste</title>
+                <title>Nouvelle Candidature</title>
                 <style>
                     body {
                         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -142,15 +132,6 @@ ${message || 'Aucun message.'}
                         border-radius: 8px;
                         padding: 25px;
                     }
-                    .message-title {
-                        font-size: 14px;
-                        font-weight: 600;
-                        color: #1A1A1A;
-                        margin: 0 0 15px 0;
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                    }
                     .message-content {
                         font-size: 15px;
                         line-height: 1.6;
@@ -158,11 +139,6 @@ ${message || 'Aucun message.'}
                         margin: 0;
                         white-space: pre-wrap;
                         font-style: italic;
-                    }
-                    .empty-message {
-                        color: #999999;
-                        font-style: italic;
-                        font-size: 14px;
                     }
                     .email-footer {
                         background-color: #F8F9FA;
@@ -184,58 +160,45 @@ ${message || 'Aucun message.'}
                         font-size: 14px;
                         transition: background-color 0.3s;
                     }
-                    .btn-action:hover {
-                        background-color: #333333;
-                    }
                 </style>
             </head>
             <body>
                 <div class="email-container">
                     <div class="email-header">
                         <p class="logo-text">Les Amis <span class="logo-accent">du CBD</span></p>
-                        <p class="header-title">Nouveau Lead Buraliste</p>
+                        <p class="header-title">Espace Recrutement</p>
                     </div>
                     
                     <div class="email-body">
                         <div class="greeting">
-                            Un buraliste souhaite vous rejoindre ! 🚀
+                            Quelqu'un souhaite rejoindre l'équipe ! 💼
                         </div>
                         
                         <div class="info-card">
                             <div class="info-row">
-                                <span class="info-label">Société / Nom du tabac</span>
-                                <span class="info-value">${company}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Contact</span>
+                                <span class="info-label">Candidat</span>
                                 <span class="info-value">${name}</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">Email</span>
+                                <span class="info-label">Email de contact</span>
                                 <span class="info-value"><a href="mailto:${email}" style="color: #49B197; text-decoration: none;">${email}</a></span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Téléphone</span>
-                                <span class="info-value"><a href="tel:${phone.replace(/\s+/g, '')}" style="color: #1A1A1A; text-decoration: none;">${phone}</a></span>
                             </div>
                         </div>
 
                         <div class="message-card">
-                            <h4 class="message-title">💬 Message laissé :</h4>
-                            ${message ?
-                    `<p class="message-content">"${message.replace(/\n/g, '<br/>')}"</p>` :
-                    `<p class="empty-message">Le prospect n'a pas laissé de message complémentaire.</p>`
-                }
+                            <span class="info-label" style="margin-bottom: 10px;">Message du candidat :</span>
+                            <p class="message-content">"${message.replace(/\n/g, '<br/>')}"</p>
                         </div>
+                        
+                        ${file ? `<p style="margin-top: 20px; font-size: 14px; text-align: center;">📎 <b>Une pièce jointe a été envoyée avec cette candidature.</b></p>` : ''}
 
                         <center>
-                            <a href="mailto:${email}" class="btn-action">Répondre au prospect</a>
+                            <a href="mailto:${email}" class="btn-action">Contacter le candidat</a>
                         </center>
                     </div>
 
                     <div class="email-footer">
-                        Cet email vous a été envoyé depuis votre boutique Les Amis du CBD.<br>
-                        Le prospect est en attente de réponse.
+                        Candidature reçue depuis le site Les Amis du CBD.<br>
                     </div>
                 </div>
             </body>
@@ -243,10 +206,19 @@ ${message || 'Aucun message.'}
             `
         };
 
-        // Si l'utilisateur n'a pas configuré l'email, on fait semblant que ça marche dans la console
+        // Traitement de la pièce jointe si présente
+        if (file && file instanceof Blob) {
+            const buffer = Buffer.from(await file.arrayBuffer());
+            mailOptions.attachments = [
+                {
+                    filename: file.name,
+                    content: buffer,
+                }
+            ];
+        }
+
         if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
             console.log('--- [DEV] EMAIL NON ENVOYÉ (Manque EMAIL_USER/EMAIL_PASS) ---');
-            console.log(mailOptions.text);
             return NextResponse.json({ success: true, simulated: true });
         }
 
@@ -255,7 +227,7 @@ ${message || 'Aucun message.'}
         return NextResponse.json({ success: true });
 
     } catch (error) {
-        console.error("Erreur lors de l'envoi de l'email:", error);
+        console.error("Erreur lors de l'envoi de la candidature:", error);
         return NextResponse.json({ error: "Erreur serveur lors de l'envoi" }, { status: 500 });
     }
 }

@@ -132,11 +132,27 @@
         max-width: 600px;
     }
 
+    .textBlock {
+        max-width: 600px;
+        /* On élargit le texte descriptif sur Desktop */
+        font-size: 1.1rem;
+        /* On grossit légèrement le texte */
+    }
+
     .contactCard {
         padding: 60px 40px;
+        max-width: 800px;
+        /* On élargit la carte verte */
     }
 
     .cardTitle {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
+        /* Un peu plus gros */
+    }
+
+    .cardText {
+        max-width: 500px;
+        /* On aère le texte de la carte */
+        font-size: 1.1rem;
     }
 }

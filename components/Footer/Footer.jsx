@@ -1,8 +1,45 @@
+'use client';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight, MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Send } from 'lucide-react';
 import styles from './Footer.module.css';
 
 export default function Footer({ columnLinks, contactInfo, newsletter, copyright }) {
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+    const [message, setMessage] = useState('');
+
+    const handleNewsletterSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!email) return;
+
+        setStatus('loading');
+        setMessage('');
+
+        try {
+            const response = await fetch('/api/newsletter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setStatus('success');
+                setMessage(data.message || 'Merci pour votre inscription !');
+            } else {
+                setStatus('error');
+                setMessage(data.error || 'Une erreur est survenue.');
+            }
+        } catch (error) {
+            console.error('Erreur API Newsletter', error);
+            setStatus('error');
+            setMessage('Erreur réseau. Veuillez réessayer.');
+        }
+    };
+
     return (
         <footer className={styles.wrapper}>
             <div className={styles.container}>
@@ -59,17 +96,33 @@ export default function Footer({ columnLinks, contactInfo, newsletter, copyright
 
                         <div className={styles.newsletterSection}>
                             <h3 className={styles.header}>Newsletter</h3>
-                            <div className={styles.newsletterForm}>
-                                <div className={styles.inputWrapper}>
-                                    <input
-                                        type="email"
-                                        placeholder={newsletter.placeholder}
-                                        className={styles.input}
-                                    />
-                                    <Mail size={18} className={styles.inputIcon} />
+                            {status === 'success' ? (
+                                <div className={styles.newsletterSuccess}>
+                                    <p style={{ color: '#49B197', fontWeight: '500', marginBottom: '8px' }}>{message}</p>
+                                    <p className={styles.disclaimer}>Merci de votre intérêt.</p>
                                 </div>
-                                <p className={styles.disclaimer}>{newsletter.disclaimer}</p>
-                            </div>
+                            ) : (
+                                <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
+                                    <div className={styles.inputWrapper}>
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder={newsletter.placeholder}
+                                            className={styles.input}
+                                            required
+                                            disabled={status === 'loading'}
+                                        />
+                                        <button type="submit" disabled={status === 'loading'} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                                            <Send size={18} className={styles.inputIcon} style={{ opacity: status === 'loading' ? 0.5 : 1 }} />
+                                        </button>
+                                    </div>
+                                    {status === 'error' && (
+                                        <p style={{ color: '#ff6b6b', fontSize: '0.8rem', marginTop: '6px' }}>{message}</p>
+                                    )}
+                                    <p className={styles.disclaimer}>{newsletter.disclaimer}</p>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>

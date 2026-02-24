@@ -7,8 +7,8 @@
 }
 
 .container {
-    width: 96%;
-    max-width: none;
+    width: 100%;
+    max-width: var(--container-width);
     margin: 0 auto;
 
     /* GRID LAYOUT for precise alignment */

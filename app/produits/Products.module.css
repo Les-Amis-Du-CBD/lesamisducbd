@@ -9,8 +9,8 @@
     text-align: center;
     color: white;
     margin: 20px auto 40px;
-    width: 96%;
-    max-width: 1400px;
+    width: 100%;
+    max-width: var(--container-width);
     border-radius: 40px;
     /* Full rounded "bubble" */
     position: relative;
@@ -18,7 +18,7 @@
 }
 
 .heroContent h1 {
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 400;
     margin-bottom: 10px;
     color: white;
@@ -28,7 +28,7 @@
 }
 
 .heroContent p {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     color: white;
     /* Footer subtext color approx or lighter */
     font-weight: 300;
@@ -37,7 +37,8 @@
 }
 
 .container {
-    max-width: 1400px;
+    width: 100%;
+    max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 20px 100px;
 }
@@ -74,33 +75,39 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 40px 30px;
+    /* Reduce min-width so more cards fit per row */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px 20px;
 }
 
 .card {
     background: var(--background-gradient);
-    border-radius: 32px;
+    border-radius: 24px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    padding: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
 }
 
 .imageLink {
     display: block;
-    border-radius: 24px;
+    border-radius: 16px;
     overflow: hidden;
     position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    /* Very subtle inner background for structure */
 }
 
 .imageWrapper {
-    height: 320px;
+    height: 220px;
+    /* Significantly shorter image */
     position: relative;
     transition: transform 0.5s ease;
 }
@@ -110,9 +117,9 @@
 }
 
 .image {
-    margin-top: 20px;
     object-fit: contain;
-    padding: 20px;
+    padding: 15px;
+    /* Tighter padding around the actual product */
 }
 
 .tag {
@@ -131,25 +138,31 @@
 }
 
 .cardContent {
-    padding: 20px 10px 10px;
+    padding: 15px 10px 5px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .cardHeader {
-    margin-bottom: 20px;
+    margin-bottom: auto;
+    /* Push footer to bottom if titles vary */
+    padding-bottom: 20px;
 }
 
 .productName {
-    font-size: 1.5rem;
-    font-weight: 800;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    font-weight: 700;
     color: white;
     margin-bottom: 4px;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
 }
 
 .productSubtitle {
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: 400;
 }
 
 .cardFooter {
@@ -164,49 +177,69 @@
 }
 
 .priceLabel {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    color: white;
-    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
 }
 
 .priceValue {
-    font-size: 1.25rem;
-    font-weight: 800;
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    font-weight: 700;
     color: white;
 }
 
 .addBtn {
-    width: 48px;
-    height: 48px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: white;
     color: #1F4B40;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
 }
 
 .addBtn:hover {
-    transform: scale(1.15) rotate(90deg);
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 /* Mobile */
 @media (max-width: 768px) {
     .hero {
-        padding: 70px 20px;
+        padding: 40px 15px;
+        margin: 10px auto 20px;
+        border-radius: 20px;
     }
 
     .grid {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
     }
 
     .imageWrapper {
-        height: 260px;
+        height: 140px;
+    }
+
+    .cardContent {
+        padding: 10px 5px 5px;
+    }
+
+    .cardHeader {
+        margin-bottom: 6px;
+        padding-bottom: 10px;
+    }
+
+    .addBtn {
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
     }
 }

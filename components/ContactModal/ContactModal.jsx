@@ -18,6 +18,7 @@ export default function ContactModal({ isOpen, onClose }) {
     const [detectedCountry, setDetectedCountry] = useState(defaultCountry);
     const [showCountryDropdown, setShowCountryDropdown] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
 
     React.useEffect(() => {
         setMounted(true);
@@ -49,6 +50,41 @@ export default function ContactModal({ isOpen, onClose }) {
         setShowCountryDropdown(false);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('loading');
+
+        try {
+            const formData = new FormData(e.target);
+            const data = {
+                name: formData.get('name'),
+                company: formData.get('company'),
+                email: formData.get('email'),
+                phone: phoneValue, // use the state value
+                message: formData.get('message')
+            };
+
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setTimeout(() => {
+                    onClose();
+                    // Optional: reset form state here if you want it fresh next time
+                }, 4000);
+            } else {
+                setStatus('error');
+            }
+        } catch (error) {
+            console.error("Erreur d'envoi", error);
+            setStatus('error');
+        }
+    };
+
     return createPortal(
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -66,89 +102,105 @@ export default function ContactModal({ isOpen, onClose }) {
                     <li><span className={styles.link}>Satisfait ou remboursé !</span></li>
                 </ul>
 
-                <form className={styles.form} onClick={() => setShowCountryDropdown(false)} onSubmit={(e) => e.preventDefault()}>
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Prénom et nom *</label>
-                        <input type="text" className={styles.input} required placeholder="Ex : Jean Dupont" />
+                {status === 'success' ? (
+                    <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                        <h3 style={{ color: '#49B197', marginBottom: '15px' }}>Message envoyé avec succès !</h3>
+                        <p style={{ color: 'white', opacity: 0.9 }}>
+                            Merci pour votre message. Un conseiller Les Amis du CBD vous recontactera très prochainement.
+                        </p>
                     </div>
-
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Société *</label>
-                        <input type="text" className={styles.input} required placeholder="Ex : Vaposhop Paris" />
-                    </div>
-
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Email *</label>
-                        <input type="email" className={styles.input} required placeholder="Ex : contact@vaposhop.com" />
-                    </div>
-
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Téléphone *</label>
-                        <div className={styles.phoneInputContainer} onClick={(e) => e.stopPropagation()}>
-                            <div
-                                className={styles.countrySelector}
-                                onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                            >
-                                {detectedCountry ? (
-                                    <img
-                                        src={`https://flagcdn.com/w40/${detectedCountry.code.toLowerCase()}.png`}
-                                        srcSet={`https://flagcdn.com/w80/${detectedCountry.code.toLowerCase()}.png 2x`}
-                                        width="24"
-                                        height="18"
-                                        alt={detectedCountry.name}
-                                        className={styles.flagImage}
-                                    />
-                                ) : (
-                                    <Globe size={24} color="#888" />
-                                )}
-                                <ChevronDown size={14} className={styles.chevron} />
-                            </div>
-
-                            {showCountryDropdown && (
-                                <div className={styles.countryDropdown}>
-                                    {COUNTRIES.map((country) => (
-                                        <div
-                                            key={country.code}
-                                            className={styles.countryOption}
-                                            onClick={() => handleCountrySelect(country)}
-                                        >
-                                            <img
-                                                src={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png`}
-                                                srcSet={`https://flagcdn.com/w80/${country.code.toLowerCase()}.png 2x`}
-                                                width="24"
-                                                height="18"
-                                                alt={country.name}
-                                                className={styles.optionFlagImage}
-                                            />
-                                            <span className={styles.optionName}>{country.name}</span>
-                                            <span className={styles.optionDial}>{country.dial}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
-                            <input
-                                type="tel"
-                                className={styles.phoneInput}
-                                value={phoneValue}
-                                onChange={handlePhoneChange}
-                                required
-                            />
+                ) : (
+                    <form className={styles.form} onClick={() => setShowCountryDropdown(false)} onSubmit={handleSubmit}>
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label}>Prénom et nom *</label>
+                            <input type="text" name="name" className={styles.input} required placeholder="Ex : Jean Dupont" />
                         </div>
-                    </div>
 
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Message</label>
-                        <textarea
-                            className={styles.textarea}
-                            placeholder="Un petit mot sur votre point de vente..."
-                        ></textarea>
-                    </div>
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label}>Société *</label>
+                            <input type="text" name="company" className={styles.input} required placeholder="Ex : Vaposhop Paris" />
+                        </div>
 
-                    <button type="submit" className={styles.submitButton}>
-                        Envoyer
-                    </button>
-                </form>
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label}>Email *</label>
+                            <input type="email" name="email" className={styles.input} required placeholder="Ex : contact@vaposhop.com" />
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label}>Téléphone *</label>
+                            <div className={styles.phoneInputContainer} onClick={(e) => e.stopPropagation()}>
+                                <div
+                                    className={styles.countrySelector}
+                                    onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                                >
+                                    {detectedCountry ? (
+                                        <img
+                                            src={`https://flagcdn.com/w40/${detectedCountry.code.toLowerCase()}.png`}
+                                            srcSet={`https://flagcdn.com/w80/${detectedCountry.code.toLowerCase()}.png 2x`}
+                                            width="24"
+                                            height="18"
+                                            alt={detectedCountry.name}
+                                            className={styles.flagImage}
+                                        />
+                                    ) : (
+                                        <Globe size={24} color="#888" />
+                                    )}
+                                    <ChevronDown size={14} className={styles.chevron} />
+                                </div>
+
+                                {showCountryDropdown && (
+                                    <div className={styles.countryDropdown}>
+                                        {COUNTRIES.map((country) => (
+                                            <div
+                                                key={country.code}
+                                                className={styles.countryOption}
+                                                onClick={() => handleCountrySelect(country)}
+                                            >
+                                                <img
+                                                    src={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png`}
+                                                    srcSet={`https://flagcdn.com/w80/${country.code.toLowerCase()}.png 2x`}
+                                                    width="24"
+                                                    height="18"
+                                                    alt={country.name}
+                                                    className={styles.optionFlagImage}
+                                                />
+                                                <span className={styles.optionName}>{country.name}</span>
+                                                <span className={styles.optionDial}>{country.dial}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <input
+                                    type="tel"
+                                    className={styles.phoneInput}
+                                    value={phoneValue}
+                                    onChange={handlePhoneChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label}>Message</label>
+                            <textarea
+                                name="message"
+                                className={styles.textarea}
+                                placeholder="Un petit mot sur votre point de vente..."
+                            ></textarea>
+                        </div>
+
+                        {status === 'error' && (
+                            <p style={{ color: '#ff6b6b', textAlign: 'center', marginBottom: '15px', fontSize: '0.9rem' }}>
+                                Une erreur est survenue lors de l'envoi. Veuillez réessayer.
+                            </p>
+                        )}
+
+                        <button type="submit" className={styles.submitButton} disabled={status === 'loading'}>
+                            {status === 'loading' ? 'Envoi en cours...' : 'Envoyer'}
+                        </button>
+                    </form>
+                )}
             </div>
         </div>,
         document.body

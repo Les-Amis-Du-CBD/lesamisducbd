@@ -41,7 +41,12 @@ const FOOTER_PROPS = {
     copyright: "©2024 - Les Amis du CBD"
 };
 
-export default function ProductsClient({ initialProducts }) {
+export default function ProductsClient({ initialProducts, globalContent }) {
+    const footerProps = {
+        ...FOOTER_PROPS,
+        columnLinks: globalContent?.footerLinks || FOOTER_PROPS.columnLinks,
+        contactInfo: globalContent?.contact || FOOTER_PROPS.contactInfo
+    };
     const { addItem } = useCart();
     return (
         <main className={styles.main}>
@@ -49,8 +54,7 @@ export default function ProductsClient({ initialProducts }) {
 
             <div className={styles.hero}>
                 <div className={styles.heroContent}>
-                    <h1>Nos Fleurs</h1>
-                    <p>Naturellement inférieur à 0,3% de THC.</p>
+                    <h1>Nos Produits</h1>
                 </div>
             </div>
 
@@ -78,17 +82,18 @@ export default function ProductsClient({ initialProducts }) {
 
                                 <div className={styles.cardFooter}>
                                     <div className={styles.priceInfo}>
-                                        <span className={styles.priceLabel}>À partir de</span>
+                                        <span className={styles.priceLabel}>Prix TTC</span>
                                         <span className={styles.priceValue}>
-                                            {product.price
-                                                ? `${product.price}€`
-                                                : (product.priceInfo?.replace('À partir de ', '') || '2€ / g')
-                                            }
+                                            {product.formattedPrice || `${product.priceTTC || product.price || 5} €`}
                                         </span>
                                     </div>
                                     <button
                                         className={styles.addBtn}
-                                        onClick={() => addItem(product, 1)}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            addItem({ ...product, price: product.priceTTC || product.price || 5 }, 1);
+                                        }}
+                                        aria-label="Ajouter au panier"
                                     >
                                         +
                                     </button>
@@ -99,7 +104,7 @@ export default function ProductsClient({ initialProducts }) {
                 </div>
             </section>
 
-            <Footer {...FOOTER_PROPS} />
+            <Footer {...footerProps} />
         </main>
     );
 }

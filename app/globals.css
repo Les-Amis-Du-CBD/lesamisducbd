@@ -17,6 +17,8 @@
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   --background-gradient: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+
+  --container-width: clamp(320px, 96%, 1800px);
 }
 
 * {
@@ -40,7 +42,8 @@ main {
 
 /* Utilities */
 .container {
-  max-width: 1400px;
+  width: 100%;
+  max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 20px;
 }

@@ -5,8 +5,8 @@
 }
 
 .container {
-    width: 96%;
-    max-width: none;
+    width: 100%;
+    max-width: var(--container-width);
     margin: 0 auto;
     text-align: center;
 }
@@ -36,7 +36,3 @@
    With clamp, we barely need media queries, but we can keep them for layout shifts if needed.
    In this simple centered component, clamp() handles almost everything.
 */
-.quote br {
-    /* Optional: hide line breaks on very small screens if they break flow? 
-       For now, we trust the clamp to make text small enough to fit. */
-}

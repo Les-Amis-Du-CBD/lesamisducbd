@@ -16,8 +16,7 @@ import { ArrowRight, CheckCircle, TrendingUp, Truck } from 'lucide-react';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 
-export default function BuralisteClient() {
-    // ... (keep data mocks)
+export default function BuralisteClient({ content, globalContent }) {
 
     const headerProps = {
         logoText: "LES AMIS DU CBD",
@@ -31,14 +30,14 @@ export default function BuralisteClient() {
     };
 
     const footerProps = {
-        columnLinks: [
+        columnLinks: globalContent?.footerLinks || [
             { label: "Livraison", href: "/livraison" },
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
             { label: "Buraliste", href: "/buraliste" }
         ],
-        contactInfo: {
+        contactInfo: globalContent?.contact || {
             title: "Les Amis du CBD France",
             address: "25 rue principale 07120 Chauzon (FR)",
             phone: "06 71 82 42 87",
@@ -51,21 +50,9 @@ export default function BuralisteClient() {
         copyright: "©2024 - Les Amis du CBD"
     };
 
-    const whyChooseUsFeatures1 = [
-        { title: "Sécurité & légalité avant tout", description: "Produits conformes à la législation française, avec moins de 0,3 % de THC." },
-        { title: "Produits testés et traçables", description: "Analyses par des laboratoires indépendants et vente sous scellé de protection." },
-        { title: "Zéro risque en bureau de tabac", description: "Une gamme pensée pour une vente simple, claire et sans mauvaise surprise." },
-        { title: "CBD 100 % naturel, sans lavage chimique", description: "Fleurs cultivées naturellement, sans traitements artificiels, pour une qualité constante." },
-        { title: "Prix public ultra accessible", description: "Des fleurs entre 1,50 € et 2 € le gramme, adaptées à une forte demande." }
-    ];
+    const whyChooseUsFeatures1 = content.features1;
+    const whyChooseUsFeatures2 = content.features2;
 
-    const whyChooseUsFeatures2 = [
-        { title: "Gain de temps au quotidien", description: "Commandes rapides et gestion simplifiée pour se concentrer sur les ventes." },
-        { title: "Accompagnement clé en main", description: "Présentoirs adaptés, supports pédagogiques et outils d'aide à la vente inclus." },
-        { title: "Différenciation en point de vente", description: "Une offre CBD claire qui vous démarque de la concurrence." },
-        { title: "Marge attractive pour le buraliste", description: "Un produit accessible qui reste rentable et compétitif." },
-        { title: "Excellent rapport qualité / prix", description: "Un positionnement rare sur le marché, apprécié par les clients exigeants." }
-    ];
 
     return (
         <div className={styles.pageWrapper}>
@@ -85,19 +72,10 @@ export default function BuralisteClient() {
                                     className={styles.heroIllustration}
                                 />
                             </div>
-                            <h1 className={styles.heroTitle}>
-                                CBD accessible et pas cher pour buralistes : <br />
-                                devenez partenaire des Amis du CBD.
-                            </h1>
-                            <div className={styles.heroText}>
-                                <strong>Cher Buraliste,</strong>
-                                <br /><br />
-                                Les Amis du CBD est une marque française pensée pour les bureaux de tabac : du CBD naturel, légal, accessible en prix et simple à commercialiser.
-                                <br /><br />
-                                Notre ambition est claire : démocratiser le CBD de qualité, sans promesses floues ni prix excessifs.
-                                <br /><br />
-                                Votre bureau de tabac est le lieu idéal pour proposer un CBD pas cher, fiable et conforme à la réglementation, à une clientèle de plus en plus demandeuse.
-                            </div>
+                            <h1 className={styles.heroTitle}>{content.hero.title}</h1>
+                            <div className={styles.heroText}
+                                dangerouslySetInnerHTML={{ __html: content.hero.text.replace(/\n/g, '<br />') }}
+                            />
                         </div>
                     </div>
                 </section>
@@ -139,36 +117,15 @@ export default function BuralisteClient() {
                     <section className={styles.stepsSection}>
                         <div className={styles.stepsContainer}>
                             <h2 className={styles.stepsTitle}>Comment devenir partenaire Les Amis du CBD ?</h2>
-
                             <div className={styles.stepsGrid}>
-                                <div className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
-                                    <div className={styles.stepHeader}>CONTACTEZ NOTRE ÉQUIPE COMMERCIALE</div>
-                                    <p className={styles.stepText}>
-                                        Notre équipe est disponible pour répondre à vos questions et vous accompagner dans la mise en place.<br />
-                                        06 71 82 42 87
-                                    </p>
-                                </div>
-                                <div className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
-                                    <div className={styles.stepHeader}>DEMANDEZ VOTRE KIT DE DÉMARRAGE</div>
-                                    <p className={styles.stepText}>
-                                        Vous souhaitez tester le potentiel du CBD dans votre boutique ?<br /><br />
-                                        Demandez votre kit de démarrage gratuit, incluant une sélection de nos produits phares, pour évaluer rapidement les ventes.
-                                    </p>
-                                </div>
-                                <div className={styles.stepCard}>
-                                    <div className={styles.stepHeader} style={{ textTransform: 'none', fontSize: '1.5rem', lineHeight: '1.2' }}>
-                                        Prenez une longueur d'avance sur vos concurrents
+                                {content.steps.map((step, i) => (
+                                    <div key={i} className={styles.stepCard} style={{ alignItems: 'center', textAlign: 'center' }}>
+                                        <div className={styles.stepHeader}>{step.title}</div>
+                                        <div className={styles.stepText}
+                                            dangerouslySetInnerHTML={{ __html: step.text.replace(/\n/g, '<br />') }}
+                                        />
                                     </div>
-                                    <div className={styles.stepText} style={{ marginTop: '1rem', textAlign: 'left' }}>
-                                        Transformez votre bureau de tabac en un point de référence du CBD accessible et pas cher, tout en rassurant votre clientèle sur la qualité et la légalité des produits.
-                                        <br /><br />
-                                        Les Amis du CBD, c'est le CBD bien fait, bien expliqué, et bien vendu.
-                                        Nous serons ravis de vous accompagner dans cette aventure.
-                                        <br /><br />
-                                        Amicalement,<br />
-                                        Les Amis du CBD
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </section>

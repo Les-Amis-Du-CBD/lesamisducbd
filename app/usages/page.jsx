@@ -1,5 +1,7 @@
 import UsagesClient from './UsagesClient';
 import { SHARED_TITLE } from '@/app/shared-metadata';
+import { kv } from '@vercel/kv';
+
 
 export const metadata = {
     title: "CBD & Usages",
@@ -9,6 +11,14 @@ export const metadata = {
     },
 };
 
-export default function UsagesPage() {
-    return <UsagesClient />;
+export default async function UsagesPage() {
+    let globalContent = null;
+    try {
+        const globalData = await kv.get('global_content');
+        if (globalData) globalContent = globalData;
+    } catch (e) {
+        console.error('KV error (usages/global):', e);
+    }
+    return <UsagesClient globalContent={globalContent} />;
 }
+

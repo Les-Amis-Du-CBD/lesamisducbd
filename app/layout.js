@@ -3,6 +3,7 @@ import "./globals.css";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
+import AuthProvider from "@/components/Providers/AuthProvider";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -73,12 +74,14 @@ export default function RootLayout({ children }) {
     <html lang="fr" suppressHydrationWarning>
       <body className={bricolage.className} suppressHydrationWarning>
         <ToastProvider>
-          <CartProvider>
-            <JsonLd />
-            <ScrollToTop />
-            {children}
-            <CartDrawer />
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <JsonLd />
+              <ScrollToTop />
+              {children}
+              <CartDrawer />
+            </CartProvider>
+          </AuthProvider>
         </ToastProvider>
       </body>
     </html>

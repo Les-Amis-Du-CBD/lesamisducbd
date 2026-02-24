@@ -1,0 +1,267 @@
+.card {
+    background: var(--background-light);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 30px 20px;
+        border-radius: 16px;
+    }
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #4B5563;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.input {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #D1D5DB;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s;
+    background: #fff;
+    color: #1F2937;
+}
+
+.input:focus {
+    border-color: var(--accent-neon);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.passwordWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.passwordWrapper .input {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.eyeButton {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6B7280;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.eyeButton:hover {
+    color: var(--primary-dark);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.submitButton {
+    background: var(--primary-dark);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 15px;
+    box-shadow: 0 4px 12px rgba(31, 75, 64, 0.2);
+}
+
+.submitButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(31, 75, 64, 0.3);
+}
+
+.submitButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.loadingSpan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.errorMessage {
+    color: #EF4444;
+    font-size: 0.9rem;
+    margin-top: -5px;
+    padding: 10px;
+    background: #FEF2F2;
+    border-radius: 8px;
+    border-left: 3px solid #EF4444;
+}
+
+.switchText {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #4B5563;
+}
+
+.switchLink {
+    color: var(--primary-dark);
+    font-weight: 700;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    margin-left: 5px;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.switchLink:hover {
+    color: var(--accent-neon);
+}
+
+.backHome {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.backHome a {
+    color: #6B7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.backHome a:hover {
+    color: var(--primary-dark);
+}
+
+/* Specific to Registration */
+.fadeIn {
+    animation: fadeIn 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.checkboxGroup {
+    display: flex;
+    align-items: flex-start;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #4B5563;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1.4;
+}
+
+.checkbox {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--accent-neon);
+    cursor: pointer;
+    margin-top: 0.1rem;
+}
+
+.proFieldsContainer {
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    animation: slideDown 0.3s ease-out;
+}
+
+@media (max-width: 480px) {
+    .proFieldsContainer {
+        flex-direction: column;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

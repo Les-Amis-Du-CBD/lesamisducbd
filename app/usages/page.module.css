@@ -152,35 +152,29 @@
 /* DESKTOP ADAPTATION */
 @media (min-width: 1024px) {
 
-    /* Hero: Row Layout */
+    /* Hero: Column Layout */
     .heroSection {
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
-        text-align: left;
-        padding: 80px 20px;
+        text-align: center;
+        padding: 80px 20px 40px;
         max-width: 1200px;
         margin: 0 auto;
-        gap: 60px;
+        gap: 40px;
     }
 
     .heroTitle {
-        flex: 1;
-        font-size: 3.5rem;
+        flex: none;
+        font-size: 4rem;
         /* Larger on desktop */
         margin-bottom: 0;
-        text-align: right;
-        /* Creative choice: Title on left or right? 
-                              Mockup has text top, image below. 
-                              Side-by-side: Title Left, Image Right is standard. 
-                              Let's try Title Left big, Image Right. 
-                           */
-        text-align: left;
-        max-width: 400px;
+        text-align: center;
+        max-width: 800px;
     }
 
     .heroImageWrapper {
-        flex: 1.5;
-        margin: 0;
+        flex: none;
+        margin: 0 auto;
     }
 
     /* Intro: Wider */

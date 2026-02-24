@@ -1,5 +1,6 @@
 
 import { productService } from '@/lib/services/productService';
+import { kv } from '@vercel/kv';
 import ProductsClient from './ProductsClient';
 
 export const metadata = {
@@ -8,8 +9,28 @@ export const metadata = {
 };
 
 export default async function ProductsPage() {
-    // Fetch products on the server for SEO
-    const products = await productService.getProducts();
+    const [products, hiddenIds, globalContent, productOrder] = await Promise.all([
+        productService.getProducts(),
+        kv.get('hidden_products').catch(() => []),
+        kv.get('global_content').catch(() => null),
+        kv.get('product_order').catch(() => [])
+    ]);
 
-    return <ProductsClient initialProducts={products} />;
+    const hidden = Array.isArray(hiddenIds) ? hiddenIds : [];
+    let visibleProducts = hidden.length > 0
+        ? products.filter(p => !hidden.includes(p.id))
+        : products;
+
+    if (Array.isArray(productOrder) && productOrder.length > 0) {
+        visibleProducts.sort((a, b) => {
+            const idxA = productOrder.indexOf(a.id);
+            const idxB = productOrder.indexOf(b.id);
+            if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+            if (idxA !== -1) return -1;
+            if (idxB !== -1) return 1;
+            return 0;
+        });
+    }
+
+    return <ProductsClient initialProducts={visibleProducts} globalContent={globalContent} />;
 }

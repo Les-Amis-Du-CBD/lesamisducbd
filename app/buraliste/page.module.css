@@ -8,10 +8,9 @@
 
 /* Custom Hero */
 .heroSection {
-    padding-top: 140px;
+    padding-top: 80px;
     /* Header space */
     padding-bottom: 60px;
-    background: linear-gradient(180deg, var(--background-light) 0%, #D0FBE6 100%);
     text-align: center;
 }
 
@@ -31,7 +30,7 @@
     background-clip: text;
     font-weight: 700;
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
     position: relative;
     display: inline-block;
 }
@@ -46,7 +45,7 @@
 }
 
 .heroIllustration {
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
     max-width: 100%;
     height: auto;
     border-radius: 20px;
@@ -66,15 +65,12 @@
     line-height: 1.5;
     max-width: 600px;
     font-weight: 500;
-    margin: 0 auto 3rem auto;
+    margin: 0 auto auto auto;
 }
 
 /* Calculator Section */
-/* Calculator Section */
-/* Calculator Section */
-/* Calculator Section */
 .calculatorSection {
-    padding: 60px 20px;
+    padding: 20px 20px;
     /* Standard vertical spacing */
     margin: 0;
 }
@@ -276,22 +272,12 @@
 
 /* Responsive adjustments */
 @media (min-width: 1024px) {
-    .heroContainer {
-        flex-direction: row;
-        text-align: left;
-        justify-content: space-between;
-        gap: 40px;
-    }
-
     .heroContent {
         flex: 1;
-        order: 2;
     }
 
     .heroIllustration {
-        flex: 1;
         max-width: 500px;
-        order: 1;
         border-radius: 20px;
     }
 }

@@ -1,31 +1,23 @@
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-import { NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
-
-export async function middleware(request) {
-    // Only protect /admin routes
-    if (request.nextUrl.pathname.startsWith('/admin')) {
-        // Allow access to login page
-        if (request.nextUrl.pathname === '/admin/login') {
-            return NextResponse.next();
-        }
-
-        const token = request.cookies.get('admin_token')?.value;
-
-        console.log(`Middleware: Checking access to ${request.nextUrl.pathname}`);
-        console.log('Middleware: Token found?', !!token);
-
-        const verified = token && await verifyToken(token);
-        console.log('Middleware: Token verified?', verified);
-
-        if (!verified) {
-            console.log('Middleware: Access denied, redirecting to login');
-            return NextResponse.redirect(new URL('/admin/login', request.url));
-        }
+export default withAuth(
+    function middleware(req) {
+        // Optionnel : Ajouter des vérifications de rôles ici si besoin plus tard
+        // par exemple, bloquer l'accès à /admin pour les rôles 'client'
+        return NextResponse.next();
+    },
+    {
+        callbacks: {
+            authorized: ({ token }) => !!token
+        },
     }
-    return NextResponse.next();
-}
+);
 
+// Spécifier les routes qui nécessitent une authentification
 export const config = {
-    matcher: ['/admin/:path*', '/api/admin/:path*'],
+    matcher: [
+        "/account/:path*",
+        "/checkout/:path*"
+    ]
 };

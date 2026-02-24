@@ -47,7 +47,7 @@ export default function ProductDetailsClient({ product, relatedProducts }) {
     const [quantity, setQuantity] = useState(1);
 
     const handleAddToCart = () => {
-        addItem({ ...product, price: product.price || 5 }, quantity);
+        addItem({ ...product, price: product.priceTTC || product.price || 5 }, quantity);
     };
 
     return (
@@ -81,9 +81,8 @@ export default function ProductDetailsClient({ product, relatedProducts }) {
                         </div>
 
                         <div className={styles.priceSection}>
-                            <span className={styles.price}>{product.price || '5,00'} €</span>
-                            <span className={styles.perGram}>{product.pricePerGram ? `${product.pricePerGram} €` : '2,50 €'} Par gramme</span>
-                            <span className={styles.taxInfo}>TTC</span>
+                            <span className={styles.price}>{product.formattedPrice || `${product.price || '5,00'} €`}</span>
+                            <span className={styles.taxInfo}>TTC (TVA 20% incluse)</span>
                         </div>
 
                         <div className={styles.actions}>
@@ -97,9 +96,10 @@ export default function ProductDetailsClient({ product, relatedProducts }) {
                             </button>
                         </div>
 
-                        <p className={styles.description}>
-                            {product.description || "Une variété d'exception sélectionnée pour ses arômes intenses et ses effets relaxants. Cultivée en France dans le respect de l'environnement."}
-                        </p>
+                        <div
+                            className={styles.description}
+                            dangerouslySetInnerHTML={{ __html: product.description || product.descriptionShort || "<p>Une variété d'exception sélectionnée pour ses arômes intenses et ses effets relaxants. Cultivée en France dans le respect de l'environnement.</p>" }}
+                        />
 
                         <div className={styles.features}>
                             <div className={styles.feature}>
@@ -138,7 +138,7 @@ export default function ProductDetailsClient({ product, relatedProducts }) {
                                 </div>
                                 <div className={styles.relatedInfo}>
                                     <h3>{p.name}</h3>
-                                    <span>{p.price || '5.00'}€</span>
+                                    <span>{p.formattedPrice || `${p.price || '5.00'} €`}</span>
                                 </div>
                             </Link>
                         ))}

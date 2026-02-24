@@ -9,37 +9,47 @@
 .container {
     background-color: #1F4B40;
     color: #fff;
-    width: 96%;
-    max-width: 500px;
-    /* Constrain width to look like the mobile reference */
+    width: 100%;
+    max-width: var(--container-width);
     margin: 0 auto;
     padding: 40px 30px;
     border-radius: 30px;
-    box-sizing: border-box;
 }
 
 @media (min-width: 1024px) {
     .container {
-        max-width: 1200px;
-        /* Allow wider on desktop if needed, or keep narrow if user wants exact match */
-        /* Assuming user wants the "mobile stack" look even on desktop based on "ressemble à ça" */
+        padding: 60px 80px;
+        border-radius: 40px;
     }
 }
 
 .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr 1.2fr 1fr;
+        gap: 60px;
+    }
 }
 
 /* Header Styles */
 .header {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #49B197;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: #2CEDBE;
+    margin-bottom: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     display: block;
     width: 100%;
 }
@@ -98,9 +108,13 @@
 }
 
 /* Social Section */
+.socialSection {
+    margin-bottom: 30px;
+}
+
 .socialIcons {
     display: flex;
-    gap: 20px;
+    gap: 15px;
 }
 
 .socialIcon {
@@ -131,14 +145,13 @@
 
 .input {
     width: 100%;
-    padding: 15px 20px;
+    padding: 12px 20px;
     padding-right: 45px;
-    border-radius: 50px;
-    /* Fully rounded */
+    border-radius: 4px;
     border: none;
     outline: none;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #1F4B40;
     background-color: #ffffff;
     font-weight: 500;
@@ -164,11 +177,3 @@
 }
 
 /* Desktop Adjustment - If user wants grid on desktop, uncomment below */
-@media (min-width: 768px) {
-    .container {
-        /* max-width: 100%; */
-        /* Keeps it somewhat contained like a card */
-    }
-
-    /* Optional: Keep layout vertical to strictly match "exactement ça" */
-}

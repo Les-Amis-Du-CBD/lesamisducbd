@@ -4,7 +4,9 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import styles from './Header.module.css';
 import { User, ShoppingBag, Menu, X } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 import LoginModal from '../LoginModal/LoginModal';
+
 import { useCart } from '@/context/CartContext';
 
 export default function Header({ logoText, logoImage, menuItems }) {
@@ -12,8 +14,13 @@ export default function Header({ logoText, logoImage, menuItems }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    // Auth session
+    const { data: session, status } = useSession();
+    const isAuthenticated = status === 'authenticated';
+    const user = session?.user;
 
     // Cart Context
+
     const { setIsCartOpen, cartCount } = useCart();
 
     useEffect(() => {
@@ -72,13 +79,25 @@ export default function Header({ logoText, logoImage, menuItems }) {
                     </nav>
 
                     <div className={styles.actions}>
-                        <button
-                            className={styles.iconBtn}
-                            aria-label="Compte"
-                            onClick={() => setIsLoginOpen(true)}
-                        >
-                            <User size={20} />
-                        </button>
+                        {isAuthenticated && mounted ? (
+                            <div className={styles.userMenu}>
+                                <Link
+                                    href="/account"
+                                    className={`${styles.iconBtn} ${styles.loggedInBtn}`}
+                                    title={`Mon Compte`}
+                                >
+                                    <User size={20} />
+                                </Link>
+                            </div>
+                        ) : (
+                            <button
+                                className={styles.iconBtn}
+                                aria-label="Compte"
+                                onClick={() => setIsLoginOpen(true)}
+                            >
+                                <User size={20} />
+                            </button>
+                        )}
 
                         <button
                             className={`${styles.iconBtn} ${styles.cartBtn}`}
@@ -111,7 +130,8 @@ export default function Header({ logoText, logoImage, menuItems }) {
             )}
 
             {/* Login Modal */}
-            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+            {!isAuthenticated && <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />}
         </>
     );
 }
+

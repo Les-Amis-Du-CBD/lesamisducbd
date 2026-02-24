@@ -1,0 +1,143 @@
+.container {
+    display: flex;
+    min-height: 600px;
+}
+
+.sidebar {
+    width: 250px;
+    background: #ffffff;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabButton {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 30px;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-left: 4px solid transparent;
+}
+
+.tabButton:hover {
+    background: #F9FAFB;
+    color: var(--primary-dark);
+}
+
+.tabButton.active {
+    background: rgba(31, 75, 64, 0.05);
+    color: var(--primary-dark);
+    border-left-color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.logoutBtn {
+    margin-top: 10px;
+    color: #EF4444;
+}
+
+.logoutBtn:hover {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+.contentArea {
+    flex: 1;
+    padding: 50px;
+    background: #FAFAFA;
+}
+
+.loadingContainer,
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    color: #6B7280;
+    text-align: center;
+}
+
+.emptyState h3 {
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+}
+
+.emptyIcon {
+    margin-bottom: 20px;
+    color: #D1D5DB;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 5px 15px;
+        gap: 10px;
+    }
+
+    .tabButton {
+        padding: 15px;
+        justify-content: center;
+        border-left: none;
+        border-radius: 12px;
+        border-bottom: none;
+        white-space: nowrap;
+        background: #F3F4F6;
+        color: #4B5563;
+    }
+
+    .tabButton.active {
+        border-left-color: transparent;
+        background: var(--primary-dark);
+        color: white;
+    }
+
+    .tabButton span {
+        display: none;
+        /* Icon only on mobile to save space */
+    }
+
+    .logoutBtn {
+        background: #FEF2F2;
+    }
+
+    .contentArea {
+        padding: 25px 20px;
+    }
+}

@@ -1,225 +1,389 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import styles from './Products.module.css';
 
-export default function ProductsPage() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const BADGE_OPTIONS = ['', 'Bestseller', 'Nouveauté', 'Promo', 'Édition limitée', 'Notre choix'];
 
-    // Form State
-    const [formData, setFormData] = useState({
-        name: '',
-        subtitle: '',
-        quoteTitle: '',
-        price: '',
-        pricePerGram: '',
-        description: '',
-        tag: '',
-        image: null
-    });
-    const [uploading, setUploading] = useState(false);
+const OrderInput = ({ idx, total, onChange, className }) => {
+    const [val, setVal] = useState('');
+    useEffect(() => { setVal((idx + 1).toString()); }, [idx]);
+
+    const handleBlur = () => {
+        onChange(val);
+        setVal((idx + 1).toString());
+    };
+
+    return (
+        <input
+            type="number" min="1" max={total}
+            value={val}
+            onChange={e => setVal(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={e => e.key === 'Enter' && e.target.blur()}
+            className={className}
+        />
+    );
+};
+
+export default function ProductsPage() {
+    const [tab, setTab] = useState('vitrine'); // 'vitrine' | 'visibility'
+    const [allProducts, setAllProducts] = useState([]);
+    const [vitrine, setVitrine] = useState({ flowers: [], resins: [] });
+    const [hiddenIds, setHiddenIds] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [saved, setSaved] = useState(false);
+    const [search, setSearch] = useState('');
+    const [visSearch, setVisSearch] = useState('');
 
     useEffect(() => {
-        fetchProducts();
+        Promise.all([
+            fetch('/api/products').then(r => r.json()),
+            fetch('/api/admin/vitrine').then(r => r.json())
+        ]).then(([products, config]) => {
+            const fetchedProducts = Array.isArray(products) ? products : [];
+            const pOrder = Array.isArray(config?.productOrder) ? config.productOrder : [];
+
+            if (pOrder.length > 0) {
+                fetchedProducts.sort((a, b) => {
+                    const idxA = pOrder.indexOf(a.id);
+                    const idxB = pOrder.indexOf(b.id);
+                    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                    if (idxA !== -1) return -1;
+                    if (idxB !== -1) return 1;
+                    return 0;
+                });
+            }
+
+            setAllProducts(fetchedProducts);
+            setVitrine({ flowers: config?.flowers || [], resins: config?.resins || [] });
+            setHiddenIds(Array.isArray(config?.hiddenIds) ? config.hiddenIds : []);
+        }).catch(console.error).finally(() => setLoading(false));
     }, []);
 
-    const fetchProducts = async () => {
-        try {
-            const res = await fetch('/api/products');
-            if (!res.ok) throw new Error('Failed to fetch');
-            const data = await res.json();
-            setProducts(Array.isArray(data) ? data : []);
-        } catch (err) {
-            console.error('Frontend fetchProducts error:', err);
-        } finally {
-            setLoading(false);
+    // ── Search helpers ───────────────────────────────────────────
+    const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const matchSearch = (p, q) => {
+        const hay = normalize(`${p.name} ${p.reference || ''} ${p.slug}`);
+        return normalize(q).split(/\s+/).filter(Boolean).every(w => hay.includes(w));
+    };
+
+    const RESIN_KEYWORDS = ['hash', 'pollen', 'resin', 'résine', 'harsh', 'golden'];
+    const isResin = (p) => RESIN_KEYWORDS.some(k => p.name.toLowerCase().includes(k));
+
+    const filteredProducts = allProducts.filter(p => !search || matchSearch(p, search));
+    const filteredVis = allProducts.filter(p => !visSearch || matchSearch(p, visSearch));
+
+    // ── Vitrine helpers ──────────────────────────────────────────
+    const isPinnedFlower = (p) => vitrine.flowers.some(f => f.slug === p.slug);
+    const isPinnedResin = (p) => vitrine.resins.some(r => r.slug === p.slug);
+    const isPinned = (p) => isPinnedFlower(p) || isPinnedResin(p);
+
+    const pin = (product) => {
+        const entry = { slug: product.slug, name: product.name, image: product.image, badge: '', formattedPrice: product.formattedPrice };
+        if (isResin(product)) {
+            if (isPinnedResin(product)) return;
+            setVitrine(v => ({ ...v, resins: [...v.resins, entry] }));
+        } else {
+            if (isPinnedFlower(product)) return;
+            setVitrine(v => ({ ...v, flowers: [...v.flowers, entry] }));
         }
+        setSaved(false);
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+    const unpin = (slug, type) => {
+        setVitrine(v => ({ ...v, [type]: v[type].filter(p => p.slug !== slug) }));
+        setSaved(false);
     };
 
-    const handleFileChange = (e) => {
-        setFormData(prev => ({ ...prev, image: e.target.files[0] }));
+    const updateBadge = (slug, type, badge) => {
+        setVitrine(v => ({ ...v, [type]: v[type].map(p => p.slug === slug ? { ...p, badge } : p) }));
+        setSaved(false);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setUploading(true);
+    const moveUp = (index, type) => {
+        if (index === 0) return;
+        setVitrine(v => {
+            const arr = [...v[type]];
+            [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
+            return { ...v, [type]: arr };
+        });
+        setSaved(false);
+    };
 
+    const moveDown = (index, type) => {
+        setVitrine(v => {
+            if (index >= v[type].length - 1) return v;
+            const arr = [...v[type]];
+            [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
+            return { ...v, [type]: arr };
+        });
+        setSaved(false);
+    };
+
+    const changeVitrineOrder = (productSlug, type, newPosStr) => {
+        let newPos = parseInt(newPosStr, 10);
+        if (isNaN(newPos)) return;
+
+        let targetIdx = newPos - 1;
+        setVitrine(v => {
+            const arr = [...v[type]];
+            const oldIdx = arr.findIndex(p => p.slug === productSlug);
+            if (oldIdx === -1) return v;
+
+            if (targetIdx < 0) targetIdx = 0;
+            if (targetIdx >= arr.length) targetIdx = arr.length - 1;
+
+            if (oldIdx === targetIdx) return v;
+
+            const [item] = arr.splice(oldIdx, 1);
+            arr.splice(targetIdx, 0, item);
+            return { ...v, [type]: arr };
+        });
+        setSaved(false);
+    };
+
+    // ── Visibility helpers ───────────────────────────────────────
+    const isHidden = (p) => hiddenIds.includes(p.id);
+
+    const toggleVisibility = (product) => {
+        setHiddenIds(prev =>
+            prev.includes(product.id)
+                ? prev.filter(id => id !== product.id)
+                : [...prev, product.id]
+        );
+        setSaved(false);
+    };
+
+    const changeCatalogOrder = (productId, newPosStr) => {
+        let newPos = parseInt(newPosStr, 10);
+        if (isNaN(newPos)) return;
+
+        let targetIdx = newPos - 1;
+
+        setAllProducts(prev => {
+            const arr = [...prev];
+            const oldIdx = arr.findIndex(p => p.id === productId);
+            if (oldIdx === -1) return prev;
+
+            if (targetIdx < 0) targetIdx = 0;
+            if (targetIdx >= arr.length) targetIdx = arr.length - 1;
+
+            if (oldIdx === targetIdx) return prev;
+
+            const [item] = arr.splice(oldIdx, 1);
+            arr.splice(targetIdx, 0, item);
+            return arr;
+        });
+        setSaved(false);
+    };
+
+    // ── Save ─────────────────────────────────────────────────────
+    const save = async () => {
+        setSaving(true);
         try {
-            let imageUrl = '';
-
-            // Upload Image first
-            if (formData.image) {
-                const uploadData = new FormData();
-                uploadData.append('file', formData.image);
-
-                const uploadRes = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: uploadData
-                });
-
-                if (!uploadRes.ok) throw new Error('Upload failed');
-
-                const uploadResult = await uploadRes.json();
-                imageUrl = uploadResult.url;
-            }
-
-            // Create Product
-            const newProduct = {
-                name: formData.name,
-                slug: formData.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
-                subtitle: formData.subtitle.toUpperCase(),
-                quoteTitle: `“${formData.quoteTitle}”`,
-                image: imageUrl || '/images/products/placeholder.webp',
-                price: formData.price,
-                pricePerGram: formData.pricePerGram,
-                description: formData.description,
-                tag: formData.tag,
-                pillLeft: '4G 10€',
-                pillRight: '10G 20€',
-                // Legacy fields for card view compatibility if needed, or derived
-                priceInfo: `À partir de ${formData.pricePerGram || '2€'} le gramme`
-            };
-
-            const productRes = await fetch('/api/products', {
+            const productOrder = allProducts.map(p => p.id);
+            const res = await fetch('/api/admin/vitrine', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newProduct)
+                body: JSON.stringify({ ...vitrine, hiddenIds, productOrder })
             });
-
-            if (productRes.ok) {
-                fetchProducts();
-                setIsModalOpen(false);
-                setFormData({
-                    name: '', subtitle: '', quoteTitle: '',
-                    price: '', pricePerGram: '', description: '',
-                    tag: '', image: null
-                });
-            }
-
-        } catch (error) {
-            console.error(error);
-            alert('Erreur lors de la création');
-        } finally {
-            setUploading(false);
-        }
+            if (res.ok) setSaved(true);
+            else alert('Erreur lors de la sauvegarde');
+        } catch { alert('Erreur réseau'); }
+        finally { setSaving(false); }
     };
 
-    const handleDelete = async (name) => {
-        if (!confirm('Voulez-vous vraiment supprimer ce produit ?')) return;
+    if (loading) return <div className={styles.loading}>Chargement des produits PrestaShop...</div>;
 
-        const res = await fetch(`/api/products?name=${encodeURIComponent(name)}`, {
-            method: 'DELETE'
-        });
-
-        if (res.ok) {
-            fetchProducts();
-        }
-    };
-
-    if (loading) return <div>Chargement...</div>;
+    const hiddenCount = hiddenIds.length;
+    const visibleCount = allProducts.length - hiddenCount;
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <h1>Gestion des Produits</h1>
-                <button onClick={() => setIsModalOpen(true)} className={styles.addButton}>
-                    + Ajouter un produit
+            {/* ── Header ── */}
+            <div className={styles.pageHeader}>
+                <div>
+                    <h1 className={styles.title}>Gestion Produits</h1>
+                    <p className={styles.subtitle}>
+                        Configurez la vitrine homepage et la visibilité des produits. Le catalogue est géré depuis PrestaShop.
+                    </p>
+                </div>
+                <button
+                    onClick={save}
+                    disabled={saving}
+                    className={`${styles.saveButton} ${saved ? styles.savedButton : ''}`}
+                >
+                    {saving ? 'Enregistrement...' : saved ? '✓ Sauvegardé' : 'Enregistrer'}
                 </button>
             </div>
 
-            <div className={styles.grid}>
-                {products.length === 0 ? (
-                    <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#666' }}>
-                        <p>Aucun produit trouvé.</p>
-                        <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Vérifiez la console du serveur pour le debug.</p>
-                    </div>
-                ) : (
-                    products.map((product, index) => (
-                        <div key={index} className={styles.card}>
-                            <div className={styles.imageWrapper}>
-                                <img src={product.image} alt={product.name} className={styles.image} />
-                                {product.tag && <span className={styles.tag}>{product.tag}</span>}
-                            </div>
-                            <div className={styles.content}>
-                                <h3>{product.name}</h3>
-                                {/* Subtitle removed */}
-                                <p className={styles.price}>{product.price}€ ({product.pricePerGram}€/g)</p>
-                                <button
-                                    onClick={() => handleDelete(product.name)}
-                                    className={styles.deleteButton}
-                                >
-                                    Supprimer
-                                </button>
-                            </div>
-                        </div>
-                    ))
-                )}
+            {/* ── Tabs ── */}
+            <div className={styles.tabs}>
+                <button
+                    onClick={() => setTab('vitrine')}
+                    className={`${styles.tab} ${tab === 'vitrine' ? styles.activeTab : ''}`}
+                >
+                    🏪 Vitrine Homepage
+                </button>
+                <button
+                    onClick={() => setTab('visibility')}
+                    className={`${styles.tab} ${tab === 'visibility' ? styles.activeTab : ''}`}
+                >
+                    👁 Visibilité Catalogue
+                    {hiddenCount > 0 && <span className={styles.hiddenBadge}>{hiddenCount} masqué{hiddenCount > 1 ? 's' : ''}</span>}
+                </button>
             </div>
 
-            {isModalOpen && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modal}>
-                        <h2>Nouveau Produit</h2>
-                        <form onSubmit={handleSubmit} className={styles.form}>
-                            <div className={styles.formGroup}>
-                                <label>Nom (ex: Gorilla Glue)</label>
-                                <input name="name" value={formData.name} onChange={handleInputChange} required />
-                            </div>
-
-                            {/* Subtitle input removed */}
-
-                            <div className={styles.formGroup}>
-                                <label>Citation (ex: La Puissante)</label>
-                                <input name="quoteTitle" value={formData.quoteTitle} onChange={handleInputChange} required />
-                            </div>
-
-                            <div className={styles.row}>
-                                <div className={styles.formGroup}>
-                                    <label>Prix Total (ex: 5.00)</label>
-                                    <input name="price" value={formData.price} onChange={handleInputChange} placeholder="5.00" />
+            {/* ══════════════ TAB: VITRINE ══════════════ */}
+            {tab === 'vitrine' && (
+                <div className={styles.layout}>
+                    {/* Catalogue */}
+                    <div className={styles.panel}>
+                        <h2 className={styles.panelTitle}>
+                            Catalogue PrestaShop
+                            <span className={styles.counter}>{allProducts.length} produits actifs</span>
+                        </h2>
+                        <input
+                            className={styles.search}
+                            placeholder="Rechercher un produit..."
+                            value={search}
+                            onChange={e => setSearch(e.target.value)}
+                        />
+                        <div className={styles.catalogList}>
+                            {filteredProducts.map(product => (
+                                <div key={product.id} className={`${styles.catalogItem} ${isPinned(product) ? styles.pinned : ''}`}>
+                                    <img src={product.image} alt={product.name} className={styles.catalogImg} />
+                                    <div className={styles.catalogInfo}>
+                                        <strong>{product.name}</strong>
+                                        <span className={styles.catalogPrice}>{product.formattedPrice}</span>
+                                        <span className={styles.typeLabel}>{isResin(product) ? '🍫 Résine' : '🌿 Fleur'}</span>
+                                    </div>
+                                    <button
+                                        onClick={() => pin(product)}
+                                        disabled={isPinned(product)}
+                                        className={isPinned(product) ? styles.pinnedBtn : styles.pinBtn}
+                                    >
+                                        {isPinned(product) ? '✓ Épinglé' : '+ Épingler'}
+                                    </button>
                                 </div>
-                                <div className={styles.formGroup}>
-                                    <label>Prix au gramme (ex: 2.50)</label>
-                                    <input name="pricePerGram" value={formData.pricePerGram} onChange={handleInputChange} placeholder="2.50" />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Vitrine Config */}
+                    <div className={styles.panel}>
+                        <h2 className={styles.panelTitle}>Vitrine Homepage</h2>
+
+                        <div className={styles.vitrineSection}>
+                            <h3 className={styles.sectionLabel}>🌿 Fleurs — "Nos fleurs phares"</h3>
+                            {vitrine.flowers.length === 0 ? (
+                                <p className={styles.emptyHint}>Aucune fleur épinglée.</p>
+                            ) : vitrine.flowers.map((item, idx) => (
+                                <div
+                                    key={item.slug}
+                                    className={styles.vitrineItem}
+                                >
+                                    <div className={styles.vitrineOrder}>
+                                        <button onClick={() => moveUp(idx, 'flowers')} disabled={idx === 0} className={styles.orderBtn}>▲</button>
+                                        <OrderInput idx={idx} total={vitrine.flowers.length} onChange={(val) => changeVitrineOrder(item.slug, 'flowers', val)} className={styles.orderInputBox} />
+                                        <button onClick={() => moveDown(idx, 'flowers')} disabled={idx === vitrine.flowers.length - 1} className={styles.orderBtn}>▼</button>
+                                    </div>
+                                    <img src={item.image} alt={item.name} className={styles.vitrineImg} />
+                                    <div className={styles.vitrineInfo}>
+                                        <strong>{item.name}</strong>
+                                        <span className={styles.catalogPrice}>{item.formattedPrice}</span>
+                                        <select value={item.badge} onChange={e => updateBadge(item.slug, 'flowers', e.target.value)} className={styles.badgeSelect}>
+                                            {BADGE_OPTIONS.map(b => <option key={b} value={b}>{b || '— Pas de badge —'}</option>)}
+                                        </select>
+                                    </div>
+                                    <button onClick={() => unpin(item.slug, 'flowers')} className={styles.unpinBtn}>✕</button>
                                 </div>
-                            </div>
+                            ))}
+                        </div>
 
-                            <div className={styles.formGroup}>
-                                <label>Description</label>
-                                <textarea
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    rows={4}
-                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd' }}
-                                />
-                            </div>
+                        <div className={styles.vitrineSection}>
+                            <h3 className={styles.sectionLabel}>🍫 Résines — "Nos résines phares"</h3>
+                            {vitrine.resins.length === 0 ? (
+                                <p className={styles.emptyHint}>Aucune résine épinglée.</p>
+                            ) : vitrine.resins.map((item, idx) => (
+                                <div
+                                    key={item.slug}
+                                    className={styles.vitrineItem}
+                                >
+                                    <div className={styles.vitrineOrder}>
+                                        <button onClick={() => moveUp(idx, 'resins')} disabled={idx === 0} className={styles.orderBtn}>▲</button>
+                                        <OrderInput idx={idx} total={vitrine.resins.length} onChange={(val) => changeVitrineOrder(item.slug, 'resins', val)} className={styles.orderInputBox} />
+                                        <button onClick={() => moveDown(idx, 'resins')} disabled={idx === vitrine.resins.length - 1} className={styles.orderBtn}>▼</button>
+                                    </div>
+                                    <img src={item.image} alt={item.name} className={styles.vitrineImg} />
+                                    <div className={styles.vitrineInfo}>
+                                        <strong>{item.name}</strong>
+                                        <span className={styles.catalogPrice}>{item.formattedPrice}</span>
+                                        <select value={item.badge} onChange={e => updateBadge(item.slug, 'resins', e.target.value)} className={styles.badgeSelect}>
+                                            {BADGE_OPTIONS.map(b => <option key={b} value={b}>{b || '— Pas de badge —'}</option>)}
+                                        </select>
+                                    </div>
+                                    <button onClick={() => unpin(item.slug, 'resins')} className={styles.unpinBtn}>✕</button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                            <div className={styles.formGroup}>
-                                <label>Tag (Optionnel, ex: Bestseller)</label>
-                                <input name="tag" value={formData.tag} onChange={handleInputChange} />
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>Image</label>
-                                <input type="file" onChange={handleFileChange} required accept="image/*" />
-                            </div>
-
-                            <div className={styles.actions}>
-                                <button type="button" onClick={() => setIsModalOpen(false)} className={styles.cancelButton}>Annuler</button>
-                                <button type="submit" disabled={uploading} className={styles.submitButton}>
-                                    {uploading ? 'Enregistrement...' : 'Créer'}
-                                </button>
-                            </div>
-                        </form>
+            {/* ══════════════ TAB: VISIBILITY ══════════════ */}
+            {tab === 'visibility' && (
+                <div className={styles.panel}>
+                    <div className={styles.visHeader}>
+                        <h2 className={styles.panelTitle}>
+                            Visibilité sur /produits
+                            <span className={styles.counter}>{visibleCount} affiché{visibleCount > 1 ? 's' : ''} · {hiddenCount} masqué{hiddenCount > 1 ? 's' : ''}</span>
+                        </h2>
+                        <p className={styles.visHint}>
+                            Les produits masqués ne s'affichent plus sur la page boutique, mais restent actifs sur PrestaShop.
+                        </p>
+                    </div>
+                    <input
+                        className={styles.search}
+                        placeholder="Rechercher un produit..."
+                        value={visSearch}
+                        onChange={e => setVisSearch(e.target.value)}
+                    />
+                    <div className={styles.visList}>
+                        {filteredVis.map((product, idx) => {
+                            const hidden = isHidden(product);
+                            return (
+                                <div
+                                    key={product.id}
+                                    className={`${styles.visItem} ${hidden ? styles.visHidden : ''}`}
+                                >
+                                    {!visSearch && (
+                                        <div className={styles.catalogOrderCtrl}>
+                                            <OrderInput idx={idx} total={filteredVis.length} onChange={(val) => changeCatalogOrder(product.id, val)} className={styles.orderInputBox} />
+                                        </div>
+                                    )}
+                                    <img src={product.image} alt={product.name} className={styles.catalogImg} />
+                                    <div className={styles.catalogInfo}>
+                                        <strong>{product.name}</strong>
+                                        <span className={styles.catalogPrice}>{product.formattedPrice}</span>
+                                        <span className={styles.typeLabel}>{isResin(product) ? '🍫 Résine' : '🌿 Fleur'}</span>
+                                    </div>
+                                    <div className={styles.visStatus}>
+                                        <span className={hidden ? styles.statusHidden : styles.statusVisible}>
+                                            {hidden ? '🙈 Masqué' : '👁 Visible'}
+                                        </span>
+                                        <button
+                                            onClick={() => toggleVisibility(product)}
+                                            className={hidden ? styles.showBtn : styles.hideBtn}
+                                        >
+                                            {hidden ? 'Afficher' : 'Masquer'}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             )}

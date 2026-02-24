@@ -6,6 +6,7 @@ import styles from './CartDrawer.module.css';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 
 export default function CartDrawer() {
@@ -16,13 +17,26 @@ export default function CartDrawer() {
 
     if (!isCartOpen) return null;
 
+    const router = useRouter();
+
     const handleCheckout = async () => {
-        // Implement Redirect Checkout Logic
-        // 1. Send cart to API
-        // 2. Redirect to PrestaShop URL
-        // For now, mock redirect
-        alert('Redirection vers le paiement sécurisé (PrestaShop) ...');
-        // window.location.href = '...';
+        try {
+            const res = await fetch('/api/checkout/prestashop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cart })
+            });
+            const data = await res.json();
+
+            if (res.ok && data.success && data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+            } else {
+                alert(`Erreur de redirection vers le paiement: ${data.error || 'Inconnue'}`);
+            }
+        } catch (error) {
+            console.error('Checkout redirect error:', error);
+            alert("Erreur réseau lors de la préparation du paiement.");
+        }
     };
 
     return (
@@ -87,7 +101,9 @@ export default function CartDrawer() {
                             <span>Total</span>
                             <span className={styles.totalAmount}>{cartTotal.toFixed(2)}€</span>
                         </div>
-                        <p className={styles.shippingNote}>Livraison calculée à l'étape suivante</p>
+                        <p className={styles.shippingNote}>
+                            Livraison <span style={{ color: '#10B981', fontWeight: 'bold' }}>offerte</span>
+                        </p>
                         <button onClick={handleCheckout} className={styles.checkoutBtn}>
                             Procéder au paiement
                         </button>

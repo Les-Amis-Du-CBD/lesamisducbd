@@ -1,0 +1,208 @@
+.main {
+    background-color: var(--background-light);
+    min-height: 100vh;
+}
+
+.pageContainer {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 120px auto 100px;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #4B5563;
+}
+
+/* Schema Grid */
+.schemaSection {
+    margin-bottom: 80px;
+}
+
+.stepsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    position: relative;
+}
+
+/* Line connecting the steps (visible only on desktop) */
+@media (min-width: 1024px) {
+    .stepsGrid::before {
+        content: '';
+        position: absolute;
+        top: 60px;
+        /* Aligns with icons */
+        left: 12%;
+        right: 12%;
+        height: 2px;
+        background: url('data:image/svg+xml;utf8,<svg width="100%" height="2" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="1" x2="100%" y2="1" stroke="%232d6a2d" stroke-width="2" stroke-dasharray="6,6" /></svg>') repeat-x;
+        z-index: 0;
+        opacity: 0.5;
+    }
+}
+
+.stepCard {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stepCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.iconContainer {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    background: #f0f7f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2d6a2d;
+}
+
+.stepNumber {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    background: #ec6e4e;
+    /* Orange accent from the design */
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(236, 110, 78, 0.3);
+}
+
+.icon {
+    opacity: 0.9;
+}
+
+.stepHeader {
+    background: #1e2920;
+    /* Dark background matching the image headers */
+    color: #00FF94;
+    /* Green accent text */
+    padding: 10px 15px;
+    margin: 0 -20px 20px;
+    /* Stretch to edges of padding */
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+}
+
+.stepText {
+    font-size: 0.95rem;
+    color: var(--primary-dark);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.stepText strong {
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+/* Info Section below schema */
+.infoSection {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.infoTitle {
+    font-size: 2rem;
+    color: #1e2920;
+    /* Olive/Dark text */
+    font-weight: 800;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.infoContent {
+    font-size: 1.05rem;
+    color: #4B5563;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.infoContent strong {
+    color: #111827;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .stepsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .pageContainer {
+        margin-top: 100px;
+    }
+
+    .stepsGrid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .infoSection {
+        padding: 30px 20px;
+    }
+
+    .infoTitle {
+        font-size: 1.6rem;
+    }
+}

@@ -12,7 +12,7 @@ import JoinUs from '@/components/JoinUs/JoinUs';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 
-export default function UsagesClient() {
+export default function UsagesClient({ globalContent }) {
 
     // --- Mocks ---
     const headerProps = {
@@ -27,14 +27,14 @@ export default function UsagesClient() {
     };
 
     const footerProps = {
-        columnLinks: [
+        columnLinks: globalContent?.footerLinks || [
             { label: "Livraison", href: "/livraison" },
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
             { label: "Buraliste", href: "/buraliste" }
         ],
-        contactInfo: {
+        contactInfo: globalContent?.contact || {
             title: "Les Amis du CBD France",
             address: "25 rue principale 07120 Chauzon (FR)",
             phone: "06 71 82 42 87",

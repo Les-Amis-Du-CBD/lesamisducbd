@@ -11,8 +11,9 @@
     background-color: #1F4B40;
     /* Same as Footer */
     color: #fff;
-    width: 96%;
-    max-width: none;
+    color: #fff;
+    width: 100%;
+    max-width: var(--container-width);
     margin: 0 auto;
 
     /* Fluid padding - Reduced vertical to minimal */

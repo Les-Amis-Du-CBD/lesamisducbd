@@ -1,5 +1,7 @@
 import QuiSommesNousClient from './QuiSommesNousClient';
 import { SHARED_TITLE } from '@/app/shared-metadata';
+import { kv } from '@vercel/kv';
+
 
 export const metadata = {
     title: "Qui sommes-nous ?",
@@ -9,6 +11,14 @@ export const metadata = {
     },
 };
 
-export default function QuiSommesNousPage() {
-    return <QuiSommesNousClient />;
+export default async function QuiSommesNousPage() {
+    let globalContent = null;
+    try {
+        const globalData = await kv.get('global_content');
+        if (globalData) globalContent = globalData;
+    } catch (e) {
+        console.error('KV error (qui-sommes-nous/global):', e);
+    }
+    return <QuiSommesNousClient globalContent={globalContent} />;
 }
+

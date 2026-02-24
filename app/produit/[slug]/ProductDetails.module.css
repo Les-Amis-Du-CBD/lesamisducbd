@@ -217,6 +217,7 @@
     line-height: 1.6;
     margin-bottom: 40px;
     font-size: 1rem;
+    white-space: pre-line;
 }
 
 .features {

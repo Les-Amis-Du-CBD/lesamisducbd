@@ -145,8 +145,7 @@
 }
 
 .cardHeader {
-    margin-bottom: auto;
-    /* Push footer to bottom if titles vary */
+    /* Pulled margin-bottom auto to the footer instead */
     padding-bottom: 20px;
 }
 
@@ -169,6 +168,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-top: auto;
 }
 
 .priceInfo {
@@ -233,7 +233,6 @@
     }
 
     .cardHeader {
-        margin-bottom: 6px;
         padding-bottom: 10px;
     }
 

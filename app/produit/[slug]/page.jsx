@@ -1,5 +1,6 @@
 
 
+import { kv } from '@vercel/kv';
 import { productService } from '@/lib/services/productService';
 import ProductDetailsClient from './ProductDetailsClient';
 import { notFound } from 'next/navigation';
@@ -28,7 +29,12 @@ export const dynamic = 'force-dynamic';
 
 export default async function ProductPage({ params }) {
     const { slug } = await params;
-    const products = await productService.getProducts();
+
+    const [products, globalContent] = await Promise.all([
+        productService.getProducts(),
+        kv.get('global_content').catch(() => null)
+    ]);
+
     // Verify slug matching using explicit slug field
     const product = products.find(p => p.slug === slug);
 
@@ -39,5 +45,5 @@ export default async function ProductPage({ params }) {
     // Pass related products (just first 3 others for now)
     const relatedProducts = products.filter(p => p.name !== product.name).slice(0, 3);
 
-    return <ProductDetailsClient product={product} relatedProducts={relatedProducts} />;
+    return <ProductDetailsClient product={product} relatedProducts={relatedProducts} globalContent={globalContent} />;
 }

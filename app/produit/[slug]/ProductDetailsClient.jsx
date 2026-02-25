@@ -42,9 +42,15 @@ const FOOTER_PROPS = {
     copyright: "©2024 - Les Amis du CBD"
 };
 
-export default function ProductDetailsClient({ product, relatedProducts }) {
+export default function ProductDetailsClient({ product, relatedProducts, globalContent }) {
     const { addItem } = useCart();
     const [quantity, setQuantity] = useState(1);
+
+    const footerProps = {
+        ...FOOTER_PROPS,
+        columnLinks: globalContent?.footerLinks || FOOTER_PROPS.columnLinks,
+        contactInfo: globalContent?.contact || FOOTER_PROPS.contactInfo
+    };
 
     const handleAddToCart = () => {
         addItem({ ...product, price: product.priceTTC || product.price || 5 }, quantity);
@@ -82,7 +88,24 @@ export default function ProductDetailsClient({ product, relatedProducts }) {
 
                         <div className={styles.priceSection}>
                             <span className={styles.price}>{product.formattedPrice || `${product.price || '5,00'} €`}</span>
-                            <span className={styles.taxInfo}>TTC (TVA 20% incluse)</span>
+                            {(() => {
+                                const nameLower = product.name?.toLowerCase() || '';
+                                const tagLower = product.tag?.toLowerCase() || '';
+
+                                const isResine = ['résine', 'resine', 'hash', 'filtré', 'pollen'].some(k => nameLower.includes(k) || tagLower.includes(k));
+                                const isPack = ['pack', 'mystère', 'découverte', 'decouverte'].some(k => nameLower.includes(k) || tagLower.includes(k));
+                                const isFleur = ['fleur', 'trim', 'mix', 'skunk', 'amnesia', 'gorilla', 'remedy', 'cbd'].some(k => nameLower.includes(k) || tagLower.includes(k)) || (!isResine && !isPack && product.category === 3); // Fallback assumption
+
+                                let perGramText = null;
+                                if (isResine) {
+                                    perGramText = "5,00 € /g TTC";
+                                } else if (isFleur || isPack) {
+                                    perGramText = "2,50 € /g TTC";
+                                }
+
+                                if (!perGramText) return null;
+                                return <span className={styles.taxInfo}>{perGramText}</span>;
+                            })()}
                         </div>
 
                         <div className={styles.actions}>
@@ -146,7 +169,7 @@ export default function ProductDetailsClient({ product, relatedProducts }) {
                 </section>
             </div>
 
-            <Footer {...FOOTER_PROPS} />
+            <Footer {...footerProps} />
         </main>
     );
 }

@@ -2,7 +2,7 @@ import { kv } from '@vercel/kv';
 import BuralisteClient from './BuralisteClient';
 import { SHARED_TITLE } from '@/app/shared-metadata';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export const metadata = {
     title: 'Espace Buraliste & Revendeurs',

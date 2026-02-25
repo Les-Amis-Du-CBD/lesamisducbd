@@ -2,7 +2,7 @@ import { kv } from '@vercel/kv';
 import EssentielClient from './EssentielClient';
 import { SHARED_TITLE } from '../shared-metadata';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export const metadata = {
     title: "L'Essentiel du CBD",

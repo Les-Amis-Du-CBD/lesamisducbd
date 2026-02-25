@@ -215,7 +215,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
 
                 {/* Grid */}
                 <div className={styles.grid}>
-                    {filteredProducts.map((product) => {
+                    {filteredProducts.map((product, index) => {
                         return (
                             <div key={product.name} className={styles.card}>
                                 <Link href={`/produit/${product.slug}`} className={styles.imageLink}>
@@ -224,6 +224,9 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                             src={product.image || '/images/placeholder.webp'}
                                             alt={product.name}
                                             fill
+                                            priority={index < 6}
+                                            unoptimized
+                                            sizes="(max-width: 768px) 100vw, 33vw"
                                             className={styles.image}
                                         />
                                         {product.tag && product.tag.toLowerCase() !== 'bestseller' && (

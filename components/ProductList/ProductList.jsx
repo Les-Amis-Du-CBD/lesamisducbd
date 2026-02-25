@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import styles from './ProductList.module.css';
 
@@ -30,7 +31,16 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
                                 </div>
 
                                 <div className={styles.imageContainer}>
-                                    <img src={product.image} alt={product.name} className={styles.productImage} />
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        width={400}
+                                        height={400}
+                                        priority={index < 4}
+                                        unoptimized
+                                        className={styles.productImage}
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                    />
                                 </div>
 
                                 <div className={styles.pillsContainer}>

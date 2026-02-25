@@ -8,7 +8,7 @@ export const metadata = {
     description: 'Découvrez notre sélection de fleurs de CBD françaises. Cultivées naturellement, sans ajout de terpènes chimiques. Livraison offerte.',
 };
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60; // ISR cache every minute
 
 export default async function ProductsPage() {
     const [products, hiddenIds, globalContent, productOrder] = await Promise.all([

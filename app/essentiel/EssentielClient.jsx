@@ -8,6 +8,7 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import Quote from '@/components/Quote/Quote';
 import JoinUs from '@/components/JoinUs/JoinUs';
+import ContentHero from '@/components/ContentHero/ContentHero';
 import UsagesCarousel from '@/components/UsagesCarousel/UsagesCarousel';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
@@ -53,16 +54,12 @@ export default function EssentielClient({ content, globalContent }) {
             <Header {...headerProps} />
             <main>
                 {/* HERO */}
-                <section className={styles.heroSection}>
+                <ContentHero
+                    imageSrc="/images/about/team.webp"
+                    imageAlt="L'équipe Les Amis du CBD"
+                >
                     <h1 className={styles.pageTitle}>L'Essentiel</h1>
-                    <div className={styles.heroImageWrapper}>
-                        <img
-                            src="/images/about/team.webp"
-                            alt="L'équipe Les Amis du CBD"
-                            className={styles.heroImage}
-                        />
-                    </div>
-                </section>
+                </ContentHero>
 
                 {/* INTRO TEXT */}
                 <ScrollReveal animation="fade-up">

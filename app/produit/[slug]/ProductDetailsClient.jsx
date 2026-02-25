@@ -89,12 +89,13 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                         <div className={styles.priceSection}>
                             <span className={styles.price}>{product.formattedPrice || `${product.price || '5,00'} €`}</span>
                             {(() => {
-                                const nameLower = product.name?.toLowerCase() || '';
-                                const tagLower = product.tag?.toLowerCase() || '';
+                                const nameNorm = (product.name || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                const tagNorm = (product.tag || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-                                const isResine = ['résine', 'resine', 'hash', 'filtré', 'pollen'].some(k => nameLower.includes(k) || tagLower.includes(k));
-                                const isPack = ['pack', 'mystère', 'découverte', 'decouverte'].some(k => nameLower.includes(k) || tagLower.includes(k));
-                                const isFleur = ['fleur', 'trim', 'mix', 'skunk', 'amnesia', 'gorilla', 'remedy', 'cbd'].some(k => nameLower.includes(k) || tagLower.includes(k)) || (!isResine && !isPack && product.category === 3); // Fallback assumption
+                                const isAutre = ['plv', 'flyer', 'tourniquet', 'accessoire', 'presentoir'].some(k => nameNorm.includes(k) || tagNorm.includes(k));
+                                const isResine = !isAutre && ['resine', 'hash', 'filtre', 'pollen'].some(k => nameNorm.includes(k) || tagNorm.includes(k));
+                                const isPack = !isAutre && ['pack', 'mystere', 'decouverte'].some(k => nameNorm.includes(k) || tagNorm.includes(k));
+                                const isFleur = !isAutre && !isResine && !isPack && (['fleur', 'trim', 'mix', 'skunk', 'amnesia', 'gorilla', 'remedy', 'cbd'].some(k => nameNorm.includes(k) || tagNorm.includes(k)) || product.category === 3);
 
                                 let perGramText = null;
                                 if (isResine) {
@@ -102,7 +103,6 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                                 } else if (isFleur || isPack) {
                                     perGramText = "2,50 € /g TTC";
                                 }
-
                                 if (!perGramText) return null;
                                 return <span className={styles.taxInfo}>{perGramText}</span>;
                             })()}

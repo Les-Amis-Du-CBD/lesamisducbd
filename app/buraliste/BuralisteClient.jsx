@@ -15,6 +15,7 @@ import OfferComparator from '@/components/OfferComparator/OfferComparator';
 import { ArrowRight, CheckCircle, TrendingUp, Truck } from 'lucide-react';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
+import ContentHero from '@/components/ContentHero/ContentHero';
 
 export default function BuralisteClient({ content, globalContent }) {
 
@@ -61,24 +62,21 @@ export default function BuralisteClient({ content, globalContent }) {
 
             <main>
                 {/* HERO SECTION - No Reveal for LCP */}
-                <section className={styles.heroSection}>
-                    <div className={styles.heroContainer}>
-                        <div className={styles.heroContent}>
-                            <span className={styles.newBadge}>Nous rejoindre ?</span>
-                            <div className={styles.heroImageWrapper}>
-                                <img
-                                    src="/images/buraliste/header-illustration.webp"
-                                    alt="Partenariat Buraliste"
-                                    className={styles.heroIllustration}
-                                />
-                            </div>
-                            <h1 className={styles.heroTitle}>{content.hero.title}</h1>
-                            <div className={styles.heroText}
-                                dangerouslySetInnerHTML={{ __html: content.hero.text.replace(/\n/g, '<br />') }}
-                            />
-                        </div>
-                    </div>
-                </section>
+                <ContentHero
+                    imageSrc="/images/buraliste/header-illustration.webp"
+                    imageAlt="Partenariat Buraliste"
+                    imagePosition="center 40%"
+                >
+                    <h2 className={styles.newBadge}>Nous rejoindre ?</h2>
+                </ContentHero>
+
+                {/* Text below the hero image banner */}
+                <div className={styles.heroTextContent}>
+                    <h1 className={styles.heroTitle}>{content.hero.title}</h1>
+                    <div className={styles.heroText}
+                        dangerouslySetInnerHTML={{ __html: content.hero.text.replace(/\n/g, '<br />') }}
+                    />
+                </div>
 
                 {/* CALCULATOR SECTION */}
                 <ScrollReveal animation="fade-up">

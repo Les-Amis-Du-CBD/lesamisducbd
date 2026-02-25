@@ -9,6 +9,7 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import RecruitmentModal from '@/components/RecruitmentModal/RecruitmentModal';
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
+import ContentHero from '@/components/ContentHero/ContentHero';
 
 export default function RecruitmentClient({ globalContent }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,16 +52,12 @@ export default function RecruitmentClient({ globalContent }) {
 
             <main>
                 {/* HERO */}
-                <section className={styles.heroSection}>
+                <ContentHero
+                    imageSrc="/images/recrutement/handshake.webp"
+                    imageAlt="Rejoindre l'équipe"
+                >
                     <h1 className={styles.pageTitle}>Intégrer l'équipe ?</h1>
-                    <div className={styles.heroImageWrapper}>
-                        <img
-                            src="/images/recrutement/handshake.webp"
-                            alt="Rejoindre l'équipe"
-                            className={styles.heroImage}
-                        />
-                    </div>
-                </section>
+                </ContentHero>
 
                 {/* TEXT CONTENT */}
                 <ScrollReveal animation="fade-up">

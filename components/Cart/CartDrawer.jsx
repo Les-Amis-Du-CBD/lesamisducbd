@@ -12,12 +12,12 @@ import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 export default function CartDrawer() {
     const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, cartTotal } = useCart();
 
+    const router = useRouter();
+
     // Lock scroll when cart is open
     useLockBodyScroll(isCartOpen);
 
     if (!isCartOpen) return null;
-
-    const router = useRouter();
 
     const handleCheckout = async () => {
         try {

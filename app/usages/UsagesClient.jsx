@@ -9,6 +9,7 @@ import Footer from '@/components/Footer/Footer';
 import UsagesCarousel from '@/components/UsagesCarousel/UsagesCarousel';
 import Quote from '@/components/Quote/Quote';
 import JoinUs from '@/components/JoinUs/JoinUs';
+import ContentHero from '@/components/ContentHero/ContentHero';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 
@@ -82,16 +83,13 @@ export default function UsagesClient({ globalContent }) {
 
             <main>
                 {/* HERO */}
-                <section className={styles.heroSection}>
+                <ContentHero
+                    imageSrc="/images/usages/hero.webp"
+                    imageAlt="Illustration CBD Questionnement"
+                    imagePosition="center 35%"
+                >
                     <h1 className={styles.heroTitle}>Le CBD ?</h1>
-                    <div className={styles.heroImageWrapper}>
-                        <img
-                            src="/images/usages/hero.webp"
-                            alt="Illustration CBD Questionnement"
-                            className={styles.heroImage}
-                        />
-                    </div>
-                </section>
+                </ContentHero>
 
                 {/* INTRO */}
                 <ScrollReveal animation="fade-up">

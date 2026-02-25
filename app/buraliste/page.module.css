@@ -6,50 +6,20 @@
     overflow-x: hidden;
 }
 
-/* Custom Hero */
-.heroSection {
-    padding-top: 80px;
-    /* Header space */
-    padding-bottom: 60px;
-    text-align: center;
-}
 
-.heroContainer {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
 .newBadge {
-    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     font-weight: 700;
-    font-size: 2rem;
-    margin-bottom: 4rem;
+    font-size: 2.5rem;
+    margin-bottom: 0;
     position: relative;
     display: inline-block;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 2;
 }
 
-.newBadge::after {
-    content: '';
-    position: absolute;
-    right: -15px;
-    top: 0;
-    color: var(--accent-neon);
-    font-size: 1.2rem;
-}
 
-.heroIllustration {
-    margin-bottom: 5rem;
-    max-width: 100%;
-    height: auto;
-    border-radius: 20px;
-}
 
 .heroTitle {
     font-size: 2.5rem;
@@ -57,15 +27,23 @@
     line-height: 1.1;
     margin-bottom: 1.5rem;
     font-weight: 800;
+    text-align: center;
 }
 
 .heroText {
     color: var(--primary-dark);
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1.5;
-    max-width: 600px;
+    max-width: 800px;
     font-weight: 500;
-    margin: 0 auto auto auto;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.heroTextContent {
+    max-width: 1000px;
+    margin: 40px auto 20px;
+    padding: 0 20px;
 }
 
 /* Calculator Section */
@@ -272,13 +250,8 @@
 
 /* Responsive adjustments */
 @media (min-width: 1024px) {
-    .heroContent {
-        flex: 1;
-    }
-
-    .heroIllustration {
-        max-width: 500px;
-        border-radius: 20px;
+    .newBadge {
+        font-size: 4rem;
     }
 }
 

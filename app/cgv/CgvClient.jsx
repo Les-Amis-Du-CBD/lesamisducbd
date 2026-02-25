@@ -193,7 +193,7 @@ export default function CgvClient({ globalContent }) {
 
                     <h2>Article 10 - Droit de rétractation et retour des articles commandés</h2>
                     <p>Conformément aux articles L. 221-5 et suivants du code de la consommation, le client dispose d’un délai de 14 jours à compter de la réception, par lui-même ou un tiers, des articles commandés pour exercer son droit à rétraction sans avoir à justifier de motifs ou payer de pénalités.</p>
-                    <p>Pour exercer le droit de rétractation, le client doit remplir le formulaire de rétractation sur la page suivante https://www.lesamisducbd.fr/formulaire-de-retractation.html ou envoyer un courriel contenant son nom, prénom, adresse et numéro de commande et indiquant sans ambigüité qu’il exerce son droit à rétractation à l’adresse suivante : lesamiducbd@gmail.com</p>
+                    <p>Pour exercer le droit de rétractation, le client doit remplir le formulaire de rétractation sur la page suivante https://www.lesamisducbd.fr/formulaire-de-retractation.html ou envoyer un courriel contenant son nom, prénom, adresse et numéro de commande et indiquant sans ambiguïté qu’il exerce son droit à rétractation à l’adresse suivante : lesamisducbd@gmail.com</p>
                     <p>Les frais de retour du produit commandé et livré au client seront supportés par le client.</p>
                     <p>Le client peut renvoyer les produits à l’adresse postale suivante :</p>
                     <p><strong>BLUE SKY WELL, 25 RUE PRINCIPALE ETIENNE GEORGES 07120 CHAUZON</strong></p>
@@ -218,7 +218,7 @@ export default function CgvClient({ globalContent }) {
 
                     <h2>Article 14 - Litiges, tribunal compétent et droit applicable</h2>
                     <p>Le présent contrat et les CGV le régissant sont soumis à la loi française, sous réserve des règles impératives du pays de résidence du consommateur.</p>
-                    <p>À défaut d'accord amiable, tout litige relatif à l'existence, l'interprétation, la conclusion, l'exécution ou la rupture du contrat ainsi que sur tous les documents connexes à ce contrat relèvera de la compétence du tribunal judiciaire et/ou du tribunal de commerce de l’ardéche.</p>
+                    <p>À défaut d'accord amiable, tout litige relatif à l'existence, l'interprétation, la conclusion, l'exécution ou la rupture du contrat ainsi que sur tous les documents connexes à ce contrat relèvera de la compétence du tribunal judiciaire et/ou du tribunal de commerce de l'Ardèche.</p>
                 </div>
             </div>
 

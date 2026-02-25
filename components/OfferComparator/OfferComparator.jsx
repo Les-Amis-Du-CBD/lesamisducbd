@@ -57,7 +57,7 @@ export default function OfferComparator() {
                         </div>
                     </div>
 
-                    {/* Prix Achat Unitire Slider */}
+                    {/* Prix Achat Unitaire Slider */}
                     <div className={styles.sliderGroup}>
                         <div className={styles.labelRow}>
                             <label className={styles.label}>Prix d'achat unitaire de votre offre actuelle</label>
@@ -137,7 +137,7 @@ export default function OfferComparator() {
                             <span>100%</span>
                         </div>
                         <p className={styles.subText}>
-                            Grace à notre excellent rapport qualité/prix, les ventes de nos clients augmentent en moyenne de +47% !<br />
+                            Grâce à notre excellent rapport qualité/prix, les ventes de nos clients augmentent en moyenne de +47% !<br />
                             (Progression entre 2024 et 2025)
                         </p>
                     </div>
@@ -173,7 +173,7 @@ export default function OfferComparator() {
                                 className={styles.ctaButton}
                                 onClick={() => setIsModalOpen(true)}
                             >
-                                Contactez un conseillé sympa
+                                Contactez un conseiller sympa
                             </button>
                         </div>
                     </div>

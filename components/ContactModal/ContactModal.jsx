@@ -98,7 +98,7 @@ export default function ContactModal({ isOpen, onClose }) {
                     <li>Entreprise française</li>
                     <li>Livraison gratuite en 24/48h</li>
                     <li>Zéro minimum de commande</li>
-                    <li>Présentoirs et PLV offertes</li>
+                    <li>Présentoirs et PLV offerts</li>
                     <li><span className={styles.link}>Satisfait ou remboursé !</span></li>
                 </ul>
 

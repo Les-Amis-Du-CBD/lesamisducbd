@@ -82,9 +82,9 @@ export default function TransparenceClient({ globalContent }) {
                     </div>
                     <div className={styles.quoteBlock}>
                         <p className={styles.quoteText}>
-                            "Nous, Les Amis du CBD sommes des vrais passionnés du cannabis !<br /><br />
-                            Or nous étions extrêmement déçu de voir le marché français inondé par des produits de qualité médiocre, vendus bien souvent à des prix délirants !<br /><br />
-                            Nous nous sommes donc mis au travail, et nous avons été surpris de voir ce qu'il était possible."
+                            "Nous, Les Amis du CBD sommes de vrais passionnés du cannabis !<br /><br />
+                            Or nous étions extrêmement déçus de voir le marché français inondé par des produits de qualité médiocre, vendus bien souvent à des prix délirants !<br /><br />
+                            Nous nous sommes donc mis au travail, et nous avons été surpris de voir ce qui était possible."
                         </p>
                         <p className={styles.quoteAuthor}>Nelson - Les Amis du CBD</p>
                     </div>
@@ -103,13 +103,13 @@ export default function TransparenceClient({ globalContent }) {
                             <ul>
                                 <li>Ni engrais chimiques, ni pesticides ou insecticides.</li>
                                 <li>Sous la lumière naturelle du soleil.</li>
-                                <li>Boostées seulement avec des engrais organiques type composte et guano de chauve-souris.</li>
+                                <li>Boostées seulement avec des engrais organiques type compost et guano de chauve-souris.</li>
                             </ul>
                         </div>
                         <div className={styles.column}>
                             <h3>&lt; 0,3% de THC, sans lavage !</h3>
                             <p>Point essentiel pour la qualité finale, nos fleurs ont naturellement moins de 0,3% de THC.</p>
-                            <p>Elles n'ont donc pas besoins de "lavage" avec des produits chimiques afin de baisser le taux de THC.</p>
+                            <p>Elles n'ont donc pas besoin de "lavage" avec des produits chimiques afin de baisser le taux de THC.</p>
                             <p>Ainsi, nous préservons la couleur, les arômes et les parfums originaux.</p>
                         </div>
                     </div>
@@ -124,7 +124,7 @@ export default function TransparenceClient({ globalContent }) {
                     <div className={styles.columns}>
                         <div className={styles.column}>
                             <h3>Le naturel, c'est gratuit !</h3>
-                            <p>Comme nos fleurs sont cultivées naturellement, nos économisons :</p>
+                            <p>Comme nos fleurs sont cultivées naturellement, nous économisons :</p>
                             <ul>
                                 <li>Pas d'engrais ou d'autres produits chimiques coûteux.</li>
                                 <li>Pas de matériel hi-tech (ni système hydroponique, ni éclairage artificiel).</li>
@@ -137,11 +137,11 @@ export default function TransparenceClient({ globalContent }) {
                             <h3>Simplicité :</h3>
                             <p>Nous comptons sur la quantité et nous pratiquons des marges raisonnables.</p>
                             <p>Avec Les Amis du CBD, vous n'avez pas 200 références.</p>
-                            <p>Seulement 4 variétés au top, disponibles en 4 ou 10 gramme !</p>
+                            <p>Seulement 4 variétés au top, disponibles en 4 ou 10 grammes !</p>
                             <p>Ainsi :</p>
                             <ul>
                                 <li>La gestion de vos stocks est plus facile.</li>
-                                <li>Vos commandes sont rapide à faire,</li>
+                                <li>Vos commandes sont rapides à faire,</li>
                                 <li>Vous proposez un prix imbattable que cela soit vis-à-vis de vos concurrents locaux, comme de la concurrence en ligne !</li>
                             </ul>
                         </div>

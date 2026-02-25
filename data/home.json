@@ -34,7 +34,7 @@
       "id": "promo-marquee",
       "type": "Marquee",
       "props": {
-        "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDES • PLUS SIMPLE, MOINS CHER",
+        "text": "LA LIVRAISON OFFERTE SANS MINIMUM DE COMMANDE • PLUS SIMPLE, MOINS CHER",
         "speed": "15"
       }
     },
@@ -74,7 +74,7 @@
             "image": "/images/uploads/bca7851a-f4e6-469f-8a1d-e7bd3935b9c9-gorilla-glue.png",
             "price": "10",
             "pricePerGram": "2.50",
-            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4g écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nAvoir des fleurs de CBD Gorilla Glue, c'est comme avoir un ami gorille géant qui vous fait un câlin réconfortant.\n\nTHC < 0,3 %",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4g écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À goûter sans attendre !\n\nAvoir des fleurs de CBD Gorilla Glue, c'est comme avoir un ami gorille géant qui vous fait un câlin réconfortant.\n\nTHC < 0,3 %",
             "tag": "Classique",
             "priceInfo": "À partir de 2.50 le gramme"
           },
@@ -86,7 +86,7 @@
             "image": "/images/uploads/86d2b9bc-1ec8-480e-9bd6-e639bf2a6072-amnesia.png",
             "price": "10",
             "pricePerGram": "2.50",
-            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4G écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nTHC < 0,3 %",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4G écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À goûter sans attendre !\n\nTHC < 0,3 %",
             "tag": "",
             "priceInfo": "À partir de 2.50 le gramme"
           },
@@ -98,7 +98,7 @@
             "image": "/images/uploads/a9852208-dd82-4918-bc59-c6f4777a56e2-super-skunk.png",
             "price": "10",
             "pricePerGram": "2.50",
-            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4 g écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nTHC < 0,3 %",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4 g écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À goûter sans attendre !\n\nTHC < 0,3 %",
             "tag": "BESTSELLER",
             "pillLeft": "4G 10€",
             "pillRight": "10G 20€",
@@ -112,7 +112,7 @@
             "image": "/images/uploads/087921f7-d6bf-461b-a6d5-ef95c7af42ce-remedy.png",
             "price": "10",
             "pricePerGram": "2.50",
-            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4G écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À gouter sans attendre !\n\nTHC < 0,3 %",
+            "description": "Un rapport qualité/prix fou, conditionné en sachet de 4G écoresponsable.\n\nC'est LE PRODUIT économique par excellence. À goûter sans attendre !\n\nTHC < 0,3 %",
             "tag": "",
             "pillLeft": "4G 10€",
             "pillRight": "10G 20€",
@@ -191,22 +191,22 @@
           {
             "name": "NOM BUREAU DE TABAC",
             "role": "Nom Gérant",
-            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défie toute<br />concurrence, locale ou en ligne."
           },
           {
             "name": "NOM BUREAU DE TABAC",
             "role": "Nom Gérant",
-            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défie toute<br />concurrence, locale ou en ligne."
           },
           {
             "name": "NOM BUREAU DE TABAC",
             "role": "Nom Gérant",
-            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défie toute<br />concurrence, locale ou en ligne."
           },
           {
             "name": "NOM BUREAU DE TABAC",
             "role": "Nom Gérant",
-            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défit toute<br />concurrence, locale ou en ligne."
+            "quote": "Les Amis du CBD, c'est vraiment autre<br />chose. Leurs fleurs sont naturellement<br />parfumées et c'est ce que mes clients<br />recherchent. En plus, le prix défie toute<br />concurrence, locale ou en ligne."
           }
         ]
       }

@@ -108,7 +108,7 @@ export default function QuiSommesNousClient({ globalContent }) {
                             Chez Les Amis du CBD, aucune étiquette compliquée, ni de noms artificiels, nous on utilise un vocabulaire du quotidien.
                         </p>
                         <p className={styles.introText}>
-                            Notre aventure, c'est avant tout une histoire d'ams, de partage et de sincérité, avec nos partenaires et nos clients.
+                            Notre aventure, c'est avant tout une histoire d'amis, de partage et de sincérité, avec nos partenaires et nos clients.
                         </p>
                     </section>
                 </ScrollReveal>
@@ -134,7 +134,7 @@ export default function QuiSommesNousClient({ globalContent }) {
                             Culture naturelle : ce que cela change<br />vraiment.
                         </h2>
                         <p className={styles.sectionIntro}>
-                            La manière dont est planté et cultivé influence directement sa qualité finale.
+                            La manière dont une plante est cultivée influence directement sa qualité finale.
                             Une culture naturelle permet :
                         </p>
                         <UsagesCarousel items={cultureItems} />

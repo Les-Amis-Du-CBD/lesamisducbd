@@ -59,7 +59,7 @@ export default function Footer({ columnLinks, contactInfo, newsletter, copyright
 
                     {/* Column 2: Contactez nous */}
                     <div className={styles.column}>
-                        <h3 className={styles.header}>Contactez nous</h3>
+                        <h3 className={styles.header}>Contactez-nous</h3>
                         <div className={styles.contactList}>
                             <p className={styles.contactTitle}>{contactInfo.title}</p>
                             <div className={styles.contactItem}>

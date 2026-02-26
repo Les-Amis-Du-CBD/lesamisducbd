@@ -71,3 +71,29 @@ a {
 ul {
   list-style: none;
 }
+
+/* ─── Admin Dashboard Mobile Fixes ─── */
+@media (max-width: 768px) {
+
+  /* Make inline-styled tab bars scrollable horizontally */
+  .admin-tabs-bar,
+  [style*="borderBottom: '2px solid #eee'"],
+  [style*="display: 'flex'"][style*="borderBottom"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+
+  /* Ensure editor forms take full width */
+  [style*="maxWidth: 800"] {
+    max-width: 100% !important;
+    padding: 0 4px;
+  }
+
+  /* Prevent inline tab buttons from being too small */
+  [style*="borderBottom"][style*="cursor: 'pointer'"] {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}

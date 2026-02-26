@@ -133,7 +133,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
 
     return (
         <main className={styles.main}>
-            <Header {...HEADER_PROPS} bannerVisible={globalContent?.visibility?.headerBanner !== false} />
+            <Header {...HEADER_PROPS} />
 
             {/* Hero Carousel */}
             <div className={styles.carouselContainer}>

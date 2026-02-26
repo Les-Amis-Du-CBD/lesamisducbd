@@ -81,3 +81,29 @@
     display: block;
     margin-top: 5px;
 }
+
+/* ─── Mobile Responsiveness ────────── */
+@media (max-width: 768px) {
+    .form {
+        padding: 16px;
+        gap: 16px;
+        border-radius: 8px;
+        max-width: 100%;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .saveBtn {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+
+    .input,
+    .textarea {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+}

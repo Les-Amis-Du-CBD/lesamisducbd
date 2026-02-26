@@ -238,4 +238,14 @@
         align-items: flex-start;
         gap: 0.2rem;
     }
+
+    .backLink {
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .pageSubtitle {
+        font-size: 0.85rem;
+        margin-bottom: 1.25rem;
+    }
 }

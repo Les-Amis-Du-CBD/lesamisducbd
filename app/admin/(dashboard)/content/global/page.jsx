@@ -88,7 +88,7 @@ export default function GlobalContentPage() {
             </div>
 
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: 8, marginBottom: 20, borderBottom: '2px solid #eee', paddingBottom: 0 }}>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 20, borderBottom: '2px solid #eee', paddingBottom: 0, overflowX: 'auto', flexWrap: 'nowrap', WebkitOverflowScrolling: 'touch' }}>
                 {TABS.map(t => (
                     <button key={t.id} type="button" onClick={() => setTab(t.id)} style={{
                         background: 'none', border: 'none', borderBottom: tab === t.id ? '3px solid #1F4B40' : '3px solid transparent',

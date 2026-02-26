@@ -13,12 +13,12 @@ import ContentHero from '@/components/ContentHero/ContentHero';
 
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 
-export default function UsagesClient({ globalContent }) {
+export default function UsagesClient({ globalContent, content }) {
 
     // --- Mocks ---
     const headerProps = {
         bannerVisible: globalContent?.visibility?.headerBanner !== false,
-        
+
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.webp",
         menuItems: [
@@ -50,8 +50,16 @@ export default function UsagesClient({ globalContent }) {
         copyright: "©2024 - Les Amis du CBD"
     };
 
-    // Carousel Data Placeholder
-    const usagesItems = [
+    const visibility = content?.visibility || {};
+    const heroData = content?.hero || { title: "Le CBD ?" };
+    const introData = content?.intro || { title: "CBD : usages courants,\nlimites et bonnes pratiques.", text: "Le CBD est utilisé par de nombreuses personnes dans la vie quotidienne.\nCette page présente 5 usages fréquents, avec leurs limites et bonnes pratiques.\nLe CBD n'est pas un médicament et ne remplace jamais un avis médical." };
+    const carouselData = content?.carousel || { title: "Usages du CBD\nau quotidien :" };
+    const warningData = content?.warning || { title: "Le CBD :\nn'est pas un médicament, ne guérit aucune maladie, ne remplace pas un traitement médical.\nEn cas de doute, de traitement en cours ou de condition particulière, consultez un professionnel de santé.", responsibleTitle: "Pour une utilisation responsable :\nproduits analysés en laboratoire, origine claire, taux de THC conforme, information transparente" };
+    const essentialData = content?.essential || { title: "L'essentiel sur les usages du CBD :", items: ["Le CBD s'inscrit dans une démarche de bien-être", "Les usages varient selon les individus", "Il ne s'agit jamais d'un traitement médical", "La qualité et la transparence sont essentielles"] };
+    const quoteData = content?.quote || { text: "\"Découvrir le CBD en toute responsabilité.<br/>Explorez nos produits.<br/>Lire nos guides pédagogiques.\"", author: "Nelson — Les Amis du CBD" };
+    const joinUsData = content?.joinUs || { title: "Nous rejoindre", buttonLabel: "Venez par ici", buttonLink: "/recrutement", text: "Aucun poste ouvert pour le moment ? Les candidatures spontanées sont toujours les bienvenues." };
+
+    const usagesItems = content?.carousel?.items || [
         {
             title: "Détente et relaxation",
             description: "Le CBD est souvent consommé pour favoriser un état de calme et de détente, surtout dans les périodes de stress ponctuel.\n\nIl peut être intégré à vos routines de relaxation, méditation ou moments cocooning.",
@@ -90,81 +98,81 @@ export default function UsagesClient({ globalContent }) {
                     imageAlt="Illustration CBD Questionnement"
                     imagePosition="center 35%"
                 >
-                    <h1 className={styles.heroTitle}>Le CBD ?</h1>
+                    <h1 className={styles.heroTitle}>{heroData.title}</h1>
                 </ContentHero>
 
                 {/* INTRO */}
-                <ScrollReveal animation="fade-up">
-                    <section className={styles.introSection}>
-                        <h2 className={styles.introTitle}>CBD : usages courants,<br />limites et bonnes pratiques.</h2>
-                        <p className={styles.introText}>
-                            Le CBD est utilisé par de nombreuses personnes dans la vie quotidienne.
-                            Cette page présente 5 usages fréquents, avec leurs limites et bonnes pratiques.
-                            Le CBD n'est pas un médicament et ne remplace jamais un avis médical.
-                        </p>
-                    </section>
-                </ScrollReveal>
+                {visibility.intro !== false && (
+                    <ScrollReveal animation="fade-up">
+                        <section className={styles.introSection}>
+                            <h2 className={styles.introTitle} dangerouslySetInnerHTML={{ __html: introData.title.replace(/\n/g, '<br />') }} />
+                            <p className={styles.introText} dangerouslySetInnerHTML={{ __html: introData.text.replace(/\n/g, '<br />') }} />
+                        </section>
+                    </ScrollReveal>
+                )}
 
                 {/* CAROUSEL */}
-                <ScrollReveal animation="fade-up" delay={200}>
-                    <section className={styles.carouselSection}>
-                        <h2 className={styles.carouselTitle}>Usages du CBD<br />au quotidien :</h2>
-                        <UsagesCarousel items={usagesItems} />
-                    </section>
-                </ScrollReveal>
+                {visibility.carousel !== false && (
+                    <ScrollReveal animation="fade-up" delay={200}>
+                        <section className={styles.carouselSection}>
+                            <h2 className={styles.carouselTitle} dangerouslySetInnerHTML={{ __html: carouselData.title.replace(/\n/g, '<br />') }} />
+                            <UsagesCarousel items={usagesItems} />
+                        </section>
+                    </ScrollReveal>
+                )}
 
                 {/* WARNING */}
-                <ScrollReveal animation="fade-up">
-                    <section className={styles.warningSection}>
-                        <h2 className={styles.warningTitle}>
-                            <span>
-                                Le CBD :<br />
-                                n'est pas un médicament, ne guérit aucune maladie, ne remplace pas un traitement médical.<br />
-                                En cas de doute, de traitement en cours ou de condition particulière, consultez un professionnel de santé.
-                            </span>
-                        </h2>
+                {visibility.warning !== false && (
+                    <ScrollReveal animation="fade-up">
+                        <section className={styles.warningSection}>
+                            <h2 className={styles.warningTitle}>
+                                <span dangerouslySetInnerHTML={{ __html: warningData.title.replace(/\n/g, '<br />') }} />
+                            </h2>
 
-                        <div className={styles.responsibleSection}>
-                            <h3 className={styles.responsibleTitle}>
-                                Pour une utilisation responsable :<br />
-                                produits analysés en laboratoire, origine claire, taux de THC conforme, information transparente
-                            </h3>
-                        </div>
-                    </section>
-                </ScrollReveal>
+                            <div className={styles.responsibleSection}>
+                                <h3 className={styles.responsibleTitle} dangerouslySetInnerHTML={{ __html: warningData.responsibleTitle.replace(/\n/g, '<br />') }} />
+                            </div>
+                        </section>
+                    </ScrollReveal>
+                )}
 
                 {/* ESSENTIAL BOX */}
-                <ScrollReveal animation="fade-up">
-                    <section className={styles.essentialSection}>
-                        <div className={styles.essentialBox}>
-                            <h3 className={styles.essentialTitle}>L'essentiel sur les usages du CBD :</h3>
-                            <ul className={styles.essentialList}>
-                                <li>Le CBD s'inscrit dans une démarche de bien-être</li>
-                                <li>Les usages varient selon les individus</li>
-                                <li>Il ne s'agit jamais d'un traitement médical</li>
-                                <li>La qualité et la transparence sont essentielles</li>
-                            </ul>
-                        </div>
-                    </section>
-                </ScrollReveal>
+                {visibility.essential !== false && (
+                    <ScrollReveal animation="fade-up">
+                        <section className={styles.essentialSection}>
+                            <div className={styles.essentialBox}>
+                                <h3 className={styles.essentialTitle}>{essentialData.title}</h3>
+                                <ul className={styles.essentialList}>
+                                    {essentialData.items.map((item, i) => (
+                                        <li key={i}>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </section>
+                    </ScrollReveal>
+                )}
 
                 {/* FOOTER QUERY */}
-                <ScrollReveal animation="fade-up">
-                    <Quote
-                        text={`"Découvrir le CBD en toute responsabilité.<br/>Explorez nos produits.<br/>Lire nos guides pédagogiques."`}
-                        author="Nelson — Les Amis du CBD"
-                    />
-                </ScrollReveal>
+                {visibility.quote !== false && (
+                    <ScrollReveal animation="fade-up">
+                        <Quote
+                            text={quoteData.text}
+                            author={quoteData.author}
+                        />
+                    </ScrollReveal>
+                )}
 
                 {/* JOIN US */}
-                <ScrollReveal animation="fade-up">
-                    <JoinUs
-                        title="Nous rejoindre"
-                        buttonLabel="Venez par ici"
-                        buttonLink="/recrutement"
-                        text="Aucun poste ouvert pour le moment ? Les candidatures spontanées sont toujours les bienvenues."
-                    />
-                </ScrollReveal>
+                {visibility.joinUs !== false && (
+                    <ScrollReveal animation="fade-up">
+                        <JoinUs
+                            title={joinUsData.title}
+                            buttonLabel={joinUsData.buttonLabel}
+                            buttonLink={joinUsData.buttonLink}
+                            text={joinUsData.text}
+                        />
+                    </ScrollReveal>
+                )}
 
             </main>
 

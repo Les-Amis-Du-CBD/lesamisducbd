@@ -25,7 +25,7 @@ export default function AdminLogin() {
 
             if (res.ok) {
                 // Force hard navigation to ensure cookies are sent 
-                window.location.href = '/admin/products';
+                window.location.href = '/admin/content';
             } else {
                 setError(data.message || 'Mot de passe incorrect');
             }

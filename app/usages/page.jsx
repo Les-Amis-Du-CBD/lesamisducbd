@@ -13,12 +13,15 @@ export const metadata = {
 
 export default async function UsagesPage() {
     let globalContent = null;
+    let content = null;
     try {
         const globalData = await kv.get('global_content');
         if (globalData) globalContent = globalData;
+        const pageData = await kv.get('content:usages');
+        if (pageData) content = pageData;
     } catch (e) {
         console.error('KV error (usages/global):', e);
     }
-    return <UsagesClient globalContent={globalContent} />;
+    return <UsagesClient globalContent={globalContent} content={content} />;
 }
 

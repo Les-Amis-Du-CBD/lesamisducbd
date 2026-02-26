@@ -46,12 +46,6 @@ export default function Header({ logoText, logoImage, menuItems, bannerVisible }
 
     return (
         <>
-            {bannerVisible && (
-                <div style={{ background: '#1F4B40', color: '#fff', textAlign: 'center', padding: '8px 15px', fontSize: '0.85rem', fontWeight: 500, display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, position: 'relative' }}>
-                    <span style={{ marginRight: '10px' }}>Livraison offerte à partir de 50€ d'achat 🚚</span>
-                    <Link href="/produits" style={{ color: '#EEDB92', textDecoration: 'underline', fontWeight: 'bold' }}>J'en profite</Link>
-                </div>
-            )}
             <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
                 <div className={styles.container}>
                     {/* Mobile Menu Toggle */}

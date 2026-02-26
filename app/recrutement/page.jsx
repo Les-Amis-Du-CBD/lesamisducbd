@@ -1,7 +1,6 @@
-import RecruitmentClient from './RecruitmentClient';
-import { SHARED_TITLE } from '@/app/shared-metadata';
-import { kv } from '@vercel/kv';
 
+import RecruitmentClient from './RecruitmentClient';
+import { kv } from '@vercel/kv';
 
 export const metadata = {
     title: "Rejoignez l'équipe",
@@ -11,14 +10,23 @@ export const metadata = {
     },
 };
 
-export default async function RecrutementPage() {
-    let globalContent = null;
-    try {
-        const globalData = await kv.get('global_content');
-        if (globalData) globalContent = globalData;
-    } catch (e) {
-        console.error('KV error (recrutement/global):', e);
-    }
-    return <RecruitmentClient globalContent={globalContent} />;
-}
+export const revalidate = 60;
 
+export default async function RecrutementPage() {
+
+    let globalContent = null;
+    let content = null;
+
+    try {
+        const [gData, cData] = await Promise.all([
+            kv.get('global_content'),
+            kv.get('recrutement_content')
+        ]);
+        if (gData) globalContent = gData;
+        if (cData) content = cData;
+    } catch (e) {
+        console.error('KV error (recrutement):', e);
+    }
+
+    return <RecruitmentClient globalContent={globalContent} content={content} />;
+}

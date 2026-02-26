@@ -36,7 +36,8 @@ const FOOTER_PROPS = {
     },
     newsletter: {
         placeholder: "Votre adresse e-mail",
-        disclaimer: "Vous pouvez vous désinscrire à tout moment."
+        disclaimer: "Vous pouvez vous désinscrire à tout moment.",
+            isVisible: globalContent?.visibility?.newsletter !== false
     },
     copyright: "©2024 - Les Amis du CBD"
 };

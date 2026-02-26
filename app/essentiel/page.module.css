@@ -82,33 +82,39 @@
 }
 
 .essentialTitle {
-    font-size: 2rem;
-    font-weight: 400;
-    margin-bottom: 20px;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 500;
+    margin-bottom: 40px;
     text-align: center;
+    line-height: 1.2;
 }
 
 .essentialList {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-weight: 300;
 }
 
 .essentialList li {
     position: relative;
     padding-left: 20px;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
+    margin-bottom: 20px;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
     line-height: 1.5;
+    font-weight: 400;
 }
 
 .essentialList li::before {
-    content: "•";
+    content: "";
     position: absolute;
     left: 0;
-    color: #ffffff;
-    font-weight: bold;
+    top: 8px;
+    /* Align vertical center with first line text */
+    width: 4px;
+    height: 4px;
+    background-color: #ffffff;
+    border-radius: 1px;
+    /* Slight rounding for a clean square */
 }
 
 /* Responsive Adjustments */
@@ -128,6 +134,27 @@
     }
 
     .essentialBox {
-        padding: 50px;
+        padding: 60px;
+        max-width: 1100px;
+        /* Widened for 3 columns */
+    }
+
+    .essentialTitle {
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        /* Slightly larger on desktop */
+        margin-bottom: 50px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.3;
+    }
+
+    .essentialList {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px 80px;
+        /* 40px vertical, 80px horizontal gap */
+        max-width: 900px;
+        margin: 0 auto;
     }
 }

@@ -17,6 +17,7 @@ export default function UsagesClient({ globalContent }) {
 
     // --- Mocks ---
     const headerProps = {
+        bannerVisible: globalContent?.visibility?.headerBanner !== false,
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.webp",
         menuItems: [
@@ -43,7 +44,8 @@ export default function UsagesClient({ globalContent }) {
         },
         newsletter: {
             placeholder: "Votre adresse e-mail",
-            disclaimer: "Vous pouvez vous désinscrire à tout moment."
+            disclaimer: "Vous pouvez vous désinscrire à tout moment.",
+            isVisible: globalContent?.visibility?.newsletter !== false
         },
         copyright: "©2024 - Les Amis du CBD"
     };
@@ -115,9 +117,11 @@ export default function UsagesClient({ globalContent }) {
                 <ScrollReveal animation="fade-up">
                     <section className={styles.warningSection}>
                         <h2 className={styles.warningTitle}>
-                            Le CBD :<br />
-                            n'est pas un médicament, ne guérit aucune maladie, ne remplace pas un traitement médical.<br />
-                            En cas de doute, de traitement en cours ou de condition particulière, consultez un professionnel de santé.
+                            <span>
+                                Le CBD :<br />
+                                n'est pas un médicament, ne guérit aucune maladie, ne remplace pas un traitement médical.<br />
+                                En cas de doute, de traitement en cours ou de condition particulière, consultez un professionnel de santé.
+                            </span>
                         </h2>
 
                         <div className={styles.responsibleSection}>

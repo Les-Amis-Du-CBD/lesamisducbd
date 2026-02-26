@@ -43,6 +43,14 @@ export default function EssentielContentPage() {
     const [essentialPoints, setEssentialPoints] = useState(DEFAULTS.essentialPoints);
     const [quote, setQuote] = useState(DEFAULTS.quote);
 
+    const [visibility, setVisibility] = useState({
+        intro: true,
+        legalItems: true,
+        cultureItems: true,
+        essentialPoints: true,
+        quote: true
+    });
+
     useEffect(() => {
         const controller = new AbortController();
         fetch('/api/admin/content/essentiel', { signal: controller.signal })
@@ -53,6 +61,7 @@ export default function EssentielContentPage() {
                 if (data.cultureItems) setCultureItems(data.cultureItems);
                 if (data.essentialPoints) setEssentialPoints(data.essentialPoints);
                 if (data.quote) setQuote(data.quote);
+                if (data.visibility) setVisibility(prev => ({ ...prev, ...data.visibility }));
                 setLoaded(true);
             }).catch(err => {
                 if (err.name !== 'AbortError') setLoaded(true);
@@ -67,7 +76,7 @@ export default function EssentielContentPage() {
             await fetch('/api/admin/content/essentiel', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ intro, legalItems, cultureItems, essentialPoints, quote })
+                body: JSON.stringify({ intro, legalItems, cultureItems, essentialPoints, quote, visibility })
             });
             alert('Modifications enregistrées !');
         } catch { alert('Erreur lors de la sauvegarde'); }
@@ -110,6 +119,19 @@ export default function EssentielContentPage() {
             </div>
 
             <form onSubmit={handleSubmit} className={styles.form} style={{ maxWidth: '100%' }}>
+
+                <div style={{ marginBottom: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '8px', borderLeft: '4px solid #1F4B40' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                        <input
+                            type="checkbox"
+                            checked={visibility[tab] !== false}
+                            onChange={(e) => setVisibility(prev => ({ ...prev, [tab]: e.target.checked }))}
+                            style={{ width: '18px', height: '18px' }}
+                        />
+                        Afficher {TAB_LABELS[tab]} sur le site web
+                    </label>
+                    <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>Décochez cette case pour masquer cette partie au public.</small>
+                </div>
 
                 {/* Intro */}
                 {tab === 'intro' && intro.map((para, i) => (

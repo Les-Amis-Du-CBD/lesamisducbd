@@ -6,6 +6,7 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './Transparence.module.css';
 import { X, Star, BadgeEuro, ShieldCheck } from 'lucide-react';
+import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 
 const HEADER_PROPS = {
     logoText: "LES AMIS DU CBD",
@@ -34,23 +35,83 @@ const FOOTER_PROPS = {
     },
     newsletter: {
         placeholder: "Votre adresse e-mail",
-        disclaimer: "Vous pouvez vous désinscrire à tout moment."
+        disclaimer: "Vous pouvez vous désinscrire à tout moment.",
+            isVisible: globalContent?.visibility?.newsletter !== false
     },
     copyright: "©2024 - Les Amis du CBD"
 };
 
-// Based on the user's uploaded 5 certificates names at the bottom
-const ANALYSES = [
-    { src: '/images/transparence/ak47.png', alt: 'Analyse AK-47 CBD', label: 'AK-47 CBD = 7,5%' },
-    { src: '/images/transparence/amnesia.png', alt: 'Analyse AMNÉSIA CBD', label: 'AMNÉSIA CBD = 7%' },
-    { src: '/images/transparence/remedy.png', alt: 'Analyse REMEDY CBD', label: 'REMEDY CBD = 9%' },
-    { src: '/images/transparence/superskunk.png', alt: 'Analyse SUPER SKUNK CBD', label: 'SUPER SKUNK CBD = 12%' },
-    { src: '/images/transparence/gorillaglue.jpg', alt: 'Analyse GORILLA GLUE CBD', label: 'GORILLA GLUE CBD = 10%' },
-];
+const DEFAULT_CONTENT = {
+    hero: {
+        title: "Transparence",
+        subtitle: "La qualité sans compromis."
+    },
+    quote: {
+        text: "Nous, Les Amis du CBD sommes de vrais passionnés du cannabis !\nOr nous étions extrêmement déçus de voir le marché français inondé par des produits de qualité médiocre, vendus bien souvent à des prix délirants !\nNous nous sommes donc mis au travail, et nous avons été surpris de voir ce qui était possible.",
+        author: "Nelson - Les Amis du CBD"
+    },
+    section1: {
+        title: "Meilleure qualité",
+        col1: {
+            title: "Culture 100 % naturelle",
+            text: "Nos plantes sont cultivées en serre sur sol vivant :\n- Ni engrais chimiques, ni pesticides ou insecticides.\n- Sous la lumière naturelle du soleil.\n- Boostées seulement avec des engrais organiques type compost et guano de chauve-souris."
+        },
+        col2: {
+            title: "< 0,3% de THC, sans lavage !",
+            text: "Point essentiel pour la qualité finale, nos fleurs ont naturellement moins de 0,3% de THC.\nElles n'ont donc pas besoin de \"lavage\" avec des produits chimiques afin de baisser le taux de THC.\nAinsi, nous préservons la couleur, les arômes et les parfums originaux."
+        }
+    },
+    section2: {
+        title: "Moins cher",
+        col1: {
+            title: "Le naturel, c'est gratuit !",
+            text: "Comme nos fleurs sont cultivées naturellement, nous économisons :\n- Pas d'engrais ou d'autres produits chimiques coûteux.\n- Pas de matériel hi-tech (ni système hydroponique, ni éclairage artificiel).\n- Pas de facture d'électricité.\n- Pas de \"lavage\" chimique pour baisser le taux de THC.\n- Donc pas besoin de parfumer artificiellement les plantes par la suite."
+        },
+        col2: {
+            title: "Simplicité :",
+            text: "Nous comptons sur la quantité et nous pratiquons des marges raisonnables.\nAvec Les Amis du CBD, vous n'avez pas 200 références.\nSeulement 4 variétés au top, disponibles en 4 ou 10 grammes !\nAinsi :\n- La gestion de vos stocks est plus facile.\n- Vos commandes sont rapides à faire,\n- Vous proposez un prix imbattable que cela soit vis-à-vis de vos concurrents locaux, comme de la concurrence en ligne !"
+        }
+    },
+    certificats: [
+        { src: '/images/transparence/ak47.png', alt: 'Analyse AK-47 CBD', label: 'AK-47 CBD = 7,5%' },
+        { src: '/images/transparence/amnesia.png', alt: 'Analyse AMNÉSIA CBD', label: 'AMNÉSIA CBD = 7%' },
+        { src: '/images/transparence/remedy.png', alt: 'Analyse REMEDY CBD', label: 'REMEDY CBD = 9%' },
+        { src: '/images/transparence/superskunk.png', alt: 'Analyse SUPER SKUNK CBD', label: 'SUPER SKUNK CBD = 12%' },
+        { src: '/images/transparence/gorillaglue.jpg', alt: 'Analyse GORILLA GLUE CBD', label: 'GORILLA GLUE CBD = 10%' },
+    ]
+};
 
-import useLockBodyScroll from '@/hooks/useLockBodyScroll';
+// Mini Markdown parser for Columns: line starting with "-" or "*" becomes <li>, else <p>
+function renderTextLines(textBlocks) {
+    if (!textBlocks) return null;
+    const lines = textBlocks.split('\n');
+    let listItems = [];
+    const elements = [];
 
-export default function TransparenceClient({ globalContent }) {
+    lines.forEach((line, idx) => {
+        const t = line.trim();
+        if (t.startsWith('-') || t.startsWith('*')) {
+            listItems.push(<li key={`li-${idx}`}>{t.substring(1).trim()}</li>);
+        } else {
+            if (listItems.length > 0) {
+                elements.push(<ul key={`ul-${idx}`}>{listItems}</ul>);
+                listItems = [];
+            }
+            if (t.length > 0) {
+                elements.push(<p key={`p-${idx}`}>{t}</p>);
+            }
+        }
+    });
+
+    if (listItems.length > 0) {
+        elements.push(<ul key={`ul-end`}>{listItems}</ul>);
+    }
+
+    return <>{elements}</>;
+}
+
+
+export default function TransparenceClient({ globalContent, content }) {
     const [selectedImage, setSelectedImage] = useState(null);
     useLockBodyScroll(!!selectedImage);
 
@@ -60,125 +121,119 @@ export default function TransparenceClient({ globalContent }) {
         contactInfo: globalContent?.contact || FOOTER_PROPS.contactInfo
     };
 
+    const data = content || DEFAULT_CONTENT;
+
     return (
         <main className={styles.main}>
             <Header {...HEADER_PROPS} />
 
             <div className={styles.container}>
-                <div className={styles.header}>
-                    <h1 className={styles.title}>Transparence</h1>
-                    <p className={styles.subtitle}>La qualité sans compromis.</p>
-                </div>
+                {/* Hero section */}
+                {data.hero.isVisible !== false && (
+                    <div className={styles.header}>
+                        <h1 className={styles.title}>{data.hero.title}</h1>
+                        <p className={styles.subtitle}>{data.hero.subtitle}</p>
+                    </div>
+                )}
 
                 {/* Intro Section with Profile */}
-                <section className={styles.introSection}>
-                    <div className={styles.profileWrapper}>
-                        <Image
-                            src="/images/nelson.png"
-                            alt="Nelson - Les Amis du CBD"
-                            fill
-                            className={styles.profileImage}
-                        />
-                    </div>
-                    <div className={styles.quoteBlock}>
-                        <p className={styles.quoteText}>
-                            "Nous, Les Amis du CBD sommes de vrais passionnés du cannabis !<br /><br />
-                            Or nous étions extrêmement déçus de voir le marché français inondé par des produits de qualité médiocre, vendus bien souvent à des prix délirants !<br /><br />
-                            Nous nous sommes donc mis au travail, et nous avons été surpris de voir ce qui était possible."
-                        </p>
-                        <p className={styles.quoteAuthor}>Nelson - Les Amis du CBD</p>
-                    </div>
-                </section>
+                {data.quote.isVisible !== false && (
+                    <section className={styles.introSection}>
+                        <div className={styles.profileWrapper}>
+                            <Image
+                                src="/images/nelson.png"
+                                alt="Nelson - Les Amis du CBD"
+                                fill
+                                className={styles.profileImage}
+                            />
+                        </div>
+                        <div className={styles.quoteBlock}>
+                            {data.quote.text.split('\n').map((line, i) => (
+                                <p key={i} className={styles.quoteText} style={{ marginBottom: '1rem' }}>
+                                    {line}
+                                </p>
+                            ))}
+                            <p className={styles.quoteAuthor}>{data.quote.author}</p>
+                        </div>
+                    </section>
+                )}
 
-                {/* Section 1: Qualité */}
-                <section className={styles.featureSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.iconCircle}><Star size={40} /></div>
-                        <h2>Meilleure qualité</h2>
-                    </div>
-                    <div className={styles.columns}>
-                        <div className={styles.column}>
-                            <h3>Culture 100 % naturelle</h3>
-                            <p>Nos plantes sont cultivées en serre sur sol vivant :</p>
-                            <ul>
-                                <li>Ni engrais chimiques, ni pesticides ou insecticides.</li>
-                                <li>Sous la lumière naturelle du soleil.</li>
-                                <li>Boostées seulement avec des engrais organiques type compost et guano de chauve-souris.</li>
-                            </ul>
+                {/* Section 1 */}
+                {data.section1.isVisible !== false && (
+                    <section className={styles.featureSection}>
+                        <div className={styles.sectionHeader}>
+                            <div className={styles.iconCircle}><Star size={40} /></div>
+                            <h2>{data.section1.title}</h2>
                         </div>
-                        <div className={styles.column}>
-                            <h3>&lt; 0,3% de THC, sans lavage !</h3>
-                            <p>Point essentiel pour la qualité finale, nos fleurs ont naturellement moins de 0,3% de THC.</p>
-                            <p>Elles n'ont donc pas besoin de "lavage" avec des produits chimiques afin de baisser le taux de THC.</p>
-                            <p>Ainsi, nous préservons la couleur, les arômes et les parfums originaux.</p>
+                        <div className={styles.columns}>
+                            <div className={styles.column}>
+                                <h3>{data.section1.col1.title}</h3>
+                                {renderTextLines(data.section1.col1.text)}
+                            </div>
+                            <div className={styles.column}>
+                                <h3>{data.section1.col2.title}</h3>
+                                {renderTextLines(data.section1.col2.text)}
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
-                {/* Section 2: Prix */}
-                <section className={styles.featureSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.iconCircle}><BadgeEuro size={40} /></div>
-                        <h2>Moins cher</h2>
-                    </div>
-                    <div className={styles.columns}>
-                        <div className={styles.column}>
-                            <h3>Le naturel, c'est gratuit !</h3>
-                            <p>Comme nos fleurs sont cultivées naturellement, nous économisons :</p>
-                            <ul>
-                                <li>Pas d'engrais ou d'autres produits chimiques coûteux.</li>
-                                <li>Pas de matériel hi-tech (ni système hydroponique, ni éclairage artificiel).</li>
-                                <li>Pas de facture d'électricité.</li>
-                                <li>Pas de "lavage" chimique pour baisser le taux de THC.</li>
-                                <li>Donc pas besoin de parfumer artificiellement les plantes par la suite.</li>
-                            </ul>
+                {/* Section 2 */}
+                {data.section2.isVisible !== false && (
+                    <section className={styles.featureSection}>
+                        <div className={styles.sectionHeader}>
+                            <div className={styles.iconCircle}><BadgeEuro size={40} /></div>
+                            <h2>{data.section2.title}</h2>
                         </div>
-                        <div className={styles.column}>
-                            <h3>Simplicité :</h3>
-                            <p>Nous comptons sur la quantité et nous pratiquons des marges raisonnables.</p>
-                            <p>Avec Les Amis du CBD, vous n'avez pas 200 références.</p>
-                            <p>Seulement 4 variétés au top, disponibles en 4 ou 10 grammes !</p>
-                            <p>Ainsi :</p>
-                            <ul>
-                                <li>La gestion de vos stocks est plus facile.</li>
-                                <li>Vos commandes sont rapides à faire,</li>
-                                <li>Vous proposez un prix imbattable que cela soit vis-à-vis de vos concurrents locaux, comme de la concurrence en ligne !</li>
-                            </ul>
+                        <div className={styles.columns}>
+                            <div className={styles.column}>
+                                <h3>{data.section2.col1.title}</h3>
+                                {renderTextLines(data.section2.col1.text)}
+                            </div>
+                            <div className={styles.column}>
+                                <h3>{data.section2.col2.title}</h3>
+                                {renderTextLines(data.section2.col2.text)}
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* Section 3: Sécurité / Certificats */}
-                <section className={styles.featureSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.iconCircle}><ShieldCheck size={40} /></div>
-                        <h2>Sécurité</h2>
-                    </div>
+                {data.certificatsVisible !== false && (
+                    <section className={styles.featureSection}>
+                        <div className={styles.sectionHeader}>
+                            <div className={styles.iconCircle}><ShieldCheck size={40} /></div>
+                            <h2>Sécurité</h2>
+                        </div>
 
-                    <h3 className={styles.certifTitle}>Certificats d'analyses :</h3>
+                        <h3 className={styles.certifTitle}>Certificats d'analyses :</h3>
 
-                    <div className={styles.galleryGrid}>
-                        {ANALYSES.map((analyse, idx) => (
-                            <div
-                                key={idx}
-                                className={styles.imageCard}
-                                onClick={() => setSelectedImage(analyse)}
-                            >
-                                <div className={styles.imageWrapper}>
-                                    <Image
-                                        src={analyse.src}
-                                        alt={analyse.alt}
-                                        fill
-                                        className={styles.image}
-                                    />
+                        <div className={styles.galleryGrid}>
+                            {data.certificats.map((analyse, idx) => (
+                                <div
+                                    key={idx}
+                                    className={styles.imageCard}
+                                    onClick={() => setSelectedImage(analyse)}
+                                >
+                                    <div className={styles.imageWrapper}>
+                                        <Image
+                                            src={analyse.src}
+                                            alt={analyse.alt || 'Certificat analyse'}
+                                            fill
+                                            className={styles.image}
+                                        />
+                                    </div>
+                                    <div className={styles.imageCaption}>
+                                        {analyse.label}
+                                    </div>
                                 </div>
-                                <div className={styles.imageCaption}>
-                                    {analyse.label}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                            ))}
+                            {data.certificats.length === 0 && (
+                                <p style={{ textAlign: 'center', width: '100%', padding: '2rem' }}>Aucun certificat publié.</p>
+                            )}
+                        </div>
+                    </section>
+                )}
             </div>
 
             {/* Lightbox / Modal for viewing full document */}
@@ -194,7 +249,7 @@ export default function TransparenceClient({ globalContent }) {
                     <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                         <Image
                             src={selectedImage.src}
-                            alt={selectedImage.alt}
+                            alt={selectedImage.alt || 'Ceticicat'}
                             fill
                             className={styles.modalImage}
                         />

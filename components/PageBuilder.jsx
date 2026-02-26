@@ -41,6 +41,9 @@ export default function PageBuilder({ sections }) {
     return (
         <>
             {sections.map((section, index) => {
+                // If the CMS flag explicitly says to hide this component
+                if (section.props && section.props.isVisible === false) return null;
+
                 const Component = componentMap[section.type];
                 if (!Component) {
                     console.warn(`No component found for type: ${section.type}`);

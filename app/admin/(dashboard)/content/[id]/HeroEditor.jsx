@@ -25,6 +25,19 @@ export default function HeroEditor({ section, onSave }) {
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
+            <div style={{ marginBottom: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '8px', borderLeft: '4px solid #1F4B40' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                    <input
+                        type="checkbox"
+                        checked={props.isVisible !== false}
+                        onChange={(e) => setProps(prev => ({ ...prev, isVisible: e.target.checked }))}
+                        style={{ width: '18px', height: '18px' }}
+                    />
+                    Afficher cette section sur le site web
+                </label>
+                <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>Décochez cette case pour masquer cette partie au public.</small>
+            </div>
+
             <div className={styles.fieldGroup}>
                 <label>Image de fond</label>
                 <ImageUpload

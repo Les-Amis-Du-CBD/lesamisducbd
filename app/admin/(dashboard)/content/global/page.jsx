@@ -27,6 +27,10 @@ export default function GlobalContentPage() {
 
     const [contact, setContact] = useState(DEFAULTS.contact);
     const [footerLinks, setFooterLinks] = useState(DEFAULTS.footerLinks);
+    const [visibility, setVisibility] = useState({
+        headerBanner: true,
+        newsletter: true
+    });
 
     useEffect(() => {
         const controller = new AbortController();
@@ -35,6 +39,7 @@ export default function GlobalContentPage() {
             .then(data => {
                 if (data.contact) setContact(data.contact);
                 if (data.footerLinks) setFooterLinks(data.footerLinks);
+                if (data.visibility) setVisibility(prev => ({ ...prev, ...data.visibility }));
                 setLoaded(true);
             }).catch(err => {
                 if (err.name !== 'AbortError') setLoaded(true);
@@ -49,7 +54,7 @@ export default function GlobalContentPage() {
             await fetch('/api/admin/content/global', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contact, footerLinks })
+                body: JSON.stringify({ contact, footerLinks, visibility })
             });
             alert('Modifications enregistrées !');
         } catch { alert('Erreur lors de la sauvegarde'); }
@@ -71,7 +76,8 @@ export default function GlobalContentPage() {
 
     const TABS = [
         { id: 'contact', label: '📞 Informations de contact' },
-        { id: 'footer', label: '🔗 Liens Footer' }
+        { id: 'footer', label: '🔗 Liens Footer' },
+        { id: 'visibility', label: '👁️ Visibilité' }
     ];
 
     return (
@@ -139,6 +145,39 @@ export default function GlobalContentPage() {
                             color: '#1F4B40', borderRadius: 8, cursor: 'pointer', fontWeight: 700, width: '100%', marginTop: 5
                         }}>+ Ajouter un lien</button>
                     </>
+                )}
+
+                {/* Visibilité */}
+                {tab === 'visibility' && (
+                    <div style={{ padding: '20px', background: '#f8f9fa', borderRadius: '8px', borderLeft: '4px solid #1F4B40' }}>
+                        <h3 style={{ margin: '0 0 15px 0', fontSize: '1.1rem', color: '#1F4B40' }}>Paramètres de Visibilité Globale</h3>
+
+                        <div style={{ marginBottom: '15px' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={visibility.headerBanner !== false}
+                                    onChange={(e) => setVisibility(prev => ({ ...prev, headerBanner: e.target.checked }))}
+                                    style={{ width: '18px', height: '18px' }}
+                                />
+                                Afficher le bandeau d'annonce (Header Banner)
+                            </label>
+                            <small style={{ display: 'block', marginTop: '5px', color: '#666', marginLeft: '28px' }}>Si activé, affiche un bandeau promotionnel tout en haut du site.</small>
+                        </div>
+
+                        <div>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={visibility.newsletter !== false}
+                                    onChange={(e) => setVisibility(prev => ({ ...prev, newsletter: e.target.checked }))}
+                                    style={{ width: '18px', height: '18px' }}
+                                />
+                                Afficher le formulaire de Newsletter (Footer)
+                            </label>
+                            <small style={{ display: 'block', marginTop: '5px', color: '#666', marginLeft: '28px' }}>Si activé, affiche l'encart d'inscription à la newsletter dans le pied de page.</small>
+                        </div>
+                    </div>
                 )}
 
                 <button type="submit" className={styles.saveBtn} disabled={saving}>

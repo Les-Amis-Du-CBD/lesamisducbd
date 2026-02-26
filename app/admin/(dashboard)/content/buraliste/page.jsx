@@ -40,6 +40,14 @@ export default function BuralisteContentPage() {
     const [features2, setFeatures2] = useState(DEFAULTS.features2);
     const [steps, setSteps] = useState(DEFAULTS.steps);
 
+    const [visibility, setVisibility] = useState({
+        hero: true,
+        features1: true,
+        features2: true,
+        steps: true,
+        calculator: true
+    });
+
     useEffect(() => {
         const controller = new AbortController();
         fetch('/api/admin/content/buraliste', { signal: controller.signal })
@@ -49,6 +57,7 @@ export default function BuralisteContentPage() {
                 if (data.features1) setFeatures1(data.features1);
                 if (data.features2) setFeatures2(data.features2);
                 if (data.steps) setSteps(data.steps);
+                if (data.visibility) setVisibility(prev => ({ ...prev, ...data.visibility }));
                 setLoaded(true);
             }).catch(err => {
                 if (err.name !== 'AbortError') setLoaded(true);
@@ -63,7 +72,7 @@ export default function BuralisteContentPage() {
             await fetch('/api/admin/content/buraliste', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ hero, features1, features2, steps })
+                body: JSON.stringify({ hero, features1, features2, steps, visibility })
             });
             alert('Modifications enregistrées !');
         } catch { alert('Erreur lors de la sauvegarde'); }
@@ -114,6 +123,30 @@ export default function BuralisteContentPage() {
             </div>
 
             <form onSubmit={handleSubmit} className={styles.form} style={{ maxWidth: '100%' }}>
+
+                <div style={{ marginBottom: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '8px', borderLeft: '4px solid #1F4B40' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                        <input
+                            type="checkbox"
+                            checked={visibility[tab] !== false}
+                            onChange={(e) => setVisibility(prev => ({ ...prev, [tab]: e.target.checked }))}
+                            style={{ width: '18px', height: '18px' }}
+                        />
+                        Afficher  sur le site web
+                    </label>
+                    {tab === 'hero' && (
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold', marginTop: '10px' }}>
+                            <input
+                                type="checkbox"
+                                checked={visibility.calculator !== false}
+                                onChange={(e) => setVisibility(prev => ({ ...prev, calculator: e.target.checked }))}
+                                style={{ width: '18px', height: '18px' }}
+                            />
+                            Afficher le simulateur de revenus sur le site web
+                        </label>
+                    )}
+                    <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>Décochez cette case pour masquer cette partie au public.</small>
+                </div>
 
                 {/* Hero */}
                 {tab === 'hero' && (

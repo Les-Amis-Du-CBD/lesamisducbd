@@ -1,3 +1,4 @@
+import { checkVisibility } from '@/lib/services/visibilityService';
 import ConnexionForm from './ConnexionForm';
 
 export const metadata = {
@@ -5,7 +6,8 @@ export const metadata = {
     description: 'Connectez-vous ou créez un compte sur Les Amis du CBD.',
 };
 
-export default function ConnexionPage() {
+export default async function ConnexionPa
+    await checkVisibility('connexion');ge() {
     return (
         <div style={{
             minHeight: '80vh',

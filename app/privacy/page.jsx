@@ -1,3 +1,4 @@
+
 import PrivacyClient from './PrivacyClient';
 import { kv } from '@vercel/kv';
 
@@ -6,14 +7,23 @@ export const metadata = {
     description: 'Consultez la Politique de confidentialité de la boutique Les Amis du CBD.',
 };
 
+export const revalidate = 60;
+
 export default async function PrivacyPage() {
+
     let globalContent = null;
+    let content = null;
+
     try {
-        const data = await kv.get('global_content');
-        if (data) globalContent = data;
+        const [gData, cData] = await Promise.all([
+            kv.get('global_content'),
+            kv.get('privacy_content')
+        ]);
+        if (gData) globalContent = gData;
+        if (cData) content = cData;
     } catch (e) {
         console.error('KV error (privacy):', e);
     }
 
-    return <PrivacyClient globalContent={globalContent} />;
+    return <PrivacyClient globalContent={globalContent} content={content} />;
 }

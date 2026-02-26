@@ -2,6 +2,7 @@
 
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { renderMarkdown } from '@/lib/utils/markdownRenderer';
 import styles from './Livraison.module.css';
 import { MonitorCheck, PackageSearch, Truck, Home } from 'lucide-react';
 
@@ -32,17 +33,21 @@ const FOOTER_PROPS = {
     },
     newsletter: {
         placeholder: "Votre adresse e-mail",
-        disclaimer: "Vous pouvez vous désinscrire à tout moment."
+        disclaimer: "Vous pouvez vous désinscrire à tout moment.",
+            isVisible: globalContent?.visibility?.newsletter !== false
     },
     copyright: "©2024 - Les Amis du CBD"
 };
 
-export default function LivraisonClient({ globalContent }) {
+export default function LivraisonClient({ globalContent, content }) {
     const footerProps = {
         ...FOOTER_PROPS,
         columnLinks: globalContent?.footerLinks || FOOTER_PROPS.columnLinks,
         contactInfo: globalContent?.contact || FOOTER_PROPS.contactInfo
     };
+
+    const heroTitle = content?.hero?.title || "Notre processus de livraison";
+    const heroSubtitle = content?.hero?.subtitle || "Simple, rapide et discret.";
 
     return (
         <main className={styles.main}>
@@ -51,8 +56,8 @@ export default function LivraisonClient({ globalContent }) {
             <div className={styles.pageContainer}>
                 {/* Hero / Header */}
                 <div className={styles.header}>
-                    <h1 className={styles.title}>Notre processus de livraison</h1>
-                    <p className={styles.subtitle}>Simple, rapide et discret.</p>
+                    <h1 className={styles.title}>{heroTitle}</h1>
+                    <p className={styles.subtitle}>{heroSubtitle}</p>
                 </div>
 
                 {/* 4-Step Schema */}
@@ -110,19 +115,23 @@ export default function LivraisonClient({ globalContent }) {
 
                 {/* Additional Information Section */}
                 <section className={styles.infoSection}>
-                    <h2 className={styles.infoTitle}>Expédition de votre colis</h2>
-                    <div className={styles.infoContent}>
-                        <p>
-                            Pour les commandes passées avant 12h, le colis est expédié le jour même.
-                            Cependant, notez que les délais de préparation peuvent être allongés lors de fortes affluences de commande ou de situation exceptionnelle.
-                        </p>
-                        <p>
-                            Quel que soit le mode de livraison choisi, nous vous envoyons un lien pour suivre votre colis en ligne.
-                        </p>
-                        <p>
-                            L'envoi est <strong>très discret</strong>, le sachet est opaque et le colis n'a pas d'information permettant de savoir ce qu'il y a dedans.
-                        </p>
-                    </div>
+                    {content && content.markdown ? renderMarkdown(content.markdown) : (
+                        <>
+                            <h2 className={styles.infoTitle}>Expédition de votre colis</h2>
+                            <div className={styles.infoContent}>
+                                <p>
+                                    Pour les commandes passées avant 12h, le colis est expédié le jour même.
+                                    Cependant, notez que les délais de préparation peuvent être allongés lors de fortes affluences de commande ou de situation exceptionnelle.
+                                </p>
+                                <p>
+                                    Quel que soit le mode de livraison choisi, nous vous envoyons un lien pour suivre votre colis en ligne.
+                                </p>
+                                <p>
+                                    L'envoi est <strong>très discret</strong>, le sachet est opaque et le colis n'a pas d'information permettant de savoir ce qu'il y a dedans.
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </section>
             </div>
 

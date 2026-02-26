@@ -58,20 +58,21 @@
 
 /* WARNING SECTION */
 .warningSection {
-    padding: 0;
-    text-align: left;
-    max-width: 900px;
+    padding: clamp(40px, 8vw, 80px) 0;
+    max-width: 1200px;
     width: 90%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(30px, 5vw, 60px);
 }
 
-/* Shared Typography for both titles */
 .warningTitle,
 .responsibleTitle {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 700;
-    line-height: 1;
-    margin-bottom: 40px;
+    line-height: 1.2;
+    margin: 0;
     background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -86,48 +87,80 @@
 }
 
 .responsibleSection {
-    text-align: right;
-    margin-top: 40px;
+    position: relative;
+    padding-left: clamp(15px, 3vw, 40px);
 }
 
+.responsibleSection::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: clamp(2px, 0.5vw, 4px);
+    background-color: #1F4B40;
+    border-radius: 4px;
+}
 
 /* ESSENTIAL INFO BOX */
 .essentialSection {
-    margin: 10px auto;
+    margin: clamp(20px, 4vw, 60px) auto;
     display: flex;
     justify-content: center;
     width: 96%;
 }
 
 .essentialBox {
-    background: linear-gradient(145deg, #1f4b40 0%, #49b197 100%);
+    background: linear-gradient(145deg, #1f4b40 0%, #3a8c77 100%);
     color: white;
-    padding: 40px;
-    border-radius: 20px;
-    max-width: 800px;
+    padding: clamp(30px, 5vw, 60px);
+    border-radius: clamp(15px, 3vw, 30px);
+    max-width: 1000px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(31, 75, 64, 0.3);
+    box-shadow: 0 10px 30px rgba(31, 75, 64, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .essentialTitle {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    font-weight: 300;
-    line-height: 1;
-}
-
-.essentialList {
-    list-style: disc;
-    padding-left: 20px;
-    font-weight: 100;
-}
-
-.essentialList li {
-    margin-bottom: 5px;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin-bottom: clamp(20px, 4vw, 40px);
+    font-weight: 400;
     line-height: 1.2;
 }
 
+.essentialList {
+    list-style: none;
+    /* Removed default disc to use custom styling if needed, or keep clean */
+    padding: 0;
+    margin: 0;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
 
+.essentialList li {
+    line-height: 1.4;
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+    /* slightly smaller */
+    position: relative;
+    padding-left: 15px;
+    text-align: left;
+}
+
+.essentialList li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: white;
+    /* Changed from neon green to white based on mockup */
+    font-size: 1.2em;
+    top: -2px;
+}
 
 /* DESKTOP ADAPTATION */
 @media (min-width: 1024px) {
@@ -154,43 +187,61 @@
         margin: 0 auto 30px;
     }
 
-    /* Warning: Side by Side */
+    /* Warning: Centered Side by Side Flex */
     .warningSection {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px;
+        flex-direction: row;
         align-items: center;
-        max-width: 1200px;
-        text-align: left;
+        /* Center vertically against the border */
+        justify-content: center;
+        max-width: 1000px;
+        /* Constrain width so it matches mockup */
+        gap: 80px;
+        /* Space out the divider */
+        margin: 60px auto;
     }
 
-    .warningTitle,
-    .responsibleTitle {
-        font-size: 2.2rem;
-        margin-bottom: 0;
+    .warningTitle {
+        flex: 1;
+        text-align: left;
+        /* Left align text inside its block */
+        display: flex;
+        justify-content: flex-end;
+        /* Push the block to the right */
+        padding-right: 0;
+    }
+
+    .warningTitle span {
+        display: inline-block;
+        max-width: 450px;
+        /* Force line breaks like mockup */
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        /* Slightly smaller than before to match proportions */
     }
 
     .responsibleSection {
-        text-align: left;
-        margin-top: 0;
-        border-left: 4px solid #1F4B40;
+        flex: 1;
         padding-left: 40px;
-    }
-
-    /* Essential Box: Two Columns */
-    .essentialBox {
+        /* Space from border */
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 60px;
+        justify-content: flex-start;
     }
 
+    .responsibleTitle {
+        max-width: 450px;
+        /* Force line breaks */
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+    }
+
+    /* Adjust the border to be centered between them */
+    .responsibleSection::before {
+        left: -40px;
+        /* Hang it in the gap */
+    }
+
+    /* Essential Box: Two Columns for List */
     .essentialList {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px 40px;
-        text-align: left;
-        margin-top: 20px;
+        gap: 20px 60px;
     }
 }

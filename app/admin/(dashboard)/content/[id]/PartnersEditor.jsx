@@ -6,6 +6,7 @@ export default function PartnersEditor({ section, onSave }) {
     const [title, setTitle] = useState(section.props.title || '');
     const [subtitle, setSubtitle] = useState(section.props.subtitle || '');
     const [partners, setPartners] = useState(section.props.partners || []);
+    const [isVisible, setIsVisible] = useState(section.props.isVisible !== false);
     const [saving, setSaving] = useState(false);
     const [uploadingImageFor, setUploadingImageFor] = useState(null);
 
@@ -57,12 +58,25 @@ export default function PartnersEditor({ section, onSave }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
-        await onSave(section.id, { title, subtitle, partners });
+        await onSave(section.id, { title, subtitle, partners, isVisible });
         setSaving(false);
     };
 
     return (
         <form onSubmit={handleSubmit} className={styles.form} style={{ maxWidth: '800px' }}>
+            <div style={{ marginBottom: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '8px', borderLeft: '4px solid #1F4B40' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                    <input
+                        type="checkbox"
+                        checked={isVisible}
+                        onChange={(e) => setIsVisible(e.target.checked)}
+                        style={{ width: '18px', height: '18px' }}
+                    />
+                    Afficher cette section sur le site web
+                </label>
+                <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>Décochez cette case pour masquer cette partie au public.</small>
+            </div>
+
             <div className={styles.fieldGroup}>
                 <label>Titre (Chiffre '300' animé automatiquement)</label>
                 <input

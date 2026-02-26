@@ -88,24 +88,16 @@
     .carousel {
         justify-content: center;
         flex-wrap: wrap;
-        /* Wrap on desktop for grid look? Or keep carousel? User asked for carousel. 
-                           If carousel, let's keep it but show more items. 
-                           Actually user said "Usages du CBD au quotidien : doit être un carousel" initially.
-                           But now "improviser la version desktop propre". 
-                           A grid is cleaner for 5-6 items. 
-                           Mockup shows 2 columns of text? No, mockup shows illustration. 
-                           Let's stick to Carousel but 3 items visible.
-                        */
         padding: 20px 0;
         max-width: 1200px;
         margin: 0 auto;
         overflow: visible;
-        /* No scroll needed if few items, but if many, scroll. */
+        gap: 30px;
     }
 
     .card {
-        flex: 0 0 calc(50% - 20px);
-        min-width: 400px;
-        max-width: 600px;
+        flex: 0 0 calc(33.333% - 20px);
+        min-width: 250px;
+        max-width: 380px;
     }
 }

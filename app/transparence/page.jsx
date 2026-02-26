@@ -1,3 +1,4 @@
+
 import TransparenceClient from './TransparenceClient';
 import { kv } from '@vercel/kv';
 
@@ -6,14 +7,22 @@ export const metadata = {
     description: 'Découvrez notre engagement envers la qualité et consultez les résultats de nos analyses en laboratoire.',
 };
 
+export const revalidate = 60;
+
 export default async function TransparencePage() {
     let globalContent = null;
+    let content = null;
+
     try {
-        const data = await kv.get('global_content');
-        if (data) globalContent = data;
+        const [gData, cData] = await Promise.all([
+            kv.get('global_content'),
+            kv.get('transparence_content')
+        ]);
+        if (gData) globalContent = gData;
+        if (cData) content = cData;
     } catch (e) {
         console.error('KV error (transparence):', e);
     }
 
-    return <TransparenceClient globalContent={globalContent} />;
+    return <TransparenceClient globalContent={globalContent} content={content} />;
 }

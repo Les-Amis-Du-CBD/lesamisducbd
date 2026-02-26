@@ -40,6 +40,8 @@ export default function Footer({ columnLinks, contactInfo, newsletter, copyright
         }
     };
 
+    const isNewsletterVisible = newsletter?.isVisible !== false;
+
     return (
         <footer className={styles.wrapper}>
             <div className={styles.container}>
@@ -94,36 +96,38 @@ export default function Footer({ columnLinks, contactInfo, newsletter, copyright
                             </div>
                         </div>
 
-                        <div className={styles.newsletterSection}>
-                            <h3 className={styles.header}>Newsletter</h3>
-                            {status === 'success' ? (
-                                <div className={styles.newsletterSuccess}>
-                                    <p style={{ color: '#49B197', fontWeight: '500', marginBottom: '8px' }}>{message}</p>
-                                    <p className={styles.disclaimer}>Merci de votre intérêt.</p>
-                                </div>
-                            ) : (
-                                <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
-                                    <div className={styles.inputWrapper}>
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder={newsletter.placeholder}
-                                            className={styles.input}
-                                            required
-                                            disabled={status === 'loading'}
-                                        />
-                                        <button type="submit" disabled={status === 'loading'} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                                            <Send size={18} className={styles.inputIcon} style={{ opacity: status === 'loading' ? 0.5 : 1 }} />
-                                        </button>
+                        {isNewsletterVisible && (
+                            <div className={styles.newsletterSection}>
+                                <h3 className={styles.header}>Newsletter</h3>
+                                {status === 'success' ? (
+                                    <div className={styles.newsletterSuccess}>
+                                        <p style={{ color: '#49B197', fontWeight: '500', marginBottom: '8px' }}>{message}</p>
+                                        <p className={styles.disclaimer}>Merci de votre intérêt.</p>
                                     </div>
-                                    {status === 'error' && (
-                                        <p style={{ color: '#ff6b6b', fontSize: '0.8rem', marginTop: '6px' }}>{message}</p>
-                                    )}
-                                    <p className={styles.disclaimer}>{newsletter.disclaimer}</p>
-                                </form>
-                            )}
-                        </div>
+                                ) : (
+                                    <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
+                                        <div className={styles.inputWrapper}>
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder={newsletter.placeholder}
+                                                className={styles.input}
+                                                required
+                                                disabled={status === 'loading'}
+                                            />
+                                            <button type="submit" disabled={status === 'loading'} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                                                <Send size={18} className={styles.inputIcon} style={{ opacity: status === 'loading' ? 0.5 : 1 }} />
+                                            </button>
+                                        </div>
+                                        {status === 'error' && (
+                                            <p style={{ color: '#ff6b6b', fontSize: '0.8rem', marginTop: '6px' }}>{message}</p>
+                                        )}
+                                        <p className={styles.disclaimer}>{newsletter.disclaimer}</p>
+                                    </form>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

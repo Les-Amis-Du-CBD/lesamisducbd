@@ -1,3 +1,4 @@
+
 import CgvClient from './CgvClient';
 import { kv } from '@vercel/kv';
 
@@ -6,14 +7,23 @@ export const metadata = {
     description: 'Consultez les Conditions Générales de Vente (CGV) de la boutique Les Amis du CBD.',
 };
 
+export const revalidate = 60;
+
 export default async function CgvPage() {
+
     let globalContent = null;
+    let content = null;
+
     try {
-        const data = await kv.get('global_content');
-        if (data) globalContent = data;
+        const [gData, cData] = await Promise.all([
+            kv.get('global_content'),
+            kv.get('cgv_content')
+        ]);
+        if (gData) globalContent = gData;
+        if (cData) content = cData;
     } catch (e) {
         console.error('KV error (cgv):', e);
     }
 
-    return <CgvClient globalContent={globalContent} />;
+    return <CgvClient globalContent={globalContent} content={content} />;
 }

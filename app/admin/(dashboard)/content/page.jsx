@@ -37,12 +37,20 @@ const PAGES = [
         href: '/admin/content/usages'
     },
     {
-        id: 'qui-sommes-nous',
-        label: 'Qui Sommes-Nous',
-        icon: '👥',
-        description: 'Présentation équipe, Valeurs de la marque, Citation fondateur',
+        id: 'transparence',
+        label: 'Transparence',
+        icon: '🔬',
+        description: 'Héro, Manifesto, Arguments de qualité, Analyses labo',
+        count: 4,
+        href: '/admin/content/transparence'
+    },
+    {
+        id: 'recrutement',
+        label: 'Recrutement',
+        icon: '💼',
+        description: 'Texte d\'introduction, Offres d\'emploi, Contact',
         count: 3,
-        href: '/admin/content/qui-sommes-nous'
+        href: '/admin/content/recrutement'
     },
     {
         id: 'global',
@@ -51,6 +59,30 @@ const PAGES = [
         description: 'Informations de contact, Liens du footer (toutes pages)',
         count: 2,
         href: '/admin/content/global'
+    },
+    {
+        id: 'cgv',
+        label: 'CGV',
+        icon: '📄',
+        description: 'Conditions Générales de Vente (Texte de loi complet)',
+        count: 'Texte',
+        href: '/admin/content/legal/cgv'
+    },
+    {
+        id: 'livraison',
+        label: 'Livraison',
+        icon: '🚚',
+        description: 'Délais, Tarifs et Méthodes d\'expédition',
+        count: 'Texte',
+        href: '/admin/content/legal/livraison'
+    },
+    {
+        id: 'privacy',
+        label: 'Confidentialité',
+        icon: '🔒',
+        description: 'Politique de confidentialité et RGPD',
+        count: 'Texte',
+        href: '/admin/content/legal/privacy'
     }
 ];
 

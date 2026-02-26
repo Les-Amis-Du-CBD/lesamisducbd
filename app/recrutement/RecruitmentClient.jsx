@@ -31,6 +31,7 @@ export default function RecruitmentClient({ globalContent, content }) {
 
     const headerProps = {
         bannerVisible: globalContent?.visibility?.headerBanner !== false,
+        
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.png",
         menuItems: [
@@ -57,8 +58,7 @@ export default function RecruitmentClient({ globalContent, content }) {
         },
         newsletter: {
             placeholder: "Votre adresse e-mail",
-            disclaimer: "Vous pouvez vous désinscrire à tout moment.",
-            isVisible: globalContent?.visibility?.newsletter !== false
+            disclaimer: "Vous pouvez vous désinscrire à tout moment."
         },
         copyright: "©2024 - Les Amis du CBD"
     };

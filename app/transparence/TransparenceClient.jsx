@@ -35,8 +35,7 @@ const FOOTER_PROPS = {
     },
     newsletter: {
         placeholder: "Votre adresse e-mail",
-        disclaimer: "Vous pouvez vous désinscrire à tout moment.",
-            isVisible: globalContent?.visibility?.newsletter !== false
+        disclaimer: "Vous pouvez vous désinscrire à tout moment."
     },
     copyright: "©2024 - Les Amis du CBD"
 };
@@ -117,6 +116,7 @@ export default function TransparenceClient({ globalContent, content }) {
 
     const footerProps = {
         ...FOOTER_PROPS,
+        newsletter: { ...FOOTER_PROPS.newsletter, isVisible: globalContent?.visibility?.newsletter !== false },
         columnLinks: globalContent?.footerLinks || FOOTER_PROPS.columnLinks,
         contactInfo: globalContent?.contact || FOOTER_PROPS.contactInfo
     };
@@ -125,7 +125,7 @@ export default function TransparenceClient({ globalContent, content }) {
 
     return (
         <main className={styles.main}>
-            <Header {...HEADER_PROPS} />
+            <Header {...HEADER_PROPS} bannerVisible={globalContent?.visibility?.headerBanner !== false} />
 
             <div className={styles.container}>
                 {/* Hero section */}

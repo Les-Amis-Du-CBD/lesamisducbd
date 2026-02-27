@@ -17,6 +17,9 @@ export async function POST(req) {
             return NextResponse.json({ success: true, simulated: true, message: "[DEV] Inscription simulée (Manque clés Brevo)" });
         }
 
+        // Gérer une ou plusieurs listes (séparées par une virgule dans .env.local)
+        const listIds = brevoListId.split(',').map(id => parseInt(id.trim(), 10)).filter(id => !isNaN(id));
+
         const response = await fetch('https://api.brevo.com/v3/contacts', {
             method: 'POST',
             headers: {
@@ -26,7 +29,7 @@ export async function POST(req) {
             },
             body: JSON.stringify({
                 email: email,
-                listIds: [parseInt(brevoListId, 10)],
+                listIds: listIds,
                 updateEnabled: false // Ne pas mettre à jour si le contact existe déjà (pour renvoyer une erreur)
             })
         });

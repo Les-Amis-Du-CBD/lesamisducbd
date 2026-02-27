@@ -112,7 +112,5 @@ if ($debug) {
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
-echo "<html><body onload=\"window.location.href='index.php?controller=order'\">";
-echo "Redirection sécurisée... <a href='index.php?controller=order'>cliquez ici</a>";
-echo "</body></html>";
+header("Location: " . __PS_BASE_URI__ . "commande", true, 303);
 exit;

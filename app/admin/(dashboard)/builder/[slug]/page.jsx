@@ -1,17 +1,310 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../Builder.module.css';
 
+// ─── Reusable image uploader ─────────────────────────────────────────────────
+
+function ImageUploader({ value, onChange, folder = 'pages' }) {
+    const [uploading, setUploading] = useState(false);
+    const [error, setError] = useState(null);
+    const inputRef = useRef(null);
+
+    const handleFile = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        setError(null);
+        try {
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('folder', folder);
+            const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Upload failed');
+            onChange(data.url);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setUploading(false);
+            // reset so same file can be re-uploaded
+            e.target.value = '';
+        }
+    };
+
+    return (
+        <div className={styles.uploaderWrapper}>
+            {value ? (
+                <div className={styles.uploaderPreview}>
+                    <img src={value} alt="aperçu" className={styles.imgPreview} />
+                    <button
+                        type="button"
+                        className={styles.uploaderRemoveBtn}
+                        onClick={() => onChange('')}
+                        aria-label="Supprimer l\'image"
+                    >
+                        ✕ Supprimer
+                    </button>
+                </div>
+            ) : (
+                <button
+                    type="button"
+                    className={styles.uploaderBtn}
+                    onClick={() => inputRef.current?.click()}
+                    disabled={uploading}
+                >
+                    {uploading ? '⏳ Upload en cours…' : '📁 Choisir une image'}
+                </button>
+            )}
+            {error && <span className={styles.uploaderError}>{error}</span>}
+            <input
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleFile}
+            />
+        </div>
+    );
+}
+
+// ─── Section definitions ────────────────────────────────────────────────────
+
 const TEMPLATES = [
-    { type: 'ContentHero', label: 'Héro (Dégradé/Image)', icon: '🖼', defaultProps: { title: 'Titre de la page', imageSrc: '' } },
-    { type: 'RichText', label: 'Texte Riche', icon: '📝', defaultProps: { content: '<p>Votre texte riche ici...</p>', title: 'Titre de la section', centered: true } },
-    { type: 'FAQ', label: 'FAQ', icon: '❓', defaultProps: { title: 'Questions Fréquentes', items: [{ question: 'Ma question ?', answer: 'Ma réponse ici.' }] } },
-    { type: 'ProductList', label: 'Liste de Produits', icon: '🛍', defaultProps: { title: 'Nos Produits Phares', description: 'Découvrez notre sélection premium de fleurs CBD.' } },
-    { type: 'Quote', label: 'Citation', icon: '🖊', defaultProps: { text: '“Le CBD doit être simple, accessible et de qualité.”', author: 'Nelson — Les Amis du CBD' } },
+    {
+        type: 'ContentHero',
+        label: 'En-tête / Hero',
+        icon: '🖼️',
+        description: 'Grand titre avec image de fond',
+        defaultProps: { title: 'Titre de la page', imageSrc: '' },
+    },
+    {
+        type: 'RichText',
+        label: 'Texte & Sous-texte',
+        icon: '📝',
+        description: 'Bloc titre + contenu HTML',
+        defaultProps: { title: 'Titre de la section', content: '<p>Votre texte ici...</p>', centered: false },
+    },
+    {
+        type: 'ImageBlock',
+        label: 'Image',
+        icon: '🖼',
+        description: 'Image pleine largeur avec légende optionnelle',
+        defaultProps: { src: '', alt: '', caption: '' },
+    },
+    {
+        type: 'FAQ',
+        label: 'FAQ',
+        icon: '❓',
+        description: 'Accordéon de questions / réponses',
+        defaultProps: { title: 'Questions Fréquentes', items: [{ question: 'Ma question ?', answer: 'Ma réponse ici.' }] },
+    },
+    {
+        type: 'Quote',
+        label: 'Citation',
+        icon: '💬',
+        description: 'Citation mise en valeur avec auteur',
+        defaultProps: { text: '"Le CBD doit être simple, accessible et de qualité."', author: 'Les Amis du CBD' },
+    },
 ];
+
+// ─── Per-section-type editor forms ──────────────────────────────────────────
+
+function HeroEditor({ props, onChange }) {
+    return (
+        <div className={styles.editorFields}>
+            <Field label="Titre principal">
+                <textarea
+                    className={styles.fieldTextarea}
+                    value={props.title || ''}
+                    onChange={e => onChange({ title: e.target.value })}
+                    placeholder="Ex : Découvrez notre gamme CBD"
+                    rows={3}
+                />
+                <span className={styles.fieldHint}>Supporte le HTML basique (&lt;strong&gt;, &lt;em&gt;…)</span>
+            </Field>
+            <Field label="Image de fond">
+                <ImageUploader
+                    value={props.imageSrc || ''}
+                    onChange={url => onChange({ imageSrc: url })}
+                    folder="pages/hero"
+                />
+            </Field>
+        </div>
+    );
+}
+
+function RichTextEditor({ props, onChange }) {
+    return (
+        <div className={styles.editorFields}>
+            <Field label="Titre de section">
+                <input
+                    className={styles.fieldInput}
+                    type="text"
+                    value={props.title || ''}
+                    onChange={e => onChange({ title: e.target.value })}
+                    placeholder="Laissez vide pour masquer"
+                />
+            </Field>
+            <Field label="Contenu (HTML)">
+                <textarea
+                    className={styles.fieldTextarea}
+                    value={props.content || ''}
+                    onChange={e => onChange({ content: e.target.value })}
+                    rows={10}
+                    placeholder="<p>Votre texte en HTML...</p>"
+                />
+                <span className={styles.fieldHint}>Vous pouvez utiliser &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;a href=""&gt;, etc.</span>
+            </Field>
+            <Field label="">
+                <label className={styles.checkboxLabel}>
+                    <input
+                        type="checkbox"
+                        checked={!!props.centered}
+                        onChange={e => onChange({ centered: e.target.checked })}
+                    />
+                    Centrer le texte
+                </label>
+            </Field>
+        </div>
+    );
+}
+
+function ImageBlockEditor({ props, onChange }) {
+    return (
+        <div className={styles.editorFields}>
+            <Field label="Image">
+                <ImageUploader
+                    value={props.src || ''}
+                    onChange={url => onChange({ src: url })}
+                    folder="pages/images"
+                />
+            </Field>
+            <Field label="Texte alternatif (accessibilité)">
+                <input
+                    className={styles.fieldInput}
+                    type="text"
+                    value={props.alt || ''}
+                    onChange={e => onChange({ alt: e.target.value })}
+                    placeholder="Description de l'image"
+                />
+            </Field>
+            <Field label="Légende (optionnelle)">
+                <input
+                    className={styles.fieldInput}
+                    type="text"
+                    value={props.caption || ''}
+                    onChange={e => onChange({ caption: e.target.value })}
+                    placeholder="Ex : Vue de notre exploitation en Ardèche"
+                />
+            </Field>
+        </div>
+    );
+}
+
+function FAQEditor({ props, onChange }) {
+    const items = props.items || [];
+
+    const updateItem = (i, field, value) => {
+        const next = items.map((item, idx) => idx === i ? { ...item, [field]: value } : item);
+        onChange({ items: next });
+    };
+
+    const addItem = () => onChange({ items: [...items, { question: 'Nouvelle question ?', answer: 'Réponse ici.' }] });
+
+    const removeItem = (i) => onChange({ items: items.filter((_, idx) => idx !== i) });
+
+    return (
+        <div className={styles.editorFields}>
+            <Field label="Titre de la FAQ">
+                <input
+                    className={styles.fieldInput}
+                    type="text"
+                    value={props.title || ''}
+                    onChange={e => onChange({ title: e.target.value })}
+                    placeholder="Questions Fréquentes"
+                />
+            </Field>
+
+            <div className={styles.faqList}>
+                {items.map((item, i) => (
+                    <div key={i} className={styles.faqItem}>
+                        <div className={styles.faqItemHeader}>
+                            <span className={styles.faqItemNum}>Q{i + 1}</span>
+                            <button className={styles.faqRemoveBtn} onClick={() => removeItem(i)} aria-label="Supprimer">✕</button>
+                        </div>
+                        <Field label="Question">
+                            <input
+                                className={styles.fieldInput}
+                                type="text"
+                                value={item.question}
+                                onChange={e => updateItem(i, 'question', e.target.value)}
+                            />
+                        </Field>
+                        <Field label="Réponse">
+                            <textarea
+                                className={styles.fieldTextarea}
+                                value={item.answer}
+                                rows={3}
+                                onChange={e => updateItem(i, 'answer', e.target.value)}
+                            />
+                        </Field>
+                    </div>
+                ))}
+            </div>
+
+            <button className={styles.addItemBtn} onClick={addItem}>
+                + Ajouter une question
+            </button>
+        </div>
+    );
+}
+
+function QuoteEditor({ props, onChange }) {
+    return (
+        <div className={styles.editorFields}>
+            <Field label="Citation">
+                <textarea
+                    className={styles.fieldTextarea}
+                    value={props.text || ''}
+                    onChange={e => onChange({ text: e.target.value })}
+                    rows={4}
+                    placeholder='"Le CBD doit être simple et de qualité."'
+                />
+            </Field>
+            <Field label="Auteur">
+                <input
+                    className={styles.fieldInput}
+                    type="text"
+                    value={props.author || ''}
+                    onChange={e => onChange({ author: e.target.value })}
+                    placeholder="Nelson — Les Amis du CBD"
+                />
+            </Field>
+        </div>
+    );
+}
+
+function Field({ label, children }) {
+    return (
+        <div className={styles.field}>
+            {label && <label className={styles.fieldLabel}>{label}</label>}
+            {children}
+        </div>
+    );
+}
+
+const EDITORS = {
+    ContentHero: HeroEditor,
+    RichText: RichTextEditor,
+    ImageBlock: ImageBlockEditor,
+    FAQ: FAQEditor,
+    Quote: QuoteEditor,
+};
+
+// ─── Main Page Editor ────────────────────────────────────────────────────────
 
 export default function PageEditor() {
     const { slug } = useParams();
@@ -19,8 +312,9 @@ export default function PageEditor() {
     const [page, setPage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [saved, setSaved] = useState(false);
     const [showTemplateModal, setShowTemplateModal] = useState(false);
-    const [editingSectionIndex, setEditingSectionIndex] = useState(null);
+    const [activeSection, setActiveSection] = useState(null); // index
 
     useEffect(() => {
         if (slug) fetchPage();
@@ -46,10 +340,11 @@ export default function PageEditor() {
             const res = await fetch('/api/admin/builder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(page)
+                body: JSON.stringify(page),
             });
             if (res.ok) {
-                alert('Page sauvegardée !');
+                setSaved(true);
+                setTimeout(() => setSaved(false), 2500);
             }
         } catch (error) {
             console.error('Error saving:', error);
@@ -62,162 +357,206 @@ export default function PageEditor() {
         const newSection = {
             id: `${template.type.toLowerCase()}-${Date.now()}`,
             type: template.type,
-            props: { ...template.defaultProps }
+            props: { ...template.defaultProps },
         };
-        setPage({ ...page, sections: [...(page.sections || []), newSection] });
+        const next = [...(page.sections || []), newSection];
+        setPage({ ...page, sections: next });
+        setActiveSection(next.length - 1);
         setShowTemplateModal(false);
     };
 
     const removeSection = (index) => {
         if (!confirm('Supprimer cette section ?')) return;
-        const newSections = [...page.sections];
-        newSections.splice(index, 1);
-        setPage({ ...page, sections: newSections });
+        const next = page.sections.filter((_, i) => i !== index);
+        setPage({ ...page, sections: next });
+        if (activeSection === index) setActiveSection(null);
+        else if (activeSection > index) setActiveSection(activeSection - 1);
     };
 
-    const moveSection = (index, direction) => {
-        const newSections = [...page.sections];
-        const targetIndex = index + direction;
-        if (targetIndex < 0 || targetIndex >= newSections.length) return;
-        [newSections[index], newSections[targetIndex]] = [newSections[targetIndex], newSections[index]];
-        setPage({ ...page, sections: newSections });
+    const moveSection = (index, dir) => {
+        const next = [...page.sections];
+        const target = index + dir;
+        if (target < 0 || target >= next.length) return;
+        [next[index], next[target]] = [next[target], next[index]];
+        setPage({ ...page, sections: next });
+        setActiveSection(target);
     };
 
     const updateSectionProps = (index, newProps) => {
-        const newSections = [...page.sections];
-        newSections[index].props = { ...newSections[index].props, ...newProps };
-        setPage({ ...page, sections: newSections });
+        const next = page.sections.map((s, i) =>
+            i === index ? { ...s, props: { ...s.props, ...newProps } } : s
+        );
+        setPage({ ...page, sections: next });
     };
 
-    if (loading) return <div className={styles.container}>Chargement...</div>;
+    if (loading) return (
+        <div className={styles.container}>
+            <div className={styles.loadingState}>Chargement de la page…</div>
+        </div>
+    );
 
-    const editingSection = editingSectionIndex !== null ? page.sections[editingSectionIndex] : null;
+    const currentSection = activeSection !== null ? page.sections[activeSection] : null;
+    const EditorComponent = currentSection ? EDITORS[currentSection.type] : null;
 
     return (
         <div className={styles.container}>
+            {/* ── Top bar ─────────────────────────────────────── */}
             <div className={styles.header}>
-                <div>
+                <div className={styles.headerLeft}>
                     <Link href="/admin/builder" className={styles.backLink}>← Retour</Link>
-                    <h1 className={styles.title}>Éditeur : {page.title}</h1>
-                    <code className={styles.pageSlug}>/p/{page.slug}</code>
+                    <div>
+                        <h1 className={styles.title}>Éditeur : {page.title}</h1>
+                        <code className={styles.pageSlug}>/p/{page.slug}</code>
+                    </div>
                 </div>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                    <a href={`/p/${page.slug}`} target="_blank" className={styles.previewBtn} style={{ textDecoration: 'none', padding: '10px 20px', borderRadius: '8px', border: '1px solid #ccc', color: '#666' }}>Prévisualiser</a>
-                    <button className={styles.saveButton} onClick={handleSave} disabled={saving}>
-                        {saving ? 'Enregistrement...' : 'Sauvegarder la page'}
+                <div className={styles.headerActions}>
+                    <a
+                        href={`/p/${page.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.previewBtn}
+                    >
+                        👁 Prévisualiser
+                    </a>
+                    <button
+                        className={`${styles.saveButton} ${saved ? styles.saveSuccess : ''}`}
+                        onClick={handleSave}
+                        disabled={saving}
+                    >
+                        {saving ? 'Enregistrement…' : saved ? '✓ Sauvegardé !' : 'Sauvegarder'}
                     </button>
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '24px', position: 'relative' }}>
-                {/* Structure de la page */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <h2 style={{ fontSize: '1.2rem', margin: 0 }}>Structure de la page</h2>
+            {/* ── Two-column layout ────────────────────────────── */}
+            <div className={styles.editorLayout}>
 
-                    {page.sections?.map((section, index) => (
-                        <div key={section.id || index} style={{
-                            background: 'white',
-                            padding: '16px',
-                            borderRadius: '12px',
-                            border: editingSectionIndex === index ? '2px solid #00FF94' : '1px solid #ddd',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '16px'
-                        }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <button onClick={() => moveSection(index, -1)} disabled={index === 0} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>▲</button>
-                                <button onClick={() => moveSection(index, 1)} disabled={index === page.sections.length - 1} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>▼</button>
-                            </div>
+                {/* Left — section list */}
+                <div className={styles.sectionList}>
+                    <div className={styles.sectionListHeader}>
+                        <span className={styles.sectionListTitle}>Sections</span>
+                        <span className={styles.sectionCount}>{page.sections?.length || 0}</span>
+                    </div>
 
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ fontSize: '1.2rem' }}>{TEMPLATES.find(t => t.type === section.type)?.icon || '🧩'}</span>
-                                    <strong style={{ color: '#1F4B40' }}>{section.type}</strong>
-                                </div>
-                                <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '4px' }}>
-                                    {section.props.title || section.props.text || 'Sans titre'}
-                                </div>
-                            </div>
-
-                            <button onClick={() => setEditingSectionIndex(index)} style={{ padding: '6px 12px', borderRadius: '6px', border: '1px solid #ddd', cursor: 'pointer' }}>Modifier</button>
-                            <button onClick={() => removeSection(index)} style={{ border: 'none', background: 'none', color: '#ff6666', cursor: 'pointer', padding: '5px' }}>🗑</button>
+                    {(!page.sections || page.sections.length === 0) && (
+                        <div className={styles.emptyList}>
+                            <span>Aucune section pour l'instant.</span>
+                            <span className={styles.emptyHint}>Ajoutez un bloc ci-dessous ↓</span>
                         </div>
-                    ))}
+                    )}
+
+                    {page.sections?.map((section, index) => {
+                        const tpl = TEMPLATES.find(t => t.type === section.type);
+                        const isActive = activeSection === index;
+                        return (
+                            <div
+                                key={section.id || index}
+                                className={`${styles.sectionRow} ${isActive ? styles.sectionRowActive : ''}`}
+                                onClick={() => setActiveSection(index)}
+                            >
+                                <span className={styles.sectionIcon}>{tpl?.icon || '🧩'}</span>
+                                <div className={styles.sectionRowInfo}>
+                                    <strong className={styles.sectionRowType}>{tpl?.label || section.type}</strong>
+                                    <span className={styles.sectionRowPreview}>
+                                        {section.props.title || section.props.text || section.props.src || '—'}
+                                    </span>
+                                </div>
+                                <div className={styles.sectionRowActions}>
+                                    <button
+                                        className={styles.moveBtn}
+                                        onClick={e => { e.stopPropagation(); moveSection(index, -1); }}
+                                        disabled={index === 0}
+                                        aria-label="Monter"
+                                    >▲</button>
+                                    <button
+                                        className={styles.moveBtn}
+                                        onClick={e => { e.stopPropagation(); moveSection(index, 1); }}
+                                        disabled={index === page.sections.length - 1}
+                                        aria-label="Descendre"
+                                    >▼</button>
+                                    <button
+                                        className={styles.deleteRowBtn}
+                                        onClick={e => { e.stopPropagation(); removeSection(index); }}
+                                        aria-label="Supprimer"
+                                    >🗑</button>
+                                </div>
+                            </div>
+                        );
+                    })}
 
                     <button
+                        className={styles.addSectionBtn}
                         onClick={() => setShowTemplateModal(true)}
-                        style={{ padding: '20px', borderRadius: '12px', border: '2px dashed #00FF94', background: 'rgba(0, 255, 148, 0.05)', color: '#1F4B40', fontWeight: 700, cursor: 'pointer' }}
                     >
-                        + Ajouter une section
+                        + Ajouter un bloc
                     </button>
                 </div>
 
-                {/* Panneau d'édition de section */}
-                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #ddd', height: 'fit-content', position: 'sticky', top: '24px' }}>
-                    {editingSection ? (
+                {/* Right — section editor */}
+                <div className={styles.sectionEditor}>
+                    {currentSection && EditorComponent ? (
                         <>
-                            <h3 style={{ margin: '0 0 20px', display: 'flex', justifyContent: 'space-between' }}>
-                                Paramètres {editingSection.type}
-                                <button onClick={() => setEditingSectionIndex(null)} style={{ fontSize: '0.8rem', background: 'none', border: 'none', color: '#888', cursor: 'pointer' }}>Fermer</button>
-                            </h3>
-
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                {Object.entries(editingSection.props).map(([key, value]) => {
-                                    if (key === 'isVisible') return null;
-
-                                    return (
-                                        <div key={key}>
-                                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#666', marginBottom: '4px' }}>{key}</label>
-                                            {typeof value === 'string' && value.length > 50 ? (
-                                                <textarea
-                                                    value={value}
-                                                    onChange={(e) => updateSectionProps(editingSectionIndex, { [key]: e.target.value })}
-                                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd', height: '100px' }}
-                                                />
-                                            ) : typeof value === 'object' ? (
-                                                <div style={{ fontSize: '0.75rem', color: '#aaa', fontStyle: 'italic' }}>Édition avancée requise (JSON)</div>
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    value={value}
-                                                    onChange={(e) => updateSectionProps(editingSectionIndex, { [key]: e.target.value })}
-                                                    style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
-                                                />
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                            <div className={styles.editorHeader}>
+                                <div className={styles.editorHeaderLeft}>
+                                    <span className={styles.editorIcon}>
+                                        {TEMPLATES.find(t => t.type === currentSection.type)?.icon}
+                                    </span>
+                                    <div>
+                                        <h2 className={styles.editorTitle}>
+                                            {TEMPLATES.find(t => t.type === currentSection.type)?.label}
+                                        </h2>
+                                        <span className={styles.editorDesc}>
+                                            {TEMPLATES.find(t => t.type === currentSection.type)?.description}
+                                        </span>
+                                    </div>
+                                </div>
+                                <button
+                                    className={styles.editorCloseBtn}
+                                    onClick={() => setActiveSection(null)}
+                                    aria-label="Fermer"
+                                >✕</button>
+                            </div>
+                            <div className={styles.editorBody}>
+                                <EditorComponent
+                                    props={currentSection.props}
+                                    onChange={(newProps) => updateSectionProps(activeSection, newProps)}
+                                />
                             </div>
                         </>
                     ) : (
-                        <div style={{ color: '#888', textAlign: 'center', padding: '40px 0' }}>
-                            Sélectionnez une section pour la modifier
+                        <div className={styles.editorEmpty}>
+                            <span className={styles.editorEmptyIcon}>←</span>
+                            <p>Sélectionnez une section à gauche pour la modifier</p>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Modal de Templates */}
+            {/* ── Template picker modal ────────────────────────── */}
             {showTemplateModal && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ background: 'white', padding: '32px', borderRadius: '24px', maxWidth: '600px', width: '90%' }}>
-                        <h2 style={{ margin: '0 0 24px' }}>Choisir un template</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className={styles.modalBackdrop} onClick={() => setShowTemplateModal(false)}>
+                    <div className={styles.modal} onClick={e => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
+                            <h2 className={styles.modalTitle}>Ajouter un bloc</h2>
+                            <button
+                                className={styles.modalClose}
+                                onClick={() => setShowTemplateModal(false)}
+                                aria-label="Fermer"
+                            >✕</button>
+                        </div>
+                        <div className={styles.templateGrid}>
                             {TEMPLATES.map(t => (
                                 <button
                                     key={t.type}
+                                    className={styles.templateCard}
                                     onClick={() => addSection(t)}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '12px', cursor: 'pointer', textAlign: 'left' }}
                                 >
-                                    <span style={{ fontSize: '2rem' }}>{t.icon}</span>
-                                    <div>
-                                        <div style={{ fontWeight: 700 }}>{t.label}</div>
-                                        <div style={{ fontSize: '0.75rem', color: '#888' }}>{t.type}</div>
-                                    </div>
+                                    <span className={styles.templateIcon}>{t.icon}</span>
+                                    <strong className={styles.templateLabel}>{t.label}</strong>
+                                    <span className={styles.templateDesc}>{t.description}</span>
                                 </button>
                             ))}
                         </div>
-                        <button onClick={() => setShowTemplateModal(false)} style={{ marginTop: '24px', width: '100%', padding: '12px', borderRadius: '12px', border: 'none', background: '#eee', cursor: 'pointer' }}>Annuler</button>
                     </div>
                 </div>
             )}

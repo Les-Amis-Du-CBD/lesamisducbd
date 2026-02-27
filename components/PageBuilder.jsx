@@ -18,6 +18,7 @@ import JoinUs from './JoinUs/JoinUs';
 import ScrollReveal from './ScrollReveal/ScrollReveal';
 import RichText from './RichText/RichText';
 import ContentHero from './ContentHero/ContentHero';
+import ImageBlock from './ImageBlock/ImageBlock';
 
 
 const componentMap = {
@@ -25,6 +26,7 @@ const componentMap = {
     Marquee: Marquee,
     Hero: Hero,
     ContentHero: ContentHero,
+    ImageBlock: ImageBlock,
     QualityBanner: QualityBanner,
     ProductList: ProductList,
     WhyChooseUs: WhyChooseUs,
@@ -32,9 +34,7 @@ const componentMap = {
     InteractiveMap: InteractiveMapWrapper,
     JoinUs: JoinUs,
     FAQ: FAQ,
-
     Partners: Partners,
-
     Quote: Quote,
     RichText: RichText,
     Footer: Footer

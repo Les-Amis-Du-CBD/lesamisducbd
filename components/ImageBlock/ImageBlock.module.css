@@ -1,0 +1,23 @@
+.section {
+    padding: 40px 20px;
+}
+
+.wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.image {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+    object-fit: cover;
+}
+
+.caption {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #888;
+    font-style: italic;
+}

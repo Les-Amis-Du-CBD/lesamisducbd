@@ -48,7 +48,7 @@ const CAROUSEL_SLIDES = [
         id: 1,
         title: "L'Essentiel du CBD",
         subtitle: "Découvrez notre sélection rigoureuse, pensée pour votre bien-être au quotidien.",
-        image: "/images/hero.png",
+        image: "/images/hero.webp",
         buttonText: "Notre histoire",
         buttonLink: "/essentiel"
     },
@@ -85,6 +85,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
     const [activeCategory, setActiveCategory] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [expandedId, setExpandedId] = useState(null);
 
     // Carousel Logic
     useEffect(() => {
@@ -289,13 +290,26 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                 <span className={styles.perGramText}>{perGramText}</span>
                                             )}
                                         </div>
-                                        <div className={styles.actionWrapper}>
+                                        <div className={`${styles.actionWrapper} ${expandedId === product.id ? styles.expanded : ''}`}>
                                             <div className={styles.qtyDrawer}>
                                                 <button
                                                     className={styles.qtyBtn}
                                                     onClick={(e) => {
                                                         e.preventDefault();
+                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 1);
+                                                        setExpandedId(null);
+                                                    }}
+                                                    aria-label="Ajouter 1 au panier"
+                                                    title="x1"
+                                                >
+                                                    x1
+                                                </button>
+                                                <button
+                                                    className={styles.qtyBtn}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
                                                         addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 3);
+                                                        setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 3 au panier"
                                                     title="x3"
@@ -307,6 +321,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 5);
+                                                        setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 5 au panier"
                                                     title="x5"
@@ -318,6 +333,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 10);
+                                                        setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 10 au panier"
                                                     title="x10"
@@ -329,7 +345,11 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                 className={styles.addBtn}
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 1);
+                                                    if (window.innerWidth <= 768) {
+                                                        setExpandedId(expandedId === product.id ? null : product.id);
+                                                    } else {
+                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 1);
+                                                    }
                                                 }}
                                                 aria-label="Ajouter au panier"
                                                 title="Ajouter au panier"

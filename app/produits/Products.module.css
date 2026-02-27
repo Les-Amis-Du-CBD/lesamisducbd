@@ -419,6 +419,8 @@
     box-shadow: 0 4px 10px rgba(31, 75, 64, 0.08);
     /* slight idle shadow */
     cursor: pointer;
+    position: relative;
+    /* For absolute positioning of drawer on mobile */
 }
 
 .actionWrapper:hover {
@@ -504,6 +506,8 @@
 
 /* Mobile */
 @media (max-width: 768px) {
+
+    /* ... previous carousel & search styles ... */
     .carouselContainer {
         height: 250px;
         border-radius: 20px;
@@ -536,6 +540,7 @@
         margin-bottom: 25px;
     }
 
+    /* Grid layout */
     .grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px 12px;
@@ -566,14 +571,98 @@
         display: none;
     }
 
-    .addBtn {
+    .cardFooter {
+        position: relative;
+        overflow: visible;
+    }
+
+    /* Interactive Drawer Mobile */
+    .actionWrapper {
+        background: transparent;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        border-radius: 12px;
+    }
+
+    .qtyDrawer {
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        width: 44px;
+        height: 0;
+        flex-direction: column;
+        background: #1F4B40;
+        border-radius: 12px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0;
+        gap: 8px;
+        z-index: 1000;
+        box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.2);
+        margin-bottom: 8px;
+        transform: translateY(10px);
+        pointer-events: none;
+    }
+
+    .actionWrapper.expanded .qtyDrawer {
+        height: 180px;
+        /* 4 buttons + gaps + padding */
+        opacity: 1;
+        visibility: visible;
+        padding: 8px 0;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .qtyBtn {
         width: 36px;
         height: 36px;
-        border-radius: 10px;
+        font-size: 0.8rem;
+        flex: none;
+        background: rgba(0, 255, 148, 0.1);
+        color: #00FF94;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        transition: transform 0.2s ease;
+    }
+
+    .qtyBtn:active {
+        background: #00FF94;
+        color: #1F4B40;
+        transform: scale(0.9);
+    }
+
+    .addBtn {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: #1F4B40 !important;
+        color: #00FF94 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        box-shadow: 0 4px 10px rgba(31, 75, 64, 0.15);
+        z-index: 10;
+        transition: transform 0.3s ease;
+    }
+
+    .actionWrapper.expanded .addBtn {
+        background: #00FF94 !important;
+        color: #1F4B40 !important;
+        transform: rotate(45deg);
+        /* Optional: turn into an X if needed */
     }
 
     .addBtn svg {
-        width: 18px;
-        height: 18px;
+        transition: transform 0.2s ease;
     }
 }

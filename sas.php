@@ -1,34 +1,37 @@
 <?php
 /**
- * Fichier SAS de paiement Sécurisé v3.1 - Les Amis du CBD
- * Passerelle Headless Next.js -> PrestaShop 8 (Connexion de Force)
+ * Fichier SAS de paiement Sécurisé v4.3 - Les Amis du CBD
+ * Passerelle Headless Next.js -> PrestaShop 8 (Auto-Diagnostic)
  */
+
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
 
 require(dirname(__FILE__) . '/config/config.inc.php');
 require(dirname(__FILE__) . '/init.php');
 
-// 1. Configuration
 $secret_key = 'LacBc67_9sP@!CBD2026_SecureKey';
 
-// --- RÉQUÊTES ---
 $cart_id = (int)Tools::getValue('cart_id');
 $id_customer = (int)Tools::getValue('id_customer');
 $ts = (int)Tools::getValue('ts');
 $signature = Tools::getValue('sign');
 $debug = (int)Tools::getValue('debug');
 
+if ($debug) {
+    ini_set('display_errors', 1);
+}
+
 if (!$cart_id || !$signature || !$ts) {
     header('HTTP/1.0 400 Bad Request');
     die('Erreur : Paramètres de sécurité manquants.');
 }
 
-// 2. Vérification de l'expiration (15 minutes)
-if (time() > ($ts + 1800)) { // Extension à 30 min pour pallier aux décalages serveurs si besoin
+if (time() > ($ts + 1800)) {
     header('HTTP/1.0 403 Forbidden');
     die('Erreur : Le lien de paiement a expiré.');
 }
 
-// 3. Vérification de la signature HMAC-SHA256
 $payload = $cart_id . '-' . $id_customer . '-' . $ts;
 $expected_signature = hash_hmac('sha256', $payload, $secret_key);
 
@@ -37,24 +40,18 @@ if (!hash_equals($expected_signature, $signature)) {
     die('Erreur : Signature de sécurité invalide.');
 }
 
-// 4. Charger le panier
-$cart = new Cart($cart_id);
-if (!Validate::isLoadedObject($cart)) {
-    die('Erreur : Panier introuvable sur le serveur.');
-}
-
 $context = Context::getContext();
 
-// 5. Authentification de Force (BRUTE FORCE)
+if (!Validate::isLoadedObject($context->shop)) {
+    $context->shop = new Shop((int)Configuration::get('PS_SHOP_DEFAULT'));
+}
+
 if ($id_customer > 0) {
     $customer = new Customer($id_customer);
     if (Validate::isLoadedObject($customer)) {
-
-        // 5.1 On définit le client dans le contexte et le cookie
+        $context->cookie->logout();
         $context->customer = $customer;
         $context->updateCustomer($customer);
-
-        // 5.2 On synchronise les variables critiques du cookie
         $context->cookie->id_customer = (int)$customer->id;
         $context->cookie->customer_lastname = $customer->lastname;
         $context->cookie->customer_firstname = $customer->firstname;
@@ -62,66 +59,60 @@ if ($id_customer > 0) {
         $context->cookie->passwd = $customer->passwd;
         $context->cookie->email = $customer->email;
         $context->cookie->is_guest = $customer->is_guest;
-        $context->cookie->checksum = $customer->checksum();
-
-        // 5.3 On génère un nouveau Guest si besoin (évite l'expiration de session)
         if (empty($context->cookie->id_guest)) {
             Guest::setNewGuest($context->cookie);
         }
-
-        // 5.4 LIAISON PANIER - Force les adresses et la secure_key
-        $cart->id_customer = (int)$customer->id;
-        $cart->secure_key = $customer->secure_key;
-
-        // On lie automatiquement l'adresse par défaut si aucune n'est mise
-        if (!$cart->id_address_delivery || $cart->id_address_delivery == 0) {
-            $cart->id_address_delivery = (int)Address::getFirstCustomerAddressId($customer->id);
-        }
-        if (!$cart->id_address_invoice || $cart->id_address_invoice == 0) {
-            $cart->id_address_invoice = (int)Address::getFirstCustomerAddressId($customer->id);
-        }
-
-        $cart->update();
-
-        // 5.5 On force l'ID panier dans le cookie
-        $context->cookie->id_cart = (int)$cart->id;
-        $context->cart = $cart;
-
-        // 5.6 HOOK D'AUTHENTIFICATION (Indispensable pour de nombreux modules)
-        Hook::exec('actionAuthentication', array('customer' => $context->customer));
-
-        // 5.7 Écriture physique
-        $context->cookie->write();
     }
 }
 else {
-    // Cas invité
     if (empty($context->cookie->id_guest)) {
         Guest::setNewGuest($context->cookie);
     }
-    $context->cookie->id_cart = (int)$cart->id;
-    $context->cookie->write();
 }
 
-// 6. Mode Debug
+$cart = new Cart($cart_id);
+if (Validate::isLoadedObject($cart)) {
+    if ($id_customer > 0) {
+        $cart->id_customer = (int)$id_customer;
+        $customer = new Customer($id_customer);
+        $cart->secure_key = $customer->secure_key;
+    }
+    $cart->id_guest = (int)$context->cookie->id_guest;
+    $cart->id_shop = (int)$context->shop->id;
+    $cart->id_lang = (int)$context->language->id;
+    if (!$cart->id_address_delivery || $cart->id_address_delivery == 0) {
+        $cart->id_address_delivery = (int)Address::getFirstCustomerAddressId($id_customer);
+    }
+    if (!$cart->id_address_invoice || $cart->id_address_invoice == 0) {
+        $cart->id_address_invoice = (int)Address::getFirstCustomerAddressId($id_customer);
+    }
+    $cart->update();
+    $context->cart = $cart;
+    $context->cookie->id_cart = (int)$cart->id;
+}
+
+$context->cookie->write();
+
 if ($debug) {
-    echo "<h1>Debug SAS v3.1 (Brute Force)</h1>";
-    echo "Cart ID: " . $cart->id . "<br>";
-    echo "Customer ID (Panier): " . $cart->id_customer . "<br>";
-    echo "Customer ID (Cookie): " . $context->cookie->id_customer . "<br>";
-    echo "Logged in context: " . ($context->customer->id ? 'OUI' : 'NON') . "<br>";
-    echo "Logged in cookie: " . ($context->cookie->logged ? 'OUI' : 'NON') . "<br>";
-    echo "Address Delivery: " . $cart->id_address_delivery . "<br>";
-    echo "Address Invoice: " . $cart->id_address_invoice . "<br>";
+    echo "<h1>Debug SAS v4.3 (Auto-Diagnostic)</h1>";
+    echo "<h3>Configuration Serveur :</h3>";
+    echo "HTTP_HOST: " . $_SERVER['HTTP_HOST'] . "<br>";
+    echo "Shop Domain: " . Configuration::get('PS_SHOP_DOMAIN') . "<br>";
+    echo "SSL Domain: " . Configuration::get('PS_SHOP_DOMAIN_SSL') . "<br>";
+    echo "Check IP on Cookie: " . (Configuration::get('PS_COOKIE_CHECK_IP') ? 'OUI (A RISQUE)' : 'NON (OK)') . "<br>";
     echo "<hr>";
-    echo "Session Symfony: " . (session_id() ?: 'N/A') . "<br>";
+    echo "<h3>Session :</h3>";
+    echo "Cookie Logged: " . ($context->cookie->logged ? 'OUI' : 'NON') . "<br>";
+    echo "Context Customer ID: " . ($context->customer->id ?? 'AUCUN') . "<br>";
+    echo "Context Cart ID: " . ($context->cart->id ?? 'AUCUN') . "<br>";
+    echo "<hr>";
+    echo "<a href='index.php?controller=order' style='font-size:20px;'>=> ALLER AU TUNNEL</a>";
     exit;
 }
 
-// 7. Redirection finale sans cache
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
-header("Referrer-Policy: strict-origin-when-cross-origin");
-
-Tools::redirect('index.php?controller=order');
+echo "<html><body onload=\"window.location.href='index.php?controller=order'\">";
+echo "Redirection sécurisée... <a href='index.php?controller=order'>cliquez ici</a>";
+echo "</body></html>";
 exit;

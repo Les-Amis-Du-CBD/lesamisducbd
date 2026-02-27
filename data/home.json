@@ -42,7 +42,7 @@
       "id": "hero-home",
       "type": "Hero",
       "props": {
-        "backgroundImage": "/images/hero.png",
+        "backgroundImage": "/images/hero.webp",
         "title": "Le CBD fiable, testé<br /> et accessible.",
         "description": "Chez Les Amis du CBD, on fait simple :<br /> des produits naturels, conformes à la loi, analysés en laboratoire,<br /> et expliqués clairement.",
         "ctaLabel": "Découvrir nos produits",

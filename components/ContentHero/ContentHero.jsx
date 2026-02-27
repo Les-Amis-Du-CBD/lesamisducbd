@@ -2,22 +2,26 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './ContentHero.module.css';
 
-export default function ContentHero({ imageSrc, imageAlt, imagePosition = 'center', children }) {
+export default function ContentHero({ title, imageSrc }) {
     return (
         <section className={styles.heroSection}>
             <div className={styles.heroContainer}>
-                {children && <div className={styles.heroContent}>{children}</div>}
-                <div className={styles.heroImageWrapper}>
-                    <Image
-                        src={imageSrc}
-                        alt={imageAlt || "Hero background"}
-                        className={styles.heroImage}
-                        fill
-                        priority
-                        sizes="100vw"
-                        style={{ objectPosition: imagePosition }}
-                    />
+                <div className={styles.heroContent}>
+                    {title && <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: title }} />}
                 </div>
+                {imageSrc && (
+                    <div className={styles.heroImageWrapper}>
+                        <Image
+                            src={imageSrc}
+                            alt={title || "Hero background"}
+                            className={styles.heroImage}
+                            fill
+                            priority
+                            sizes="100vw"
+                        />
+                        <div className={styles.overlay} />
+                    </div>
+                )}
             </div>
         </section>
     );

@@ -61,6 +61,18 @@
     z-index: 2;
 }
 
+.centeredCard {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-items: center;
+}
+
+.centeredCard .description {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Diffusion lumineuse interne */
 .glassCard::before {
     content: "";

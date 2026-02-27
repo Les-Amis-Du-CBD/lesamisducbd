@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from './Products.module.css';
 
-const BADGE_OPTIONS = ['', 'Bestseller', 'Nouveauté', 'Promo', 'Édition limitée', 'Notre choix'];
+// Suppression de BADGE_OPTIONS pour saisie libre
 
 const OrderInput = ({ idx, total, onChange, className }) => {
     const [val, setVal] = useState('');
@@ -81,7 +81,7 @@ export default function ProductsPage() {
     const isPinned = (p) => isPinnedFlower(p) || isPinnedResin(p);
 
     const pin = (product) => {
-        const entry = { slug: product.slug, name: product.name, image: product.image, badge: '', formattedPrice: product.formattedPrice };
+        const entry = { slug: product.slug, name: product.name, image: product.image, badge: '', badgeColor: '#00FFC2', formattedPrice: product.formattedPrice };
         if (isResin(product)) {
             if (isPinnedResin(product)) return;
             setVitrine(v => ({ ...v, resins: [...v.resins, entry] }));
@@ -99,6 +99,10 @@ export default function ProductsPage() {
 
     const updateBadge = (slug, type, badge) => {
         setVitrine(v => ({ ...v, [type]: v[type].map(p => p.slug === slug ? { ...p, badge } : p) }));
+        setSaved(false);
+    };
+    const updateBadgeColor = (slug, type, badgeColor) => {
+        setVitrine(v => ({ ...v, [type]: v[type].map(p => p.slug === slug ? { ...p, badgeColor } : p) }));
         setSaved(false);
     };
 
@@ -294,9 +298,22 @@ export default function ProductsPage() {
                                     <div className={styles.vitrineInfo}>
                                         <strong>{item.name}</strong>
                                         <span className={styles.catalogPrice}>{item.formattedPrice}</span>
-                                        <select value={item.badge} onChange={e => updateBadge(item.slug, 'flowers', e.target.value)} className={styles.badgeSelect}>
-                                            {BADGE_OPTIONS.map(b => <option key={b} value={b}>{b || '— Pas de badge —'}</option>)}
-                                        </select>
+                                        <div className={styles.badgeConfig}>
+                                            <input
+                                                type="text"
+                                                value={item.badge || ''}
+                                                onChange={e => updateBadge(item.slug, 'flowers', e.target.value)}
+                                                className={styles.badgeInput}
+                                                placeholder="Texte (ex: Promo)"
+                                            />
+                                            <input
+                                                type="color"
+                                                value={item.badgeColor || '#00FFC2'}
+                                                onChange={e => updateBadgeColor(item.slug, 'flowers', e.target.value)}
+                                                className={styles.colorPicker}
+                                                title="Couleur du badge"
+                                            />
+                                        </div>
                                     </div>
                                     <button onClick={() => unpin(item.slug, 'flowers')} className={styles.unpinBtn}>✕</button>
                                 </div>
@@ -321,9 +338,22 @@ export default function ProductsPage() {
                                     <div className={styles.vitrineInfo}>
                                         <strong>{item.name}</strong>
                                         <span className={styles.catalogPrice}>{item.formattedPrice}</span>
-                                        <select value={item.badge} onChange={e => updateBadge(item.slug, 'resins', e.target.value)} className={styles.badgeSelect}>
-                                            {BADGE_OPTIONS.map(b => <option key={b} value={b}>{b || '— Pas de badge —'}</option>)}
-                                        </select>
+                                        <div className={styles.badgeConfig}>
+                                            <input
+                                                type="text"
+                                                value={item.badge || ''}
+                                                onChange={e => updateBadge(item.slug, 'resins', e.target.value)}
+                                                className={styles.badgeInput}
+                                                placeholder="Texte (ex: Promo)"
+                                            />
+                                            <input
+                                                type="color"
+                                                value={item.badgeColor || '#00FFC2'}
+                                                onChange={e => updateBadgeColor(item.slug, 'resins', e.target.value)}
+                                                className={styles.colorPicker}
+                                                title="Couleur du badge"
+                                            />
+                                        </div>
                                     </div>
                                     <button onClick={() => unpin(item.slug, 'resins')} className={styles.unpinBtn}>✕</button>
                                 </div>

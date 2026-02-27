@@ -110,6 +110,21 @@
         margin-top: 8px;
     }
 
+    .badgeConfig {
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .badgeInput {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .colorPicker {
+        width: 34px;
+        height: 34px;
+    }
+
     .unpinBtn,
     .pinBtn,
     .pinnedBtn {
@@ -386,19 +401,51 @@
     text-overflow: ellipsis;
 }
 
-.badgeSelect {
-    border: 1px solid #dde8dd;
-    border-radius: 6px;
-    padding: 3px 6px;
-    font-size: 0.78rem;
-    color: #444;
-    background: #f9fcf9;
-    cursor: pointer;
-    outline: none;
+.badgeConfig {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
 }
 
-.badgeSelect:focus {
+.badgeInput {
+    flex: 1;
+    border: 1px solid #dde8dd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: #1F4B40;
+    background: #f9fcf9;
+    outline: none;
+    transition: all 0.2s;
+    min-width: 0;
+}
+
+.badgeInput:focus {
     border-color: #2d6a2d;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(45, 106, 45, 0.1);
+}
+
+.colorPicker {
+    width: 40px;
+    height: 38px;
+    padding: 2px;
+    border: 1px solid #dde8dd;
+    border-radius: 8px;
+    background: #f9fcf9;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.colorPicker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.colorPicker::-webkit-color-swatch {
+    border: none;
+    border-radius: 6px;
 }
 
 .unpinBtn {

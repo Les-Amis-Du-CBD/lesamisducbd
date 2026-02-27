@@ -124,6 +124,12 @@ export function CartProvider({ children }) {
         );
     };
 
+    // Clear Cart
+    const clearCart = () => {
+        setCart([]);
+        showToast('Le panier a été vidé', 'success');
+    };
+
     // Calculate Totals
     const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
     const cartTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -136,6 +142,7 @@ export function CartProvider({ children }) {
             addItem,
             removeItem,
             updateQuantity,
+            clearCart,
             cartCount,
             cartTotal
         }}>

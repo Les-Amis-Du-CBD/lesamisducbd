@@ -31,6 +31,7 @@ const toCard = (vitrineEntry, product) => ({
   image: product.image,
   quoteTitle: '',
   tag: vitrineEntry.badge || (product.onSale ? 'Promo' : ''),
+  badgeColor: vitrineEntry.badgeColor || null,
   pillLeft: product.formattedPrice,
   pillRight: '',
   price: product.priceTTC,

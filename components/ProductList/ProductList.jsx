@@ -55,7 +55,14 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
 
                             return (
                                 <div key={index} className={styles.card}>
-                                    {product.tag && <span className={styles.badge}>{product.tag}</span>}
+                                    {product.tag && (
+                                        <span
+                                            className={styles.badge}
+                                            style={product.badgeColor ? { backgroundColor: product.badgeColor } : {}}
+                                        >
+                                            {product.tag}
+                                        </span>
+                                    )}
 
                                     <div className={styles.topInfo}>
                                         <div className={styles.subtitlePill}>{product.name}</div>

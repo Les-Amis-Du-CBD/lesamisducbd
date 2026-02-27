@@ -16,11 +16,15 @@ import PartnersNetwork from './PartnersNetwork/PartnersNetwork';
 import InteractiveMapWrapper from './InteractiveMap/InteractiveMapWrapper';
 import JoinUs from './JoinUs/JoinUs';
 import ScrollReveal from './ScrollReveal/ScrollReveal';
+import RichText from './RichText/RichText';
+import ContentHero from './ContentHero/ContentHero';
+
 
 const componentMap = {
     Header: Header,
     Marquee: Marquee,
     Hero: Hero,
+    ContentHero: ContentHero,
     QualityBanner: QualityBanner,
     ProductList: ProductList,
     WhyChooseUs: WhyChooseUs,
@@ -32,8 +36,10 @@ const componentMap = {
     Partners: Partners,
 
     Quote: Quote,
+    RichText: RichText,
     Footer: Footer
 };
+
 
 export default function PageBuilder({ sections }) {
     if (!sections) return null;

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 
 export default function CartDrawer() {
-    const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, cartTotal } = useCart();
+    const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, clearCart, cartTotal } = useCart();
 
     const router = useRouter();
 
@@ -43,7 +43,14 @@ export default function CartDrawer() {
         <div className={styles.overlay}>
             <div className={styles.drawer} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
-                    <h2>Mon Panier</h2>
+                    <div className={styles.headerLeft}>
+                        <h2>Mon Panier</h2>
+                        {cart.length > 0 && (
+                            <button onClick={clearCart} className={styles.clearBtn} title="Vider le panier">
+                                Vider le panier
+                            </button>
+                        )}
+                    </div>
                     <button onClick={() => setIsCartOpen(false)} className={styles.closeBtn}>
                         ✕
                     </button>

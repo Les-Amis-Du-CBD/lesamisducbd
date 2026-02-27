@@ -61,6 +61,30 @@
     letter-spacing: -0.02em;
 }
 
+.headerLeft {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.clearBtn {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 107, 107, 0.1);
+    transition: all 0.2s;
+}
+
+.clearBtn:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
 .closeBtn {
     background: none;
     border: none;

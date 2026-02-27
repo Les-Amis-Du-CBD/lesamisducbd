@@ -60,7 +60,7 @@ export default function RecruitmentModal({ onClose }) {
     return createPortal(
         <div className={styles.backdrop}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                <button className={styles.closeButton} onClick={onClose}>
+                <button className={styles.closeButton} onClick={onClose} aria-label="Fermer">
                     <X size={20} />
                 </button>
 

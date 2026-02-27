@@ -51,7 +51,7 @@ export default function CartDrawer() {
                             </button>
                         )}
                     </div>
-                    <button onClick={() => setIsCartOpen(false)} className={styles.closeBtn}>
+                    <button onClick={() => setIsCartOpen(false)} className={styles.closeBtn} aria-label="Fermer le panier">
                         ✕
                     </button>
                 </div>
@@ -88,9 +88,9 @@ export default function CartDrawer() {
 
                                     <div className={styles.controls}>
                                         <div className={styles.qtyControl}>
-                                            <button onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant)}>-</button>
+                                            <button onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant)} aria-label="Diminuer la quantité">-</button>
                                             <span>{item.quantity}</span>
-                                            <button onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)}>+</button>
+                                            <button onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)} aria-label="Augmenter la quantité">+</button>
                                         </div>
                                         <button onClick={() => removeItem(item.id, item.variant)} className={styles.removeBtn}>
                                             Supprimer

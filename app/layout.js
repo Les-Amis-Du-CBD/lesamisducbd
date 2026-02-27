@@ -15,8 +15,6 @@ import { SITE_URL, SHARED_TITLE, SHARED_DESCRIPTION, SHARED_KEYWORDS } from './s
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   themeColor: '#1F4B40',
 };
 

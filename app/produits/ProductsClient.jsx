@@ -150,7 +150,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                     >
                         <div className={styles.slideOverlay}></div>
                         <div className={styles.slideContent}>
-                            <h2>{slide.title}</h2>
+                            <h1>{slide.title}</h1>
                             <p>{slide.subtitle}</p>
                             {slide.buttonLink && (
                                 <Link href={slide.buttonLink} className={styles.slideBtn}>

@@ -116,7 +116,7 @@ export default function Footer({ columnLinks, contactInfo, newsletter, copyright
                                                 required
                                                 disabled={status === 'loading'}
                                             />
-                                            <button type="submit" disabled={status === 'loading'} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                                            <button type="submit" disabled={status === 'loading'} aria-label="S'inscrire à la newsletter" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                                                 <Send size={18} className={styles.inputIcon} style={{ opacity: status === 'loading' ? 0.5 : 1 }} />
                                             </button>
                                         </div>

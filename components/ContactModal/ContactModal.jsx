@@ -88,7 +88,7 @@ export default function ContactModal({ isOpen, onClose }) {
     return createPortal(
         <div className={styles.overlay}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                <button className={styles.closeButton} onClick={onClose}>
+                <button className={styles.closeButton} onClick={onClose} aria-label="Fermer">
                     <X size={20} />
                 </button>
 

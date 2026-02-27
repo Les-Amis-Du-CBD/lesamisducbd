@@ -38,12 +38,13 @@
         width: 95%;
         max-width: 360px;
         border-radius: 16px;
-        max-height: calc(100svh - 140px);
+        max-height: 70dvh;
         margin: auto;
     }
 
     .overlay {
-        padding: 70px 10px;
+        padding: 20px 10px;
+        align-items: center;
     }
 
     .title {
@@ -130,6 +131,8 @@
 }
 
 .input {
+    width: 100%;
+    box-sizing: border-box;
     padding: 12px 15px;
     border-radius: 10px;
     border: 1px solid #ddd;
@@ -249,31 +252,27 @@
 }
 
 .checkboxLabel {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+    display: block;
+    position: relative;
+    padding-left: 1.75rem;
     font-size: 0.9rem;
     color: #4B5563;
     cursor: pointer;
     user-select: none;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 .checkbox {
-    flex-shrink: 0;
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
     width: 1.25rem;
     height: 1.25rem;
     accent-color: var(--accent-neon);
     cursor: pointer;
     margin: 0;
-    margin-top: 0.1rem;
 }
 
-.proFieldsContainer {
-    display: flex;
-    gap: 12px;
-    flex-direction: column;
-}
 
 @keyframes slideUp {
     from {

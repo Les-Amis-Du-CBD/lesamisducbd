@@ -15,10 +15,12 @@ function ConnexionFormInner() {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [isPro, setIsPro] = useState(false);
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [birthday, setBirthday] = useState('');
     const [company, setCompany] = useState('');
     const [siret, setSiret] = useState('');
+    const [rgpdAccepted, setRgpdAccepted] = useState(false);
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
@@ -42,6 +44,12 @@ function ConnexionFormInner() {
             }
         } else {
             // Inscription
+            if (!rgpdAccepted) {
+                setError("Vous devez accepter la politique de confidentialité pour créer un compte.");
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 const registerRes = await fetch('/api/auth/register', {
                     method: 'POST',
@@ -49,10 +57,11 @@ function ConnexionFormInner() {
                     body: JSON.stringify({
                         email,
                         password,
-                        name,
-                        role: isPro ? 'buraliste' : 'client',
-                        company: isPro ? company : undefined,
-                        siret: isPro ? siret : undefined
+                        firstname,
+                        lastname,
+                        birthday: birthday || undefined,
+                        company: company || undefined,
+                        siret: siret || undefined
                     })
                 });
 
@@ -90,10 +99,12 @@ function ConnexionFormInner() {
         setIsLogin(!isLogin);
         setEmail('');
         setPassword('');
-        setName('');
+        setFirstname('');
+        setLastname('');
+        setBirthday('');
         setCompany('');
         setSiret('');
-        setIsPro(false);
+        setRgpdAccepted(false);
         setError('');
     };
 
@@ -112,58 +123,70 @@ function ConnexionFormInner() {
                 {!isLogin && (
                     <div className={styles.fadeIn}>
                         <div className={styles.inputGroup}>
-                            <label className={styles.label} htmlFor="name">Prénom / Nom</label>
+                            <label className={styles.label} htmlFor="firstname">Prénom</label>
                             <input
                                 type="text"
-                                id="name"
+                                id="firstname"
                                 className={styles.input}
-                                placeholder="Jean Dupont"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Jean"
+                                value={firstname}
+                                onChange={(e) => setFirstname(e.target.value)}
+                                required={!isLogin}
+                            />
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label} htmlFor="lastname">Nom</label>
+                            <input
+                                type="text"
+                                id="lastname"
+                                className={styles.input}
+                                placeholder="Dupont"
+                                value={lastname}
+                                onChange={(e) => setLastname(e.target.value)}
                                 required={!isLogin}
                             />
                         </div>
 
-                        <div className={styles.checkboxGroup} style={{ marginTop: '15px' }}>
-                            <label className={styles.checkboxLabel}>
-                                <input
-                                    type="checkbox"
-                                    checked={isPro}
-                                    onChange={(e) => setIsPro(e.target.checked)}
-                                    className={styles.checkbox}
-                                />
-                                Je suis un professionnel (Buraliste / Revendeur)
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label} htmlFor="company">
+                                Société <span style={{ color: '#999', fontWeight: 400 }}>(optionnel)</span>
                             </label>
+                            <input
+                                type="text"
+                                id="company"
+                                className={styles.input}
+                                placeholder="Ma Boutique"
+                                value={company}
+                                onChange={(e) => setCompany(e.target.value)}
+                            />
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label} htmlFor="siret">
+                                N° fiscal <span style={{ color: '#999', fontWeight: 400 }}>(optionnel)</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="siret"
+                                className={styles.input}
+                                placeholder="SIRET / TVA"
+                                value={siret}
+                                onChange={(e) => setSiret(e.target.value)}
+                            />
                         </div>
 
-                        {isPro && (
-                            <div className={styles.proFieldsContainer}>
-                                <div className={styles.inputGroup} style={{ flex: 1 }}>
-                                    <label className={styles.label} htmlFor="company">Société</label>
-                                    <input
-                                        type="text"
-                                        id="company"
-                                        className={styles.input}
-                                        placeholder="Ma Boutique"
-                                        value={company}
-                                        onChange={(e) => setCompany(e.target.value)}
-                                        required={isPro}
-                                    />
-                                </div>
-                                <div className={styles.inputGroup} style={{ flex: 1 }}>
-                                    <label className={styles.label} htmlFor="siret">N° SIRET</label>
-                                    <input
-                                        type="text"
-                                        id="siret"
-                                        className={styles.input}
-                                        placeholder="123 456 789 00012"
-                                        value={siret}
-                                        onChange={(e) => setSiret(e.target.value)}
-                                        required={isPro}
-                                    />
-                                </div>
-                            </div>
-                        )}
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label} htmlFor="birthday">
+                                Date de naissance <span style={{ color: '#999', fontWeight: 400 }}>(optionnel)</span>
+                            </label>
+                            <input
+                                type="date"
+                                id="birthday"
+                                className={styles.input}
+                                value={birthday}
+                                onChange={(e) => setBirthday(e.target.value)}
+                                max={new Date().toISOString().split('T')[0]}
+                            />
+                        </div>
                     </div>
                 )}
 
@@ -202,6 +225,25 @@ function ConnexionFormInner() {
                         </button>
                     </div>
                 </div>
+
+                {!isLogin && (
+                    <div className={styles.checkboxGroup} style={{ marginTop: '10px', marginBottom: '15px' }}>
+                        <label className={styles.checkboxLabel}>
+                            <input
+                                type="checkbox"
+                                checked={rgpdAccepted}
+                                onChange={(e) => setRgpdAccepted(e.target.checked)}
+                                className={styles.checkbox}
+                                required
+                            />
+                            J'accepte la{' '}
+                            <a href="/privacy" target="_blank" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                                politique de confidentialité
+                            </a>{' '}
+                            et le traitement de mes données personnelles.
+                        </label>
+                    </div>
+                )}
 
                 {error && (
                     <div className={styles.errorMessage}>

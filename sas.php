@@ -13,6 +13,7 @@ $secret_key = 'LacBc67_9sP@!CBD2026_SecureKey';
 
 
 $cart_id = (int)Tools::getValue('cart_id');
+$id_customer = (int)Tools::getValue('id_customer');
 $signature = Tools::getValue('sign');
 
 if (!$cart_id || !$signature) {
@@ -20,8 +21,8 @@ if (!$cart_id || !$signature) {
 }
 
 // 2. Vérification de sécurité (empêche le scan et le vol de paniers)
-// On recrée la signature attendue
-$expected_signature = md5($cart_id . $secret_key);
+// On recrée la signature attendue. Format: md5(cart_id-id_customerSecretKey)
+$expected_signature = md5($cart_id . '-' . $id_customer . $secret_key);
 
 if ($signature !== $expected_signature) {
     header('HTTP/1.0 403 Forbidden');
@@ -36,19 +37,41 @@ if (!Validate::isLoadedObject($cart)) {
     die('Panier introuvable sur le serveur.');
 }
 
-// 4. Forcer l'assignation de ce panier au visiteur actuel
 $context = Context::getContext();
+
+// 4. Si un id_customer est fournit depuis Next.js, on connecte ce client de force
+if ($id_customer > 0) {
+    $customer = new Customer($id_customer);
+    if (Validate::isLoadedObject($customer)) {
+        // Authentification programmatique PrestaShop
+        $context->customer = $customer;
+        $context->cookie->id_customer = (int)$customer->id;
+        $context->cookie->customer_lastname = $customer->lastname;
+        $context->cookie->customer_firstname = $customer->firstname;
+        $context->cookie->logged = 1;
+        $context->cookie->passwd = $customer->passwd;
+        $context->cookie->email = $customer->email;
+        $context->cookie->is_guest = $customer->is_guest;
+
+        // Mettre à jour le panier pour ce client
+        $cart->id_customer = $customer->id;
+        // Si le panier était configuré pour l'invité, on s'assure qu'il passe au client
+        $cart->update();
+    }
+}
+
+// 5. Assigner ce panier au visiteur actuel (qu'il soit connecté ou invité)
 $context->cookie->id_cart = (int)$cart->id;
 
-// Si le client est connecté sur PrestaShop, on s'assure que le panier lui est lié
-if ($context->customer->id) {
+// Si le client est connecté sur la session (au cas où il l'était déjà indépendamment), on lie le panier
+if ($context->customer->id && !$id_customer) {
     $cart->id_customer = $context->customer->id;
     $cart->save();
 }
 
 $context->cookie->write();
 
-// 5. Redirection finale vers le tunnel de commande (sas)
+// 6. Redirection finale vers le tunnel de commande (sas)
 // Cela dépend du module de checkout utilisé. Par défaut c'est controller=order
 Tools::redirect('index.php?controller=order');
 exit;

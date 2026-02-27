@@ -8,6 +8,8 @@ import { useCart } from '@/context/CartContext';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './Products.module.css';
+import { useSession } from 'next-auth/react';
+import { calculateGroupPrice } from '@/lib/utils/groupPricing';
 
 const HEADER_PROPS = {
     logoText: "LES AMIS DU CBD",
@@ -76,6 +78,8 @@ export default function ProductsClient({ initialProducts, globalContent }) {
         contactInfo: globalContent?.contact || FOOTER_PROPS.contactInfo
     };
     const { addItem } = useCart();
+    const { data: session } = useSession();
+    const groupId = session?.user?.id_default_group || 3;
 
     // State
     const [activeCategory, setActiveCategory] = useState('all');
@@ -217,6 +221,24 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                 {/* Grid */}
                 <div className={styles.grid}>
                     {filteredProducts.map((product, index) => {
+                        const groupPrice = calculateGroupPrice(product, groupId);
+
+                        // Calcul du grammage & Prix au gramme
+                        const searchString = `${product.name || ''} ${product.reference || ''}`.toLowerCase();
+                        const weightMatch = searchString.match(/(?:^|\s|-)(\d+(?:[.,]\d+)?)\s*g\b/);
+                        let exactGrams = null;
+                        let perGramText = null;
+
+                        const currentPriceTTC = groupPrice?.priceTTC || product.priceTTC || 0;
+
+                        if (weightMatch) {
+                            exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
+                            if (exactGrams > 0 && currentPriceTTC > 0) {
+                                const newPerGram = (currentPriceTTC / exactGrams).toFixed(2).replace('.', ',');
+                                perGramText = `${newPerGram}€/g TTC`;
+                            }
+                        }
+
                         return (
                             <div key={product.name} className={styles.card}>
                                 <Link href={`/produit/${product.slug}`} className={styles.imageLink}>
@@ -250,24 +272,75 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                         <div className={styles.priceInfo}>
                                             <span className={styles.priceLabel}>Prix TTC</span>
                                             <span className={styles.priceValue}>
-                                                {product.formattedPrice || `${product.priceTTC || product.price || 5} €`}
+                                                {groupPrice.hasDiscount ? (
+                                                    <>
+                                                        <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9em', marginRight: '6px' }}>
+                                                            {product.formattedPrice}
+                                                        </span>
+                                                        <span style={{ color: '#d9534f', fontWeight: 'bold' }}>
+                                                            {groupPrice.formattedPrice}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    product.formattedPrice || `${product.priceTTC || product.price || 5} €`
+                                                )}
                                             </span>
+                                            {perGramText && (
+                                                <span className={styles.perGramText}>{perGramText}</span>
+                                            )}
                                         </div>
-                                        <button
-                                            className={styles.addBtn}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                addItem({ ...product, price: product.priceTTC || product.price || 5 }, 1);
-                                            }}
-                                            aria-label="Ajouter au panier"
-                                            title="Ajouter au panier"
-                                        >
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                                <path d="M16 10a4 4 0 0 1-8 0"></path>
-                                            </svg>
-                                        </button>
+                                        <div className={styles.actionWrapper}>
+                                            <div className={styles.qtyDrawer}>
+                                                <button
+                                                    className={styles.qtyBtn}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 3);
+                                                    }}
+                                                    aria-label="Ajouter 3 au panier"
+                                                    title="x3"
+                                                >
+                                                    x3
+                                                </button>
+                                                <button
+                                                    className={styles.qtyBtn}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 5);
+                                                    }}
+                                                    aria-label="Ajouter 5 au panier"
+                                                    title="x5"
+                                                >
+                                                    x5
+                                                </button>
+                                                <button
+                                                    className={styles.qtyBtn}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 10);
+                                                    }}
+                                                    aria-label="Ajouter 10 au panier"
+                                                    title="x10"
+                                                >
+                                                    x10
+                                                </button>
+                                            </div>
+                                            <button
+                                                className={styles.addBtn}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 1);
+                                                }}
+                                                aria-label="Ajouter au panier"
+                                                title="Ajouter au panier"
+                                            >
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -10,6 +10,20 @@ import { Tag } from 'lucide-react';
  *  - id, name, slug, formattedPrice (ex: "18,96 €"), image, descriptionShort (HTML), onSale
  */
 export default function ProductCard({ product }) {
+    // Calcul du grammage & Prix au gramme
+    const searchString = `${product.name || ''} ${product.reference || ''}`.toLowerCase();
+    const weightMatch = searchString.match(/(?:^|\s|-)(\d+(?:[.,]\d+)?)\s*g\b/);
+    let exactGrams = null;
+    let perGramText = null;
+
+    if (weightMatch) {
+        exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
+        if (exactGrams > 0 && product.priceTTC > 0) {
+            const newPerGram = (product.priceTTC / exactGrams).toFixed(2).replace('.', ',');
+            perGramText = `${newPerGram}€/g TTC`;
+        }
+    }
+
     return (
         <Link href={`/produit/${product.slug}`} className={styles.card}>
             {/* Badge Promo */}
@@ -44,8 +58,13 @@ export default function ProductCard({ product }) {
                 )}
 
                 <div className={styles.footer}>
-                    <span className={styles.price}>{product.formattedPrice}</span>
-                    <button className={styles.cta}>Voir le produit</button>
+                    <div className={styles.priceBlock}>
+                        <span className={styles.price}>{product.formattedPrice}</span>
+                        {perGramText && (
+                            <span className={styles.perGram}>{perGramText}</span>
+                        )}
+                    </div>
+                    <button className={styles.cta}>Voir</button>
                 </div>
             </div>
         </Link>

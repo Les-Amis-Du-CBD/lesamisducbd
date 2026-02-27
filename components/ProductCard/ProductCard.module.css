@@ -113,3 +113,30 @@
 .cta:hover {
     background: #1e4f1e;
 }
+
+.weightPill {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    color: #1a2e1a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.priceBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.perGram {
+    font-size: 0.7rem;
+    color: #6B7280;
+    font-weight: 500;
+}

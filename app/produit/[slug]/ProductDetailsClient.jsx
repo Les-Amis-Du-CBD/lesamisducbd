@@ -9,6 +9,8 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './ProductDetails.module.css';
 import { ArrowLeft, Star, Truck, ShieldCheck, Heart } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { calculateGroupPrice } from '@/lib/utils/groupPricing';
 
 const HEADER_PROPS = {
     logoText: "LES AMIS DU CBD",
@@ -46,6 +48,10 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
     const { addItem } = useCart();
     const [quantity, setQuantity] = useState(1);
 
+    const { data: session } = useSession();
+    const groupId = session?.user?.id_default_group || 3;
+    const groupPrice = calculateGroupPrice(product, groupId);
+
     const footerProps = {
         ...FOOTER_PROPS,
         newsletter: { ...FOOTER_PROPS.newsletter, isVisible: globalContent?.visibility?.newsletter !== false },
@@ -54,7 +60,7 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
     };
 
     const handleAddToCart = () => {
-        addItem({ ...product, price: product.priceTTC || product.price || 5 }, quantity);
+        addItem({ ...product, price: groupPrice?.priceTTC || product.priceTTC || product.price || 5 }, quantity);
     };
 
     return (
@@ -88,22 +94,39 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                         </div>
 
                         <div className={styles.priceSection}>
-                            <span className={styles.price}>{product.formattedPrice || `${product.price || '5,00'} €`}</span>
+                            <span className={styles.price}>
+                                {groupPrice?.hasDiscount ? (
+                                    <>
+                                        <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.8em', marginRight: '8px' }}>
+                                            {product.formattedPrice}
+                                        </span>
+                                        <span style={{ color: '#d9534f' }}>
+                                            {groupPrice.formattedPrice}
+                                        </span>
+                                    </>
+                                ) : (
+                                    product.formattedPrice || `${product.priceHT || product.priceTTC || 5} €`
+                                )}
+                            </span>
                             {(() => {
-                                const nameNorm = (product.name || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                                const tagNorm = (product.tag || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-                                const isAutre = ['plv', 'flyer', 'tourniquet', 'accessoire', 'presentoir'].some(k => nameNorm.includes(k) || tagNorm.includes(k));
-                                const isResine = !isAutre && ['resine', 'hash', 'filtre', 'pollen'].some(k => nameNorm.includes(k) || tagNorm.includes(k));
-                                const isPack = !isAutre && ['pack', 'mystere', 'decouverte'].some(k => nameNorm.includes(k) || tagNorm.includes(k));
-                                const isFleur = !isAutre && !isResine && !isPack && (['fleur', 'trim', 'mix', 'skunk', 'amnesia', 'gorilla', 'remedy', 'cbd'].some(k => nameNorm.includes(k) || tagNorm.includes(k)) || product.category === 3);
-
                                 let perGramText = null;
-                                if (isResine) {
-                                    perGramText = "5,00 € /g TTC";
-                                } else if (isFleur || isPack) {
-                                    perGramText = "2,50 € /g TTC";
+                                const currentPriceTTC = groupPrice?.priceTTC || product.priceTTC || 0;
+
+                                if (currentPriceTTC > 0) {
+                                    // Recherche des grammes dans le nom ou la référence (ex: "10g", "10 g", "2.5G", "100 G")
+                                    const searchString = `${product.name || ''} ${product.reference || ''}`.toLowerCase();
+                                    // Capture un nombre (avec virgule ou point optionnel) suivi de "g" ou " g"
+                                    const weightMatch = searchString.match(/(?:^|\s|-)(\d+(?:[.,]\d+)?)\s*g\b/);
+
+                                    if (weightMatch) {
+                                        const exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
+                                        if (exactGrams > 0) {
+                                            const newPerGram = (currentPriceTTC / exactGrams).toFixed(2).replace('.', ',');
+                                            perGramText = `Le gramme à partir de ${newPerGram}€ TTC`;
+                                        }
+                                    }
                                 }
+
                                 if (!perGramText) return null;
                                 return <span className={styles.taxInfo}>{perGramText}</span>;
                             })()}
@@ -155,17 +178,53 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                 <section className={styles.relatedSection}>
                     <h2>Vous aimerez aussi</h2>
                     <div className={styles.relatedGrid}>
-                        {relatedProducts.map(p => (
-                            <Link key={p.name} href={`/produit/${p.slug}`} className={styles.relatedCard}>
-                                <div className={styles.relatedImageWrapper}>
-                                    <Image src={p.image || '/images/placeholder.webp'} alt={p.name} fill className={styles.relatedImage} />
-                                </div>
-                                <div className={styles.relatedInfo}>
-                                    <h3>{p.name}</h3>
-                                    <span>{p.formattedPrice || `${p.price || '5.00'} €`}</span>
-                                </div>
-                            </Link>
-                        ))}
+                        {relatedProducts.map(p => {
+                            const relatedGroupPrice = calculateGroupPrice(p, groupId);
+
+                            // Extract weight and per gram price
+                            const searchString = `${p.name || ''} ${p.reference || ''}`.toLowerCase();
+                            const weightMatch = searchString.match(/(?:^|\s|-)(\d+(?:[.,]\d+)?)\s*g\b/);
+                            let exactGrams = null;
+                            let perGramText = null;
+
+                            const currentPriceTTC = relatedGroupPrice?.priceTTC || p.priceTTC || 0;
+
+                            if (weightMatch) {
+                                exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
+                                if (exactGrams > 0 && currentPriceTTC > 0) {
+                                    const newPerGram = (currentPriceTTC / exactGrams).toFixed(2).replace('.', ',');
+                                    perGramText = `${newPerGram}€/g TTC`;
+                                }
+                            }
+
+                            return (
+                                <Link key={p.name} href={`/produit/${p.slug}`} className={styles.relatedCard}>
+                                    <div className={styles.relatedImageWrapper}>
+                                        <Image src={p.image || '/images/placeholder.webp'} alt={p.name} fill className={styles.relatedImage} />
+                                    </div>
+                                    <div className={styles.relatedInfo}>
+                                        <h3>{p.name}</h3>
+                                        <span>
+                                            {relatedGroupPrice?.hasDiscount ? (
+                                                <>
+                                                    <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.8em', marginRight: '6px' }}>
+                                                        {p.formattedPrice}
+                                                    </span>
+                                                    <span style={{ color: '#d9534f' }}>
+                                                        {relatedGroupPrice.formattedPrice}
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                p.formattedPrice || `${p.priceHT || p.priceTTC || 5} €`
+                                            )}
+                                        </span>
+                                        {perGramText && (
+                                            <div className={styles.relatedPerGram}>{perGramText}</div>
+                                        )}
+                                    </div>
+                                </Link>
+                            );
+                        })}
                     </div>
                 </section>
             </div>

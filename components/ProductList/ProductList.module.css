@@ -144,6 +144,7 @@
 .pillsContainer {
     display: flex;
     justify-content: space-between;
+    gap: 8px;
     width: clamp(200px, 90%, 260px);
     margin: 0 auto 15px auto;
 }
@@ -156,6 +157,22 @@
     border-radius: 6px;
     font-size: 0.8rem;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.perGramList {
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    margin-top: 8px;
+    margin-bottom: 0px;
 }
 
 .pillLeft {

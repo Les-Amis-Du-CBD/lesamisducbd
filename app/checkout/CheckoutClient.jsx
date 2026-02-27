@@ -17,7 +17,7 @@ export default function CheckoutClient({ user }) {
             const res = await fetch('/api/checkout/prestashop', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cart })
+                body: JSON.stringify({ cart, user })
             });
 
             const data = await res.json();

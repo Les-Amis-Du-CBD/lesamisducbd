@@ -14,14 +14,14 @@ export default function LoginModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [isPro, setIsPro] = useState(false);
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [birthday, setBirthday] = useState('');
     const [company, setCompany] = useState('');
     const [siret, setSiret] = useState('');
+    const [rgpdAccepted, setRgpdAccepted] = useState(false);
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-
 
     useEffect(() => {
         setMounted(true);
@@ -55,7 +55,12 @@ export default function LoginModal({ isOpen, onClose }) {
                 onClose();
             }
         } else {
-            // Logique d'inscription
+            if (!rgpdAccepted) {
+                setError("Vous devez accepter la politique de confidentialité pour créer un compte.");
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 const registerRes = await fetch('/api/auth/register', {
                     method: 'POST',
@@ -63,10 +68,11 @@ export default function LoginModal({ isOpen, onClose }) {
                     body: JSON.stringify({
                         email,
                         password,
-                        name,
-                        role: isPro ? 'buraliste' : 'client',
-                        company: isPro ? company : undefined,
-                        siret: isPro ? siret : undefined
+                        firstname,
+                        lastname,
+                        birthday: birthday || undefined,
+                        company: company || undefined,
+                        siret: siret || undefined
                     })
                 });
 
@@ -99,19 +105,19 @@ export default function LoginModal({ isOpen, onClose }) {
         }
     };
 
-
     const toggleMode = (e) => {
         e?.preventDefault();
         setIsLogin(!isLogin);
         setEmail('');
         setPassword('');
-        setName('');
+        setFirstname('');
+        setLastname('');
+        setBirthday('');
         setCompany('');
         setSiret('');
-        setIsPro(false);
+        setRgpdAccepted(false);
         setError('');
     };
-
 
     if (!mounted || !isOpen) return null;
 
@@ -130,65 +136,81 @@ export default function LoginModal({ isOpen, onClose }) {
                 </p>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
-                    {/* Name field - Only for Sign Up */}
+                    {/* Champs inscription uniquement */}
                     {!isLogin && (
                         <>
-                            <div className={styles.inputGroup} style={{ animation: 'fadeIn 0.3s ease' }}>
-                                <label className={styles.label} htmlFor="name">Prénom / Nom</label>
+                            {/* Prénom + Nom */}
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label} htmlFor="firstname">Prénom</label>
                                 <input
                                     type="text"
-                                    id="name"
+                                    id="firstname"
                                     className={styles.input}
-                                    placeholder="Jean Dupont"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required={!isLogin}
+                                    placeholder="Jean"
+                                    value={firstname}
+                                    onChange={(e) => setFirstname(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label} htmlFor="lastname">Nom</label>
+                                <input
+                                    type="text"
+                                    id="lastname"
+                                    className={styles.input}
+                                    placeholder="Dupont"
+                                    value={lastname}
+                                    onChange={(e) => setLastname(e.target.value)}
+                                    required
                                 />
                             </div>
 
-                            <div className={styles.checkboxGroup} style={{ animation: 'fadeIn 0.4s ease' }}>
-                                <label className={styles.checkboxLabel}>
-                                    <input
-                                        type="checkbox"
-                                        checked={isPro}
-                                        onChange={(e) => setIsPro(e.target.checked)}
-                                        className={styles.checkbox}
-                                    />
-                                    Je suis un professionnel (Buraliste / Revendeur)
+                            {/* Société + SIRET */}
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label} htmlFor="company">
+                                    Société <span style={{ color: '#999', fontWeight: 400 }}>(optionnel)</span>
                                 </label>
+                                <input
+                                    type="text"
+                                    id="company"
+                                    className={styles.input}
+                                    placeholder="Ma Boutique"
+                                    value={company}
+                                    onChange={(e) => setCompany(e.target.value)}
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label} htmlFor="siret">
+                                    N° fiscal <span style={{ color: '#999', fontWeight: 400 }}>(optionnel)</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="siret"
+                                    className={styles.input}
+                                    placeholder="SIRET / TVA"
+                                    value={siret}
+                                    onChange={(e) => setSiret(e.target.value)}
+                                />
                             </div>
 
-                            {isPro && (
-                                <div className={styles.proFieldsContainer} style={{ animation: 'fadeIn 0.3s ease' }}>
-                                    <div className={styles.inputGroup} style={{ flex: 1 }}>
-                                        <label className={styles.label} htmlFor="company">Société</label>
-                                        <input
-                                            type="text"
-                                            id="company"
-                                            className={styles.input}
-                                            placeholder="Ma Boutique"
-                                            value={company}
-                                            onChange={(e) => setCompany(e.target.value)}
-                                            required={isPro}
-                                        />
-                                    </div>
-                                    <div className={styles.inputGroup} style={{ flex: 1 }}>
-                                        <label className={styles.label} htmlFor="siret">N° SIRET</label>
-                                        <input
-                                            type="text"
-                                            id="siret"
-                                            className={styles.input}
-                                            placeholder="123 456 789 00012"
-                                            value={siret}
-                                            onChange={(e) => setSiret(e.target.value)}
-                                            required={isPro}
-                                        />
-                                    </div>
-                                </div>
-                            )}
+                            {/* Date de naissance */}
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label} htmlFor="birthday">
+                                    Date de naissance <span style={{ color: '#999', fontWeight: 400 }}>(optionnel)</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    id="birthday"
+                                    className={styles.input}
+                                    value={birthday}
+                                    onChange={(e) => setBirthday(e.target.value)}
+                                    max={new Date().toISOString().split('T')[0]}
+                                />
+                            </div>
                         </>
                     )}
 
+                    {/* Email */}
                     <div className={styles.inputGroup}>
                         <label className={styles.label} htmlFor="email">Email</label>
                         <input
@@ -202,6 +224,7 @@ export default function LoginModal({ isOpen, onClose }) {
                         />
                     </div>
 
+                    {/* Mot de passe */}
                     <div className={styles.inputGroup}>
                         <label className={styles.label} htmlFor="password">Mot de passe</label>
                         <div className={styles.passwordWrapper}>
@@ -225,6 +248,26 @@ export default function LoginModal({ isOpen, onClose }) {
                         </div>
                     </div>
 
+                    {/* RGPD — uniquement à l'inscription */}
+                    {!isLogin && (
+                        <div className={styles.checkboxGroup} style={{ marginTop: '4px' }}>
+                            <label className={styles.checkboxLabel}>
+                                <input
+                                    type="checkbox"
+                                    checked={rgpdAccepted}
+                                    onChange={(e) => setRgpdAccepted(e.target.checked)}
+                                    className={styles.checkbox}
+                                    required
+                                />
+                                J&apos;accepte la{' '}
+                                <a href="/privacy" target="_blank" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                                    politique de confidentialité
+                                </a>{' '}
+                                et le traitement de mes données personnelles.
+                            </label>
+                        </div>
+                    )}
+
                     {error && (
                         <div style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '-0.5rem', marginBottom: '0.5rem' }}>
                             {error}
@@ -234,7 +277,7 @@ export default function LoginModal({ isOpen, onClose }) {
                     <button type="submit" className={styles.submitButton} disabled={isLoading}>
                         {isLoading ? (
                             <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                                <Loader2 size={20} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+                                <Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} />
                                 {isLogin ? 'Connexion...' : 'Inscription...'}
                             </span>
                         ) : (
@@ -246,10 +289,6 @@ export default function LoginModal({ isOpen, onClose }) {
                         @keyframes spin {
                             from { transform: rotate(0deg); }
                             to { transform: rotate(360deg); }
-                        }
-                        @keyframes fadeIn {
-                            from { opacity: 0; transform: translateY(-10px); }
-                            to { opacity: 1; transform: translateY(0); }
                         }
                     `}</style>
                 </form>

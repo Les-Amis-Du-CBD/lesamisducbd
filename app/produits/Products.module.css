@@ -388,46 +388,118 @@
 }
 
 .priceLabel {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    color: #888;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    color: #8C8C8C;
+    display: block;
     margin-bottom: 2px;
 }
 
 .priceValue {
-    font-size: clamp(1rem, 2.5vw, 1.15rem);
-    font-weight: 800;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: #1F4B40;
+    display: block;
+}
+
+.perGramText {
+    font-size: 0.7rem;
+    color: #6a7c76;
+    margin-top: 4px;
+    font-weight: 500;
+    display: block;
+}
+
+.actionWrapper {
+    display: flex;
+    align-items: center;
+    background: #1F4B40;
+    border-radius: 12px;
+    padding: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px rgba(31, 75, 64, 0.08);
+    /* slight idle shadow */
+    cursor: pointer;
+}
+
+.actionWrapper:hover {
+    box-shadow: 0 6px 16px rgba(31, 75, 64, 0.25);
+    background: #193e35;
+}
+
+.qtyDrawer {
+    display: flex;
+    align-items: center;
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    /* prevent clicks from blocking expansion */
+}
+
+.actionWrapper:hover .qtyDrawer {
+    width: 104px;
+    /* 3 labels of 28px + 3 gaps of 4px + 8px right padding */
+    opacity: 1;
+    padding-left: 6px;
+    padding-right: 2px;
+    gap: 4px;
+    pointer-events: auto;
+}
+
+.qtyBtn {
+    width: 28px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(0, 255, 148, 0.1);
+    color: #00FF94;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.qtyBtn:hover {
+    background: #00FF94;
+    color: #1F4B40;
+    transform: scale(1.1);
 }
 
 .addBtn {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: #1F4B40;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: transparent;
     color: #00FF94;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.actionWrapper:hover .addBtn {
+    background: #00FF94;
+    color: #1F4B40;
 }
 
 .addBtn svg {
     transition: transform 0.2s ease;
 }
 
-.addBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px -3px rgba(31, 75, 64, 0.3);
-    background: #2a6154;
+.actionWrapper:hover .addBtn svg {
+    transform: scale(1.15) rotate(-5deg);
 }
 
 .addBtn:active {
-    transform: translateY(1px);
+    transform: translateY(1px) scale(0.95);
 }
 
 /* Mobile */

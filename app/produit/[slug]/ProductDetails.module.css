@@ -301,19 +301,30 @@
     padding: 15px;
 }
 
+.relatedInfo {
+    padding: 0 10px;
+}
+
 .relatedInfo h3 {
     font-size: 1rem;
     color: #1F4B40;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 .relatedInfo span {
+    color: #1f4b40;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #00FF94;
-    background: #1F4B40;
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    display: block;
+}
+
+.relatedPerGram {
+    font-size: 0.7rem;
+    color: #6a7c76;
+    margin-top: 4px;
+    font-weight: 500;
+    display: block;
 }
 
 @media (max-width: 900px) {

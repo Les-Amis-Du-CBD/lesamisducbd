@@ -5,11 +5,11 @@ import bcrypt from 'bcryptjs';
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { email, password, name, company, siret, role } = body;
+        const { email, password, firstname, lastname, birthday, company, siret } = body;
 
         // Validation basique
-        if (!email || !password || !name) {
-            return NextResponse.json({ success: false, message: 'Email, mot de passe et nom sont requis' }, { status: 400 });
+        if (!email || !password || !firstname || !lastname) {
+            return NextResponse.json({ success: false, message: 'Prénom, nom, email et mot de passe sont requis' }, { status: 400 });
         }
 
         const userKey = `user:${email.toLowerCase()}`;
@@ -27,11 +27,15 @@ export async function POST(req) {
         const newUser = {
             id: Date.now().toString(),
             email: email.toLowerCase(),
-            name,
+            name: `${firstname} ${lastname}`.trim(),
+            firstname,
+            lastname,
             password: hashedPassword,
+            birthday: birthday || '',
             company: company || '',
             siret: siret || '',
-            role: role || 'client', // 'client' ou 'buraliste'
+            role: 'client',
+            id_default_group: 3, // Groupe Client par défaut — modifié uniquement par l'admin PrestaShop
             addresses: [],
             createdAt: new Date().toISOString()
         };

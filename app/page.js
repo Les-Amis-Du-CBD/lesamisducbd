@@ -35,6 +35,7 @@ const toCard = (vitrineEntry, product) => ({
   pillRight: '',
   price: product.priceTTC,
   formattedPrice: product.formattedPrice,
+  rawProduct: product // Passed down so ProductList client component can calculate group discounts
 });
 
 export default async function Home() {

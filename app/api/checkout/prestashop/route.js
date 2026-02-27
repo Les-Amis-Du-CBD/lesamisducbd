@@ -43,16 +43,27 @@ export async function POST(request) {
 
         console.log("[checkout/prestashop] Panier créé avec l'ID:", prestashopCartId);
 
-        // 3. Générer la signature de sécurité
-        // La clé secrète doit être partagée entre ce fichier et le sas.php de PrestaShop
-        const secretKey = process.env.PRESTASHOP_SAS_SECRET_KEY || 'CHANGEME_EN_PROD';
+        // 3. Générer la signature de sécurité HMAC-SHA256
+        const secretKey = process.env.PRESTASHOP_SAS_SECRET_KEY;
+        const ts = Math.floor(Date.now() / 1000); // Timestamp actuel
 
-        // Hasher id_cart + id_customer + clé secrète pour éviter la falsification de l'id client
-        const signature = crypto.createHash('md5').update(prestashopCartId + '-' + prestashopCustomerId + secretKey).digest('hex');
+        if (!secretKey) {
+            console.error("[checkout/prestashop] ERREUR CRITIQUE : PRESTASHOP_SAS_SECRET_KEY n'est pas définie.");
+            return NextResponse.json({
+                success: false,
+                error: "Configuration de sécurité manquante sur le serveur (SAS KEY)."
+            }, { status: 500 });
+        }
 
-        // 4. Préparer l'URL de redirection (on ajoute l'id_customer pour que sas.php l'identifie)
-        const prestaUrl = process.env.PRESTASHOP_API_URL.replace('/api', ''); // ex: https://lesamisducbd.fr
-        const redirectUrl = `${prestaUrl}/sas.php?cart_id=${prestashopCartId}&id_customer=${prestashopCustomerId}&sign=${signature}`;
+        // Payload: cart_id-customer_id-timestamp
+        const signaturePayload = `${prestashopCartId}-${prestashopCustomerId}-${ts}`;
+        const signature = crypto.createHmac('sha256', secretKey).update(signaturePayload).digest('hex');
+
+        console.log(`[checkout/prestashop] HMAC-SHA256 généré avec TS:${ts}`);
+
+        // 4. Préparer l'URL de redirection sécurisée
+        const prestaUrl = process.env.PRESTASHOP_API_URL.replace('/api', '');
+        const redirectUrl = `${prestaUrl}/sas.php?cart_id=${prestashopCartId}&id_customer=${prestashopCustomerId}&ts=${ts}&sign=${signature}`;
 
         return NextResponse.json({
             success: true,

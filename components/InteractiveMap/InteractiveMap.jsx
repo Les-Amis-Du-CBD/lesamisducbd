@@ -218,6 +218,13 @@ export default function InteractiveMap() {
                         <p className={styles.infoText}>300+ Partenaires</p>
                     </div>
                 </div>
+
+                <div className={styles.footerAction}>
+                    <p>Vous cherchez un point de vente spécifique ?</p>
+                    <a href="/buralistes" className={styles.ctaButton}>
+                        Voir la carte complète des partenaires
+                    </a>
+                </div>
             </div>
         </section>
     );

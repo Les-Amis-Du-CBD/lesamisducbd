@@ -110,7 +110,6 @@ if ($debug) {
     exit;
 }
 
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Pragma: no-cache");
-header("Location: " . __PS_BASE_URI__ . "commande", true, 303);
+// Redirection native PrestaShop (gère correctement l'écriture du cookie et les headers Symfony)
+Tools::redirect('index.php?controller=order');
 exit;

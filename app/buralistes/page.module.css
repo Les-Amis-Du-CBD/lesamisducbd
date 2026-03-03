@@ -10,8 +10,8 @@
 
 @media (max-width: 1024px) {
     .main {
-        height: auto;
-        overflow: auto;
+        height: 110dvh;
+        overflow: hidden;
     }
 }
 
@@ -42,10 +42,9 @@
 
 @media (max-width: 1024px) {
     .backButton {
-        position: relative;
-        top: 0;
-        left: 0;
-        margin: 20px;
-        width: fit-content;
+        top: 15px;
+        left: 15px;
+        padding: 8px 15px;
+        font-size: 0.85rem;
     }
 }

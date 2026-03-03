@@ -220,9 +220,9 @@ export default function InteractiveMap() {
                 </div>
 
                 <div className={styles.footerAction}>
-                    <p>Vous cherchez un point de vente spécifique ?</p>
+                    <p>Vous cherchez un point de vente proche de chez vous ?</p>
                     <a href="/buralistes" className={styles.ctaButton}>
-                        Voir la carte complète des partenaires
+                        Cliquez ici
                     </a>
                 </div>
             </div>

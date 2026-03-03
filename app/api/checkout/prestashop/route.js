@@ -15,8 +15,8 @@ export async function POST(request) {
         let prestashopCustomerId = 0;
 
         if (user && user.email) {
-            console.log(`[checkout/prestashop] Utilisateur connecté : ${user.email}`);
-            // Cherche le client ou le crée
+            console.log(`[checkout/prestashop] Utilisateur fourni (passage en mode Invité) : ${user.email}`);
+            // Cherche le client ou le crée en tant que GUEST
             try {
                 const customerData = await prestaCheckoutService.createCustomer({
                     email: user.email,
@@ -26,13 +26,13 @@ export async function POST(request) {
                     company: user.company,
                     siret: user.siret,
                     birthday: user.birthday,
-                    role: user.role || 'client',
-                }, 0); // 0 = vrai client, pas invité
-                // createCustomer returns {id, id_default_group}
+                    role: 'guest', // Force guest group
+                }, 1); // 1 = is_guest true
+
                 prestashopCustomerId = customerData?.id || customerData || 0;
-                console.log(`[checkout/prestashop] ID Client PrestaShop trouvé/créé : ${prestashopCustomerId}`);
+                console.log(`[checkout/prestashop] ID Client PrestaShop (Guest) : ${prestashopCustomerId}`);
             } catch (err) {
-                console.error("[checkout/prestashop] Erreur création client, on continue en anonyme", err);
+                console.error("[checkout/prestashop] Erreur création client invité, on continue anonymement", err);
             }
         }
 

@@ -162,7 +162,7 @@
 }
 
 .footerAction p {
-    color: #666;
+    color: var(--primary-dark);
     font-size: 1.1rem;
 }
 
@@ -194,6 +194,7 @@
     .mapMapWrapper {
         aspect-ratio: 1/1;
         border-radius: 30px;
+        width: 96%;
     }
 
     .infoCard {

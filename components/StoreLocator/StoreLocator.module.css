@@ -81,25 +81,65 @@
 }
 
 @media (max-width: 1024px) {
-    .layout {
-        grid-template-columns: 1fr;
-        height: auto;
-        display: block;
+    .header {
+        padding: 10px 20px 10px;
     }
 
-    .sidebar {
-        height: 400px;
-        border-right: none;
-        border-bottom: 1px solid #eee;
+    .title {
+        font-size: 1.5rem;
     }
 
-    .mapWrapper {
-        height: 450px;
+    .subtitle {
+        display: none;
+    }
+
+    .searchBox {
+        margin: 0 15px 15px;
+        width: calc(100% - 30px);
+        max-width: none;
+        padding: 8px;
+        border-radius: 12px;
     }
 
     .locatorContainer {
+        height: 100%;
+        padding-bottom: 0;
+    }
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        border-radius: 20px 20px 0 0;
+        overflow: hidden;
+        border-top: none;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .mapWrapper {
+        order: 1;
+        flex: 0 0 45%;
         height: auto;
-        padding-bottom: 40px;
+    }
+
+    .sidebar {
+        order: 2;
+        flex: 1 1 55%;
+        height: auto;
+        border-right: none;
+        border-bottom: none;
+        background: #fdfdfd;
+    }
+
+    .resultsList {
+        padding: 10px 15px;
+        gap: 8px;
+    }
+
+    .partnerCard {
+        padding: 12px;
+        border-radius: 12px;
     }
 }
 

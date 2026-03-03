@@ -36,6 +36,7 @@ export default function StoreLocator({ subtitle = true }) {
     const [activePartner, setActivePartner] = useState(null);
     const [nearbyPartners, setNearbyPartners] = useState([]);
     const [isSearchingNearby, setIsSearchingNearby] = useState(false);
+    const [isLocating, setIsLocating] = useState(false);
 
     useEffect(() => {
         const fetchPartners = async () => {
@@ -52,9 +53,54 @@ export default function StoreLocator({ subtitle = true }) {
         fetchPartners();
     }, []);
 
+    const handleLocateMe = () => {
+        if (!navigator.geolocation) {
+            alert("La géolocalisation n'est pas supportée par votre navigateur.");
+            return;
+        }
+
+        setIsLocating(true);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                // Sort partners by distance
+                const withDistance = partners.map(p => ({
+                    ...p,
+                    distance: getDistance(lat, lon, p.lat, p.lng)
+                })).sort((a, b) => a.distance - b.distance);
+
+                setSearchQuery(''); // Clear manual search
+                setNearbyPartners(withDistance.slice(0, 5)); // Show 5 closest
+                setIsSearchingNearby(true);
+                setIsLocating(false);
+
+                // Auto-select the absolute closest one if within reasonable distance (e.g. 50km)
+                if (withDistance[0].distance < 50) {
+                    handlePartnerClick(withDistance[0]);
+                }
+
+                // On mobile, scroll to results
+                if (window.innerWidth < 1024) {
+                    document.getElementById('map-wrapper')?.scrollIntoView({ behavior: 'smooth' });
+                }
+            },
+            (error) => {
+                console.error("Geolocation error:", error);
+                alert("Impossible de récupérer votre position. Veuillez vérifier vos autorisations.");
+                setIsLocating(false);
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    };
+
     const filteredPartners = useMemo(() => {
         if (!searchQuery) return partners;
         const query = searchQuery.toLowerCase().trim();
+
+        // Si on a tapé quelque chose, on désactive le mode "Autour de moi"
+        // (Note: on ne peut pas appeler de setState dans useMemo, donc on gère displayPartners plus bas)
 
         return partners.filter(p => {
             const nameMatch = p.name.toLowerCase().includes(query);
@@ -79,10 +125,20 @@ export default function StoreLocator({ subtitle = true }) {
         });
     }, [partners, searchQuery]);
 
-    // Handle Nearby Fallback if 0 results
+    // Clear "Nearby" results if user starts typing manually
+    useEffect(() => {
+        if (searchQuery.length > 0 && isSearchingNearby && nearbyPartners.length > 0) {
+            // We set nearbyPartners to empty when typing manually
+            setNearbyPartners([]);
+            setIsSearchingNearby(false);
+        }
+    }, [searchQuery, isSearchingNearby, nearbyPartners.length]);
+
+    // Handle Nominatim Geocoding Fallback if 0 results
     useEffect(() => {
         const timer = setTimeout(async () => {
-            if (searchQuery.length > 2 && filteredPartners.length === 0) {
+            // Only trigger Nominatim if we are NOT in the middle of a "Locate Me" action
+            if (searchQuery.length > 2 && filteredPartners.length === 0 && !isLocating) {
                 setIsSearchingNearby(true);
                 try {
                     const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&countrycodes=fr&limit=1`);
@@ -103,13 +159,11 @@ export default function StoreLocator({ subtitle = true }) {
                 } finally {
                     setIsSearchingNearby(false);
                 }
-            } else {
-                setNearbyPartners([]);
             }
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, [searchQuery, filteredPartners.length, partners]);
+    }, [searchQuery, filteredPartners.length, partners, isLocating]);
 
     const handlePartnerClick = (partner) => {
         setActivePartner(partner);
@@ -140,7 +194,22 @@ export default function StoreLocator({ subtitle = true }) {
                         className={styles.searchInput}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && displayPartners.length > 0) {
+                                e.preventDefault();
+                                handlePartnerClick(displayPartners[0]);
+                                e.target.blur(); // Hide mobile keyboard
+                            }
+                        }}
                     />
+                    <button
+                        className={styles.locateButton}
+                        onClick={handleLocateMe}
+                        title="Autour de moi"
+                        disabled={isLocating}
+                    >
+                        {isLocating ? <Loader2 className="animate-spin" size={20} /> : <MapPin size={20} />}
+                    </button>
                 </div>
             </div>
 

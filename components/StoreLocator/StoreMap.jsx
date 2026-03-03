@@ -74,6 +74,8 @@ export default function StoreMap({ partners, activePartner, onPartnerClick }) {
     return (
         <Map
             ref={mapRef}
+            mapLib={maplibregl}
+            reuseMaps
             {...viewState}
             onMove={evt => setViewState(evt.viewState)}
             mapStyle={MAP_STYLE}

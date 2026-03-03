@@ -57,7 +57,8 @@
 
 .searchInput {
     width: 100%;
-    padding: 10px 10px 10px 42px;
+    padding: 10px 48px 10px 42px;
+    /* Extra padding on right for the button */
     border: 2px solid #f3f4f6;
     border-radius: 12px;
     font-size: 1rem;
@@ -68,6 +69,32 @@
 .searchInput:focus {
     border-color: var(--accent-neon);
     background: #fdfdfd;
+}
+
+.locateButton {
+    position: absolute;
+    right: 8px;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.locateButton:hover {
+    background: var(--accent-neon);
+    color: white;
+}
+
+.locateButton:disabled {
+    opacity: 0.6;
+    cursor: wait;
 }
 
 .layout {

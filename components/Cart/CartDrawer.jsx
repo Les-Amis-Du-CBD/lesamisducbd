@@ -11,8 +11,10 @@ import { useSession } from 'next-auth/react';
 import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 
 export default function CartDrawer() {
-    const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, clearCart, cartTotal } = useCart();
+    const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, clearCart, cartTotalHT, cartTotalTTC } = useCart();
     const { data: session } = useSession();
+    // Use String comparison to handle both number and string types from session
+    const isPro = String(session?.user?.id_default_group) === "4";
 
     const router = useRouter();
 
@@ -42,7 +44,7 @@ export default function CartDrawer() {
     };
 
     return (
-        <div className={styles.overlay}>
+        <div className={styles.overlay} onClick={() => setIsCartOpen(false)}>
             <div className={styles.drawer} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
                     <div className={styles.headerLeft}>
@@ -70,7 +72,7 @@ export default function CartDrawer() {
                         </div>
                     ) : (
                         cart.map((item) => (
-                            <div key={`${item.id}-${item.variant?.id}`} className={styles.item}>
+                            <div key={`${item.id}-${JSON.stringify(item.variant)}`} className={styles.item}>
                                 <div className={styles.imageConfig}>
                                     {item.image && (
                                         <div className={styles.imgWrapper}>
@@ -86,7 +88,18 @@ export default function CartDrawer() {
                                 <div className={styles.itemDetails}>
                                     <h3>{item.name}</h3>
                                     {item.variant && <span className={styles.variant}>{item.variant.name}</span>}
-                                    <div className={styles.price}>{item.price}€</div>
+                                    <div className={styles.price}>
+                                        {isPro ? (
+                                            <>
+                                                {(item.priceHT || item.price).toFixed(2)}€ HT
+                                                <span style={{ fontSize: '0.85em', color: '#666', marginLeft: '6px' }}>
+                                                    ({(item.priceTTC || item.price).toFixed(2)}€ TTC)
+                                                </span>
+                                            </>
+                                        ) : (
+                                            `${(item.priceTTC || item.price).toFixed(2)}€`
+                                        )}
+                                    </div>
 
                                     <div className={styles.controls}>
                                         <div className={styles.qtyControl}>
@@ -106,10 +119,23 @@ export default function CartDrawer() {
 
                 {cart.length > 0 && (
                     <div className={styles.footer}>
-                        <div className={styles.totalRow}>
-                            <span>Total</span>
-                            <span className={styles.totalAmount}>{cartTotal.toFixed(2)}€</span>
-                        </div>
+                        {isPro ? (
+                            <div className={styles.totalRowPro}>
+                                <div className={styles.totalLine}>
+                                    <span>Total HT</span>
+                                    <span>{cartTotalHT.toFixed(2)}€</span>
+                                </div>
+                                <div className={styles.totalLine} style={{ opacity: 0.8, fontSize: '0.9em' }}>
+                                    <span>Total TTC</span>
+                                    <span>{cartTotalTTC.toFixed(2)}€</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className={styles.totalRow}>
+                                <span>Total</span>
+                                <span className={styles.totalAmount}>{cartTotalTTC.toFixed(2)}€</span>
+                            </div>
+                        )}
                         <p className={styles.shippingNote}>
                             Livraison <span style={{ color: '#10B981', fontWeight: 'bold' }}>offerte</span>
                         </p>

@@ -236,7 +236,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                             exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
                             if (exactGrams > 0 && priceToUse > 0) {
                                 const newPerGram = (priceToUse / exactGrams).toFixed(2).replace('.', ',');
-                                perGramText = `${newPerGram}€/g`;
+                                perGramText = `${newPerGram}€/g ${groupPrice.suggestShowHT ? 'HT' : ''}`;
                             }
                         }
 
@@ -296,7 +296,10 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     className={styles.qtyBtn}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 1);
+                                                        const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
+                                                        const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
+                                                        const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
+                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 1);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 1 au panier"
@@ -308,7 +311,10 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     className={styles.qtyBtn}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 3);
+                                                        const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
+                                                        const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
+                                                        const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
+                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 3);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 3 au panier"
@@ -320,7 +326,10 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     className={styles.qtyBtn}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 5);
+                                                        const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
+                                                        const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
+                                                        const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
+                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 5);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 5 au panier"
@@ -332,7 +341,10 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     className={styles.qtyBtn}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 10);
+                                                        const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
+                                                        const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
+                                                        const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
+                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 10);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 10 au panier"
@@ -348,7 +360,10 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                     if (window.innerWidth <= 768) {
                                                         setExpandedId(expandedId === product.id ? null : product.id);
                                                     } else {
-                                                        addItem({ ...product, price: groupPrice.priceTTC || product.priceTTC || product.price || 5 }, 1);
+                                                        const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
+                                                        const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
+                                                        const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
+                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 1);
                                                     }
                                                 }}
                                                 aria-label="Ajouter au panier"
@@ -366,16 +381,17 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                             </div>
                         );
                     })}
-
-                    {filteredProducts.length === 0 && (
-                        <div className={styles.emptyState}>
-                            <p>Aucun produit ne correspond à cette catégorie pour le moment.</p>
-                        </div>
-                    )}
                 </div>
+
+                {filteredProducts.length === 0 && (
+                    <div className={styles.emptyState}>
+                        <p>Aucun produit ne correspond à cette catégorie pour le moment.</p>
+                    </div>
+                )}
             </section>
 
             <Footer {...footerProps} />
         </main>
     );
 }
+

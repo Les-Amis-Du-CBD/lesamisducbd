@@ -233,6 +233,22 @@
     font-weight: 700;
 }
 
+.totalRowPro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.totalLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #1F4B40;
+    font-weight: 700;
+}
+
 .totalAmount {
     font-size: 1.5rem;
 }

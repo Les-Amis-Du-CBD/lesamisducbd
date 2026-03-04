@@ -3,6 +3,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
+import { useSession } from 'next-auth/react'; // Added import for useSession
 
 const CartContext = createContext();
 
@@ -11,6 +12,9 @@ export function CartProvider({ children }) {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const { showToast } = useToast();
+    const { data: session } = useSession();
+    // Use loose equality or cast to String to be robust against PrestaShop's string IDs
+    const isPro = String(session?.user?.id_default_group) === "4";
 
     // Helper to normalize variant for comparison
     const getVariantKey = (variant) => {
@@ -132,7 +136,18 @@ export function CartProvider({ children }) {
 
     // Calculate Totals
     const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-    const cartTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+    const cartTotalHT = cart.reduce((acc, item) => {
+        const unitHT = item.priceHT ?? (item.suggestShowHT ? item.price : item.price / 1.055);
+        return acc + (unitHT * item.quantity);
+    }, 0);
+
+    const cartTotalTTC = cart.reduce((acc, item) => {
+        const unitTTC = item.priceTTC ?? (!item.suggestShowHT ? item.price : item.price * 1.055);
+        return acc + (unitTTC * item.quantity);
+    }, 0);
+
+    const cartTotal = cartTotalTTC; // Default legacy total remains TTC
 
     return (
         <CartContext.Provider value={{
@@ -144,7 +159,9 @@ export function CartProvider({ children }) {
             updateQuantity,
             clearCart,
             cartCount,
-            cartTotal
+            cartTotal,
+            cartTotalHT,
+            cartTotalTTC
         }}>
             {children}
         </CartContext.Provider>

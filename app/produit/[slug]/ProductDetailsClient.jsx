@@ -60,7 +60,19 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
     };
 
     const handleAddToCart = () => {
-        addItem({ ...product, price: groupPrice?.priceTTC || product.priceTTC || product.price || 5 }, quantity);
+        const pHT = groupPrice?.priceHT || product.priceHT || product.price || 0;
+        const pTTC = groupPrice?.priceTTC || product.priceTTC || 0;
+
+        // Pass the appropriate display price as 'price' for backwards compatibility,
+        // but also include explicit priceHT and priceTTC for dual display.
+        const displayPrice = groupPrice?.suggestShowHT ? pHT : pTTC;
+
+        addItem({
+            ...product,
+            price: displayPrice,
+            priceHT: pHT,
+            priceTTC: pTTC
+        }, quantity);
     };
 
     return (
@@ -126,7 +138,7 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                                         const exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
                                         if (exactGrams > 0) {
                                             const newPerGram = (priceToUse / exactGrams).toFixed(2).replace('.', ',');
-                                            perGramText = `${newPerGram}€/g`;
+                                            perGramText = `${newPerGram}€/g ${groupPrice.suggestShowHT ? 'HT' : ''}`;
                                         }
                                     }
                                 }

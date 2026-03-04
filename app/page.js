@@ -53,26 +53,39 @@ export default async function Home() {
   // ── Resolve flowers ──────────────────────────────────────────────
   let flowers = [];
 
-  if (vitrineConfig?.flowers?.length > 0) {
-    // Use admin-configured vitrine (KV)
-    flowers = vitrineConfig.flowers
-      .map(entry => bySlug[entry.slug] ? toCard(entry, bySlug[entry.slug]) : null)
-      .filter(Boolean)
-      .slice(0, 4);
-  } else {
-    // Fallback: hardcoded 4g flower selection
-    const RESIN_KEYWORDS = ['hash', 'pollen', 'resin', 'résine', 'harsh', 'golden'];
-    const isResin = (p) => RESIN_KEYWORDS.some(k => p.name.toLowerCase().includes(k));
-    const FEATURED = ['super skunk', 'amn', 'gorilla', 'remedy'];
-    const is4g = (p) => /\b4\s*g\b/i.test(p.name);
-    const order = (p) => { const i = FEATURED.findIndex(k => p.name.toLowerCase().includes(k)); return i === -1 ? 999 : i; };
+  const FEATURED_NAMES = ['Super Skunk', 'Amnésia', 'Gorilla Glue', 'Remedy'];
 
-    flowers = allProducts
-      .filter(p => !isResin(p) && is4g(p) && FEATURED.some(k => p.name.toLowerCase().includes(k)))
-      .sort((a, b) => order(a) - order(b))
-      .slice(0, 4)
-      .map(p => toCard({}, p));
-  }
+  flowers = FEATURED_NAMES.map(baseName => {
+    // Find all variations for this flower
+    const variations = allProducts.filter(p =>
+      p.name.toLowerCase().includes(baseName.toLowerCase())
+    ).map(p => {
+      const weightMatch = p.name.match(/(\d+)\s*g/i);
+      return {
+        ...p,
+        weight: weightMatch ? parseInt(weightMatch[1]) : 0
+      };
+    }).sort((a, b) => a.weight - b.weight);
+
+    if (variations.length === 0) return null;
+
+    const mainProduct = variations.find(v => v.weight === 4) || variations[0];
+
+    return {
+      ...toCard({}, mainProduct),
+      name: baseName,
+      quoteTitle: baseName === 'Gorilla Glue' ? '“La Puissante”' :
+        baseName === 'Amnésia' ? '“La Rêveuse”' :
+          baseName === 'Super Skunk' ? '“La Classique”' : '“La Relaxante”',
+      variations: variations.map(v => ({
+        slug: v.slug,
+        weight: v.weight,
+        priceTTC: v.priceTTC,
+        formattedPrice: v.formattedPrice,
+        rawProduct: v
+      }))
+    };
+  }).filter(Boolean);
 
   // ── Resolve resins ───────────────────────────────────────────────
   let resins = [];

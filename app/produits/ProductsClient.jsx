@@ -271,7 +271,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
 
                                     <div className={styles.cardFooter}>
                                         <div className={styles.priceInfo}>
-                                            <span className={styles.priceLabel}>Prix TTC</span>
+                                            <span className={styles.priceLabel}>{groupPrice.suggestShowHT ? 'Prix HT' : 'Prix TTC'}</span>
                                             <span className={styles.priceValue}>
                                                 {groupPrice.hasDiscount ? (
                                                     <>
@@ -279,15 +279,15 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                             {product.formattedPrice}
                                                         </span>
                                                         <span style={{ color: '#d9534f', fontWeight: 'bold' }}>
-                                                            {groupPrice.formattedPrice}
+                                                            {groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : groupPrice.formattedPrice}
                                                         </span>
                                                     </>
                                                 ) : (
-                                                    product.formattedPrice || `${product.priceTTC || product.price || 5} €`
+                                                    groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : (product.formattedPrice || `${product.priceTTC || product.price || 5} €`)
                                                 )}
                                             </span>
                                             {perGramText && (
-                                                <span className={styles.perGramText}>{perGramText}</span>
+                                                <span className={styles.perGramText}>{perGramText.replace(' TTC', '')}</span>
                                             )}
                                         </div>
                                         <div className={`${styles.actionWrapper} ${expandedId === product.id ? styles.expanded : ''}`}>

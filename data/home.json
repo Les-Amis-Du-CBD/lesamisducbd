@@ -24,7 +24,7 @@
             "href": "/usages"
           },
           {
-            "label": "BURALISTE",
+            "label": "PROFESSIONNEL",
             "href": "/buraliste"
           }
         ]
@@ -186,7 +186,7 @@
       "type": "Partners",
       "props": {
         "title": "+ de 300",
-        "subtitle": "Buralistes partenaires en<br /> France. Testez gratuitement<br />et rejoignez-nous !",
+        "subtitle": "Partenaires professionnels en<br /> France. Testez gratuitement<br />et rejoignez-nous !",
         "partners": [
           {
             "name": "NOM BUREAU DE TABAC",
@@ -285,7 +285,7 @@
             "href": "/transparence"
           },
           {
-            "label": "Buraliste",
+            "label": "Professionnel",
             "href": "/buraliste"
           }
         ],

@@ -19,7 +19,7 @@ const HEADER_PROPS = {
         { label: "PRODUITS", href: "/produits" },
         { label: "L'ESSENTIEL", href: "/essentiel" },
         { label: "CBD & USAGES", href: "/usages" },
-        { label: "BURALISTE", href: "/buraliste" }
+        { label: "PROFESSIONNEL", href: "/buraliste" }
     ]
 };
 
@@ -29,7 +29,7 @@ const FOOTER_PROPS = {
         { label: "CGV", href: "/cgv" },
         { label: "Politique de confidentialité", href: "/privacy" },
         { label: "Transparence", href: "/transparence" },
-        { label: "Buraliste", href: "/buraliste" }
+        { label: "Professionnel", href: "/buraliste" }
     ],
     contactInfo: {
         title: "Les Amis du CBD France",
@@ -101,11 +101,11 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                                             {product.formattedPrice}
                                         </span>
                                         <span style={{ color: '#d9534f' }}>
-                                            {groupPrice.formattedPrice}
+                                            {groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : groupPrice.formattedPrice}
                                         </span>
                                     </>
                                 ) : (
-                                    product.formattedPrice || `${product.priceHT || product.priceTTC || 5} €`
+                                    groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : (product.formattedPrice || `${product.priceHT || product.priceTTC || 5} €`)
                                 )}
                             </span>
                             {(() => {
@@ -122,7 +122,7 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
                                         const exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
                                         if (exactGrams > 0) {
                                             const newPerGram = (currentPriceTTC / exactGrams).toFixed(2).replace('.', ',');
-                                            perGramText = `Le gramme à partir de ${newPerGram}€ TTC`;
+                                            perGramText = `dès ${newPerGram}€/g`;
                                         }
                                     }
                                 }

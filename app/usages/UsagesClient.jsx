@@ -25,7 +25,7 @@ export default function UsagesClient({ globalContent, content }) {
             { label: "PRODUITS", href: "/produits" },
             { label: "L'ESSENTIEL", href: "/essentiel" },
             { label: "CBD & USAGES", href: "/usages" },
-            { label: "BURALISTE", href: "/buraliste" }
+            { label: "PROFESSIONNEL", href: "/buraliste" }
         ]
     };
 
@@ -35,7 +35,7 @@ export default function UsagesClient({ globalContent, content }) {
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
-            { label: "Buraliste", href: "/buraliste" }
+            { label: "Professionnel", href: "/buraliste" }
         ],
         contactInfo: globalContent?.contact || {
             title: "Les Amis du CBD France",

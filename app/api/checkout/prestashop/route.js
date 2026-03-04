@@ -26,7 +26,7 @@ export async function POST(request) {
                     company: user.company,
                     siret: user.siret,
                     birthday: user.birthday,
-                    role: 'guest', // Force guest group
+                    role: user.role || 'client', // Preserve actual role (buraliste or client)
                 }, 1); // 1 = is_guest true
 
                 prestashopCustomerId = customerData?.id || customerData || 0;

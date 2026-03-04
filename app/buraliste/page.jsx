@@ -5,20 +5,20 @@ import { SHARED_TITLE } from '@/app/shared-metadata';
 export const revalidate = 60;
 
 export const metadata = {
-    title: 'Espace Buraliste & Revendeurs',
-    description: 'Devenez partenaire des Amis du CBD. Offres exclusives pour buralistes et professionnels : produits premium, marges attractives et accompagnement personnalisé.',
+    title: 'Espace Professionnel & Revendeurs',
+    description: 'Devenez partenaire des Amis du CBD. Offres exclusives pour professionnels et revendeurs : produits premium, marges attractives et accompagnement personnalisé.',
     alternates: { canonical: '/buraliste' },
 };
 
 const DEFAULTS = {
     hero: {
-        title: "CBD accessible et pas cher pour buralistes : devenez partenaire des Amis du CBD.",
-        text: "Les Amis du CBD est une marque française pensée pour les bureaux de tabac : du CBD naturel, légal, accessible en prix et simple à commercialiser.\n\nNotre ambition est claire : démocratiser le CBD de qualité, sans promesses floues ni prix excessifs.\n\nVotre bureau de tabac est le lieu idéal pour proposer un CBD pas cher, fiable et conforme à la réglementation, à une clientèle de plus en plus demandeuse."
+        title: "CBD accessible et pas cher pour professionnels : devenez partenaire des Amis du CBD.",
+        text: "Les Amis du CBD est une marque française pensée pour les revendeurs et boutiques : du CBD naturel, légal, accessible en prix et simple à commercialiser.\n\nNotre ambition est claire : démocratiser le CBD de qualité, sans promesses floues ni prix excessifs.\n\nVotre boutique est le lieu idéal pour proposer un CBD pas cher, fiable et conforme à la réglementation, à une clientèle de plus en plus demandeuse."
     },
     features1: [
         { title: "Sécurité & légalité avant tout", description: "Produits conformes à la législation française, avec moins de 0,3 % de THC." },
         { title: "Produits testés et traçables", description: "Analyses par des laboratoires indépendants et vente sous scellé de protection." },
-        { title: "Zéro risque en bureau de tabac", description: "Une gamme pensée pour une vente simple, claire et sans mauvaise surprise." },
+        { title: "Zéro risque en boutique", description: "Une gamme pensée pour une vente simple, claire et sans mauvaise surprise." },
         { title: "CBD 100 % naturel, sans lavage chimique", description: "Fleurs cultivées naturellement, sans traitements artificiels, pour une qualité constante." },
         { title: "Prix public ultra accessible", description: "Des fleurs entre 1,50 € et 2 € le gramme, adaptées à une forte demande." }
     ],
@@ -26,7 +26,7 @@ const DEFAULTS = {
         { title: "Gain de temps au quotidien", description: "Commandes rapides et gestion simplifiée pour se concentrer sur les ventes." },
         { title: "Accompagnement clé en main", description: "Présentoirs adaptés, supports pédagogiques et outils d'aide à la vente inclus." },
         { title: "Différenciation en point de vente", description: "Une offre CBD claire qui vous démarque de la concurrence." },
-        { title: "Marge attractive pour le buraliste", description: "Un produit accessible qui reste rentable et compétitif." },
+        { title: "Marge attractive pour le professionnel", description: "Un produit accessible qui reste rentable et compétitif." },
         { title: "Excellent rapport qualité / prix", description: "Un positionnement rare sur le marché, apprécié par les clients exigeants." }
     ],
     steps: [

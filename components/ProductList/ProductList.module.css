@@ -185,6 +185,39 @@
     color: #7EE3CB;
 }
 
+.variationSelector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: clamp(200px, 90%, 280px);
+    margin: 0 auto 15px auto;
+}
+
+.variationBtn {
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.variationBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.variationBtn.active {
+    background: #00FFC2;
+    color: #1F4B40;
+    border-color: #00FFC2;
+    font-weight: 700;
+}
+
 .mainPrice {
     font-size: 1.2rem;
     font-weight: 700;

@@ -77,7 +77,7 @@ export default function StoreLocator({ subtitle = true }) {
                 setIsLocating(false);
 
                 // Auto-select the absolute closest one if within reasonable distance (e.g. 50km)
-                if (withDistance[0].distance < 50) {
+                if (withDistance[0] && withDistance[0].distance < 80) {
                     handlePartnerClick(withDistance[0]);
                 }
 
@@ -87,12 +87,47 @@ export default function StoreLocator({ subtitle = true }) {
                 }
             },
             (error) => {
-                console.error("Geolocation error:", error);
-                alert("Impossible de récupérer votre position. Veuillez vérifier vos autorisations.");
+                console.error("Geolocation error:", error.code, error.message);
+                let msg = "Impossible de récupérer votre position.";
+                if (error.code === 1) msg += " Veuillez autoriser la localisation dans vos paramètres.";
+                else if (error.code === 3) msg += " Délai d'attente dépassé. Veuillez réessayer.";
+
+                alert(msg);
                 setIsLocating(false);
             },
-            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 } // Accuracy false for better success rate on slow networks
         );
+    };
+
+    const triggerNominatimSearch = async (queryOverride) => {
+        const query = (queryOverride || searchQuery).toLowerCase().trim();
+        if (query.length < 3) return;
+
+        setIsSearchingNearby(true);
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=fr&limit=1`);
+            const data = await res.json();
+            if (data && data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+
+                const withDistance = partners.map(p => ({
+                    ...p,
+                    distance: getDistance(lat, lon, p.lat, p.lng)
+                })).sort((a, b) => a.distance - b.distance);
+
+                setNearbyPartners(withDistance.slice(0, 3));
+
+                // If we found results, select the first one to move map
+                if (withDistance[0]) {
+                    handlePartnerClick(withDistance[0]);
+                }
+            }
+        } catch (err) {
+            console.error("Geocoding failed", err);
+        } finally {
+            setIsSearchingNearby(false);
+        }
     };
 
     const filteredPartners = useMemo(() => {
@@ -177,10 +212,10 @@ export default function StoreLocator({ subtitle = true }) {
     return (
         <section className={styles.locatorContainer}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Nos Partenaires Buralistes</h1>
+                <h1 className={styles.title}>Nos Partenaires</h1>
                 {subtitle && (
                     <p className={styles.subtitle}>
-                        Trouvez Les Amis du CBD près de chez vous. Recherchez par ville ou code postal.
+                        Retrouvez Les Amis du CBD chez nos partenaires professionnels.
                     </p>
                 )}
             </header>
@@ -195,9 +230,13 @@ export default function StoreLocator({ subtitle = true }) {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter' && displayPartners.length > 0) {
+                            if (e.key === 'Enter') {
                                 e.preventDefault();
-                                handlePartnerClick(displayPartners[0]);
+                                if (filteredPartners.length > 0) {
+                                    handlePartnerClick(filteredPartners[0]);
+                                } else {
+                                    triggerNominatimSearch();
+                                }
                                 e.target.blur(); // Hide mobile keyboard
                             }
                         }}

@@ -29,7 +29,9 @@ export default async function AccountPage() {
                     Bienvenue, <span className={styles.highlight}>{session.user.name}</span>
                 </p>
                 {session.user.role === 'buraliste' && (
-                    <span className={styles.badge}>Compte Professionnel</span>
+                    <span className={styles.roleBadge}>
+                        Compte Professionnel
+                    </span>
                 )}
             </div>
 

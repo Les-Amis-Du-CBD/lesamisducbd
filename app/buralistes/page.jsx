@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata = {
-    title: 'Points de Vente - Les Amis du CBD',
-    description: 'Trouvez un buraliste partenaire Les Amis du CBD près de chez vous grâce à notre carte interactive.',
+    title: 'Professionnel - Les Amis du CBD',
+    description: 'Devenez partenaire Les Amis du CBD et trouvez nos points de vente sur notre carte interactive.',
 };
 
 export default function BuralistesPage() {

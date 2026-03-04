@@ -66,9 +66,9 @@ export const metadata = {
     },
   },
   icons: {
-    icon: '/icon.png',
-    shortcut: '/icon.png',
-    apple: '/icon.png',
+    icon: 'https://www.lesamisducbd.fr/favicon.ico',
+    shortcut: 'https://www.lesamisducbd.fr/favicon.ico',
+    apple: 'https://www.lesamisducbd.fr/favicon.ico',
   },
 };
 

@@ -1,11 +1,106 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { calculateGroupPrice } from '@/lib/utils/groupPricing';
 import styles from './ProductList.module.css';
+
+function ProductCardItem({ product, index, groupId }) {
+    const [selectedVariant, setSelectedVariant] = useState(product.variations ? product.variations[0] : product);
+
+    const currentRaw = selectedVariant.rawProduct || product.rawProduct;
+    const groupPrice = currentRaw ? calculateGroupPrice(currentRaw, groupId) : null;
+
+    const displayPrice = groupPrice?.suggestShowHT ? groupPrice.formattedPriceHT :
+        (groupPrice?.hasDiscount ? groupPrice.formattedPrice : selectedVariant.formattedPrice || product.formattedPrice);
+
+    // Show original strike-through if discounted
+    const originalPriceHTML = (groupPrice?.hasDiscount && !groupPrice?.suggestShowHT)
+        ? `<span style="text-decoration: line-through; color: #999; font-size: 0.8em; margin-right: 6px;">${selectedVariant.formattedPrice || product.formattedPrice}</span><span style="color: #d9534f; font-weight: bold;">${displayPrice}</span>`
+        : displayPrice;
+
+    // Calculate weight and per-gram price
+    const searchString = `${selectedVariant.name || product.name || ''} ${currentRaw?.reference || ''}`.toLowerCase();
+    const weightMatch = searchString.match(/(?:^|\s|-)(\d+(?:[.,]\d+)?)\s*g\b/);
+    let exactGrams = null;
+    let perGramText = null;
+
+    if (weightMatch) {
+        exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
+        const currentPriceTTC = groupPrice?.priceTTC || currentRaw?.priceTTC || 0;
+        if (exactGrams > 0 && currentPriceTTC > 0) {
+            const newPerGram = (currentPriceTTC / exactGrams).toFixed(2).replace('.', ',');
+            perGramText = `${newPerGram}€/g`;
+        }
+    }
+
+    return (
+        <div className={styles.card}>
+            {product.tag && (
+                <span
+                    className={styles.badge}
+                    style={product.badgeColor ? { backgroundColor: product.badgeColor } : {}}
+                >
+                    {product.tag}
+                </span>
+            )}
+
+            <div className={styles.topInfo}>
+                <div className={styles.subtitlePill}>{product.name}</div>
+                <h3 className={styles.quoteTitle}>{product.quoteTitle}</h3>
+            </div>
+
+            <div className={styles.imageContainer}>
+                <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={400}
+                    height={400}
+                    priority={index < 4}
+                    unoptimized
+                    className={styles.productImage}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                />
+            </div>
+
+            {/* 4g & 10g Selection Buttons */}
+            {product.variations && product.variations.length > 0 ? (
+                <div className={styles.variationSelector}>
+                    {product.variations.map(v => (
+                        <button
+                            key={v.slug}
+                            className={`${styles.variationBtn} ${selectedVariant.slug === v.slug ? styles.active : ''}`}
+                            onClick={() => setSelectedVariant(v)}
+                        >
+                            {v.weight}g = {(() => {
+                                const vPrice = calculateGroupPrice(v.rawProduct, groupId);
+                                return vPrice.suggestShowHT ? vPrice.formattedPriceHT : vPrice.formattedPrice;
+                            })()}
+                        </button>
+                    ))}
+                </div>
+            ) : (
+                <div className={styles.pillsContainer}>
+                    <span className={styles.pillLeft} dangerouslySetInnerHTML={{ __html: originalPriceHTML }}></span>
+                    {exactGrams && (
+                        <span className={styles.pillRight}>{exactGrams}G</span>
+                    )}
+                </div>
+            )}
+
+            <Link href={`/produit/${selectedVariant.slug}`} className={styles.ctaLink}>
+                <button className={styles.cta}>Découvrir cette variété</button>
+            </Link>
+
+            {perGramText && (
+                <div className={styles.perGramList}>dès {perGramText}</div>
+            )}
+        </div>
+    );
+}
 
 export default function ProductList({ title, description, linkLabel, linkHref, products }) {
     const titleParts = title.split(' pour ');
@@ -28,77 +123,14 @@ export default function ProductList({ title, description, linkLabel, linkHref, p
                 {/* Product Grid Container (Green Gradient + Rounded) */}
                 <div className={styles.productsContainer}>
                     <div className={styles.grid}>
-                        {products.map((product, index) => {
-                            // If `rawProduct` was passed down from page.js, calculate group price. Otherwise fallback.
-                            const groupPrice = product.rawProduct ? calculateGroupPrice(product.rawProduct, groupId) : null;
-                            const displayPrice = groupPrice?.hasDiscount ? groupPrice.formattedPrice : product.formattedPrice;
-
-                            // Show original strike-through if discounted
-                            const originalPriceHTML = groupPrice?.hasDiscount
-                                ? `<span style="text-decoration: line-through; color: #999; font-size: 0.8em; margin-right: 6px;">${product.formattedPrice}</span><span style="color: #d9534f; font-weight: bold;">${displayPrice}</span>`
-                                : displayPrice;
-
-                            // Calculate weight and per-gram price
-                            const searchString = `${product.name || ''} ${product.rawProduct?.reference || ''}`.toLowerCase();
-                            const weightMatch = searchString.match(/(?:^|\s|-)(\d+(?:[.,]\d+)?)\s*g\b/);
-                            let exactGrams = null;
-                            let perGramText = null;
-
-                            if (weightMatch) {
-                                exactGrams = parseFloat(weightMatch[1].replace(',', '.'));
-                                const currentPriceTTC = groupPrice?.priceTTC || product.rawProduct?.priceTTC || product.price;
-                                if (exactGrams > 0 && currentPriceTTC > 0) {
-                                    const newPerGram = (currentPriceTTC / exactGrams).toFixed(2).replace('.', ',');
-                                    perGramText = `${newPerGram}€/g`;
-                                }
-                            }
-
-                            return (
-                                <div key={index} className={styles.card}>
-                                    {product.tag && (
-                                        <span
-                                            className={styles.badge}
-                                            style={product.badgeColor ? { backgroundColor: product.badgeColor } : {}}
-                                        >
-                                            {product.tag}
-                                        </span>
-                                    )}
-
-                                    <div className={styles.topInfo}>
-                                        <div className={styles.subtitlePill}>{product.name}</div>
-                                        <h3 className={styles.quoteTitle}>{product.quoteTitle}</h3>
-                                    </div>
-
-                                    <div className={styles.imageContainer}>
-                                        <Image
-                                            src={product.image}
-                                            alt={product.name}
-                                            width={400}
-                                            height={400}
-                                            priority={index < 4}
-                                            unoptimized
-                                            className={styles.productImage}
-                                            sizes="(max-width: 768px) 100vw, 33vw"
-                                        />
-                                    </div>
-
-                                    <div className={styles.pillsContainer}>
-                                        <span className={styles.pillLeft} dangerouslySetInnerHTML={{ __html: originalPriceHTML }}></span>
-                                        {exactGrams && (
-                                            <span className={styles.pillRight}>{exactGrams}G</span>
-                                        )}
-                                    </div>
-
-                                    <Link href={`/produit/${product.slug}`} className={styles.ctaLink}>
-                                        <button className={styles.cta}>Découvrir cette variété</button>
-                                    </Link>
-
-                                    {perGramText && (
-                                        <div className={styles.perGramList}>Le gramme à partir de {perGramText}</div>
-                                    )}
-                                </div>
-                            );
-                        })}
+                        {products.map((product, index) => (
+                            <ProductCardItem
+                                key={index}
+                                product={product}
+                                index={index}
+                                groupId={groupId}
+                            />
+                        ))}
                     </div>
                 </div>
 

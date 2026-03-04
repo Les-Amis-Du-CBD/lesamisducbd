@@ -16,14 +16,14 @@ import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 export default function EssentielClient({ content, globalContent }) {
     const headerProps = {
         bannerVisible: globalContent?.visibility?.headerBanner !== false,
-        
+
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.webp",
         menuItems: [
             { label: "PRODUITS", href: "/produits" },
             { label: "L'ESSENTIEL", href: "/essentiel" },
             { label: "CBD & USAGES", href: "/usages" },
-            { label: "BURALISTE", href: "/buraliste" }
+            { label: "PROFESSIONNEL", href: "/buraliste" }
         ]
     };
 
@@ -33,7 +33,7 @@ export default function EssentielClient({ content, globalContent }) {
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
-            { label: "Buraliste", href: "/buraliste" }
+            { label: "Professionnel", href: "/buraliste" }
         ],
         contactInfo: globalContent?.contact || {
             title: "Les Amis du CBD France",

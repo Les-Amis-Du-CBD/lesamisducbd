@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 
 export default function CartDrawer() {
     const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, clearCart, cartTotal } = useCart();
+    const { data: session } = useSession();
 
     const router = useRouter();
 
@@ -24,7 +26,7 @@ export default function CartDrawer() {
             const res = await fetch('/api/checkout/prestashop', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cart })
+                body: JSON.stringify({ cart, user: session?.user })
             });
             const data = await res.json();
 

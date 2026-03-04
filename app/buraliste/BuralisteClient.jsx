@@ -21,14 +21,14 @@ export default function BuralisteClient({ content, globalContent }) {
 
     const headerProps = {
         bannerVisible: globalContent?.visibility?.headerBanner !== false,
-        
+
         logoText: "LES AMIS DU CBD",
         logoImage: "/images/logo.webp",
         menuItems: [
             { label: "PRODUITS", href: "/produits" },
             { label: "L'ESSENTIEL", href: "/essentiel" },
             { label: "CBD & USAGES", href: "/usages" },
-            { label: "BURALISTE", href: "/buraliste" }
+            { label: "PROFESSIONNEL", href: "/buraliste" }
         ]
     };
 
@@ -38,7 +38,7 @@ export default function BuralisteClient({ content, globalContent }) {
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
-            { label: "Buraliste", href: "/buraliste" }
+            { label: "Professionnel", href: "/buraliste" }
         ],
         contactInfo: globalContent?.contact || {
             title: "Les Amis du CBD France",
@@ -100,7 +100,7 @@ export default function BuralisteClient({ content, globalContent }) {
                 {visibility.features1 !== false && (
                     <ScrollReveal animation="fade-up" delay={200}>
                         <WhyChooseUs
-                            title="Pourquoi choisir Les Amis du CBD pour votre Bureau de Tabac ?"
+                            title="Pourquoi choisir Les Amis du CBD pour votre Boutique ?"
                             features={whyChooseUsFeatures1}
                             ctaLabel=""
                             imageSrc="/images/whychooseus/Scientist.webp"

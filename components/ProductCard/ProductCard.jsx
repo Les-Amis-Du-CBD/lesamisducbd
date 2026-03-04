@@ -59,9 +59,13 @@ export default function ProductCard({ product }) {
 
                 <div className={styles.footer}>
                     <div className={styles.priceBlock}>
-                        <span className={styles.price}>{product.formattedPrice}</span>
+                        <span className={styles.price}>
+                            {product.suggestShowHT ? product.formattedPriceHT : product.formattedPrice}
+                        </span>
                         {perGramText && (
-                            <span className={styles.perGram}>{perGramText}</span>
+                            <span className={styles.perGram}>
+                                dès {perGramText.replace(' TTC', '')}
+                            </span>
                         )}
                     </div>
                     <button className={styles.cta}>Voir</button>

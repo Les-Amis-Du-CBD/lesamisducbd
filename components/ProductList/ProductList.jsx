@@ -69,12 +69,23 @@ function ProductCardItem({ product, index, groupId }) {
 
             {/* Price / Selection Display */}
             {!product.variations || product.variations.length === 0 ? (
-                <div className={styles.pillsContainer}>
-                    <span className={styles.pillLeft} dangerouslySetInnerHTML={{ __html: originalPriceHTML }}></span>
-                    {exactGrams && (
-                        <span className={styles.pillRight}>{exactGrams}G</span>
-                    )}
-                </div>
+                groupPrice?.suggestShowHT ? (
+                    // Compte PRO : pill prix HT (gauche) + pill grammes (droite)
+                    <div className={styles.pillsContainer}>
+                        <span className={styles.pillLeft}>{groupPrice.formattedPriceHT} HT</span>
+                        {exactGrams && (
+                            <span className={styles.pillRight}>{exactGrams}G</span>
+                        )}
+                    </div>
+                ) : (
+                    // Compte standard : affichage TTC barré si promo, sinon normal
+                    <div className={styles.pillsContainer}>
+                        <span className={styles.pillLeft} dangerouslySetInnerHTML={{ __html: originalPriceHTML }}></span>
+                        {exactGrams && (
+                            <span className={styles.pillRight}>{exactGrams}G</span>
+                        )}
+                    </div>
+                )
             ) : (
                 <div className={styles.variationSelector}>
                     {product.variations.map(v => {

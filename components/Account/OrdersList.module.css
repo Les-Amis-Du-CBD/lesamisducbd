@@ -1,0 +1,238 @@
+.ordersList {
+    width: 100%;
+}
+
+.title {
+    font-size: 1.8rem;
+    color: #1a2e1a;
+    margin-bottom: 25px;
+    font-weight: 800;
+}
+
+.loadingContainer,
+.emptyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8f0e8;
+    text-align: center;
+}
+
+.spinner {
+    color: #2d6a2d;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.emptyIcon {
+    color: #8fa68f;
+    margin-bottom: 15px;
+}
+
+.emptyContainer h3 {
+    font-size: 1.2rem;
+    color: #1a2e1a;
+    margin-bottom: 8px;
+}
+
+.emptyContainer p {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.error {
+    background: #fff0f0;
+    color: #e02b2b;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.orderCard {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8f0e8;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f4f0;
+}
+
+.reference {
+    font-weight: 800;
+    color: #1a2e1a;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #6a7c76;
+    font-size: 0.9rem;
+}
+
+.total {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #2d6a2d;
+}
+
+/* Moving the statusBadge inline styles here to separate concerns */
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.statusDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.products {
+    background: #f8fbf8;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.productsTitle {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a2e1a;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.productsList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.productsList li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.itemQty {
+    font-weight: 800;
+    color: #4a6b57;
+    font-size: 0.9rem;
+    min-width: 24px;
+}
+
+.itemName {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.trackingBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #00FF94;
+    color: #1F4B40;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+@media (hover: hover) {
+    .trackingBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 255, 148, 0.4);
+    }
+}
+
+.trackingBtn .extIcon {
+    margin-left: auto;
+    opacity: 0.7;
+}
+
+.noTracking {
+    padding: 12px;
+    background: #f5f5f5;
+    color: #666;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.trackingNumberOnly {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #f0f7f0;
+    border: 1px solid #cce0cc;
+    border-radius: 12px;
+    color: #2d6a2d;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .orderCard {
+        padding: 16px;
+    }
+
+    .cardHeader {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .total {
+        font-size: 1.15rem;
+    }
+
+    .trackingBtn {
+        font-size: 0.9rem;
+    }
+}

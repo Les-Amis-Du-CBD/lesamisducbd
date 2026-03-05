@@ -4,6 +4,7 @@ import { User, MapPin, Package, Loader2, LogOut } from 'lucide-react';
 import styles from './AccountTabs.module.css';
 import ProfileTab from './Tabs/ProfileTab';
 import AddressesTab from './Tabs/AddressesTab';
+import OrdersList from '@/components/Account/OrdersList';
 import { signOut } from 'next-auth/react';
 
 export default function AccountTabs({ userSession }) {
@@ -87,11 +88,7 @@ export default function AccountTabs({ userSession }) {
                     <AddressesTab user={userData} onUpdate={handleUpdate} />
                 )}
                 {activeTab === 'orders' && (
-                    <div className={styles.emptyState}>
-                        <Package size={48} className={styles.emptyIcon} />
-                        <h3>Aucune commande</h3>
-                        <p>Vous n'avez pas encore passé de commande sur notre boutique.</p>
-                    </div>
+                    <OrdersList />
                 )}
             </div>
         </div>

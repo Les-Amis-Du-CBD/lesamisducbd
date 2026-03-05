@@ -4,7 +4,7 @@ import { kv } from '@vercel/kv';
 import bcrypt from 'bcryptjs';
 import { prestaCheckoutService } from '@/lib/services/prestaCheckoutService';
 
-const authOptions = {
+export const authOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",

@@ -1,201 +1,242 @@
 'use client';
-import { useState } from 'react';
-import { Plus, Edit2, Trash2, Save, Loader2, MapPin } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Edit2, Trash2, Save, Loader2, MapPin, ArrowLeft } from 'lucide-react';
 
-export default function AddressesTab({ user, onUpdate }) {
-    const [addresses, setAddresses] = useState(user?.addresses || []);
+const COUNTRIES = [
+    { code: 'FR', name: 'France' },
+    { code: 'BE', name: 'Belgique' },
+    { code: 'CH', name: 'Suisse' },
+    { code: 'LU', name: 'Luxembourg' },
+    { code: 'DE', name: 'Allemagne' },
+    { code: 'ES', name: 'Espagne' },
+    { code: 'IT', name: 'Italie' },
+    { code: 'NL', name: 'Pays-Bas' },
+    { code: 'PT', name: 'Portugal' },
+    { code: 'GB', name: 'Royaume-Uni' },
+];
+
+const defaultForm = {
+    alias: 'Domicile',
+    firstname: '',
+    lastname: '',
+    company: '',
+    vat_number: '',
+    address1: '',
+    address2: '',
+    postcode: '',
+    city: '',
+    country_code: 'FR',
+    phone: '',
+};
+
+export default function AddressesTab({ user }) {
+    const [addresses, setAddresses] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [editingPsId, setEditingPsId] = useState(null);
+    const [formData, setFormData] = useState(defaultForm);
 
-    // Form state
-    const [editingIndex, setEditingIndex] = useState(null);
-    const [formData, setFormData] = useState({
-        alias: 'Domicile', // Domicile, Boutique
-        firstname: '',
-        lastname: '',
-        company: '',
-        address1: '',
-        address2: '',
-        postcode: '',
-        city: '',
-        phone: ''
-    });
+    // Fetch addresses live from PrestaShop on mount
+    useEffect(() => {
+        fetchAddresses();
+    }, []);
+
+    const fetchAddresses = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch('/api/user/addresses');
+            const data = await res.json();
+            if (data.success) setAddresses(data.addresses);
+        } catch (err) {
+            console.error("Erreur chargement adresses:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const resetForm = () => {
-        setFormData({
-            alias: 'Domicile', firstname: '', lastname: '', company: '',
-            address1: '', address2: '', postcode: '', city: '', phone: ''
-        });
-        setEditingIndex(null);
+        setFormData(defaultForm);
+        setEditingPsId(null);
         setIsEditing(false);
     };
 
-    const handleEdit = (index) => {
-        setFormData(addresses[index]);
-        setEditingIndex(index);
+    const handleEdit = (addr) => {
+        setFormData({
+            alias: addr.alias,
+            firstname: addr.firstname,
+            lastname: addr.lastname,
+            company: addr.company || '',
+            vat_number: addr.vat_number || '',
+            address1: addr.address1,
+            address2: addr.address2 || '',
+            postcode: addr.postcode,
+            city: addr.city,
+            country_code: addr.country_code || 'FR',
+            phone: addr.phone || '',
+        });
+        setEditingPsId(addr.ps_id);
         setIsEditing(true);
     };
 
-    const handleDelete = async (index) => {
+    const handleDelete = async (psId) => {
         if (!confirm("Voulez-vous vraiment supprimer cette adresse ?")) return;
-
-        const newAddresses = [...addresses];
-        newAddresses.splice(index, 1);
-        await saveAddressesToApi(newAddresses);
+        try {
+            const res = await fetch(`/api/user/addresses?id=${psId}`, { method: 'DELETE' });
+            const data = await res.json();
+            if (data.success) {
+                setAddresses(prev => prev.filter(a => a.ps_id !== psId));
+            } else {
+                alert("Erreur lors de la suppression.");
+            }
+        } catch (err) {
+            alert("Erreur de connexion.");
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        let newAddresses = [...addresses];
-
-        // Auto-fill names if empty
-        const addressToSave = { ...formData };
-        if (!addressToSave.firstname) {
-            const splitName = (user.name || '').split(' ');
-            addressToSave.firstname = splitName[0] || '';
-            addressToSave.lastname = splitName.slice(1).join(' ') || '';
-        }
-
-        if (editingIndex !== null) {
-            newAddresses[editingIndex] = addressToSave;
-        } else {
-            newAddresses.push(addressToSave);
-        }
-
-        await saveAddressesToApi(newAddresses);
-        resetForm();
-    };
-
-    const saveAddressesToApi = async (newAddresses) => {
-        setIsLoading(true);
+        setIsSaving(true);
         try {
-            const res = await fetch('/api/user/profile', {
-                method: 'PUT',
+            const nameParts = (user?.name || '').trim().split(' ');
+            const payload = {
+                ...formData,
+                firstname: formData.firstname || nameParts[0] || '',
+                lastname: formData.lastname || nameParts.slice(1).join(' ') || '',
+            };
+
+            const method = editingPsId ? 'PUT' : 'POST';
+            const body = editingPsId ? { ...payload, ps_id: editingPsId } : payload;
+
+            const res = await fetch('/api/user/addresses', {
+                method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ addresses: newAddresses })
+                body: JSON.stringify(body)
             });
 
             const data = await res.json();
-            if (res.ok && data.success) {
-                setAddresses(newAddresses);
-                onUpdate(data.user); // update parent
+            if (data.success) {
+                await fetchAddresses(); // Refresh from PrestaShop
+                resetForm();
             } else {
-                alert("Erreur lors de l'enregistrement de l'adresse.");
+                alert(data.error || "Erreur lors de l'enregistrement.");
             }
         } catch (err) {
-            console.error(err);
             alert("Erreur de connexion.");
         } finally {
-            setIsLoading(false);
+            setIsSaving(false);
         }
     };
 
-    const inputFocus = (e) => e.target.style.borderColor = 'var(--accent-neon)';
-    const inputBlur = (e) => e.target.style.borderColor = '#D1D5DB';
+    const Field = ({ label, children, optional }) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                {label} {optional && <span style={{ color: '#9CA3AF', fontWeight: '400' }}>(optionnel)</span>}
+            </label>
+            {children}
+        </div>
+    );
 
     const inputStyle = {
-        padding: '12px 16px',
+        padding: '11px 14px',
         borderRadius: '10px',
-        border: '1px solid #D1D5DB',
-        outline: 'none',
+        border: '1.5px solid #E5E7EB',
         fontSize: '0.95rem',
         fontFamily: 'inherit',
-        transition: 'border-color 0.2s'
+        outline: 'none',
+        background: '#fff',
+        transition: 'border-color 0.2s',
     };
 
+    // --- FORM VIEW ---
     if (isEditing) {
         return (
-            <div style={{ maxWidth: '650px', animation: 'fadeIn 0.3s ease' }}>
-                <h2 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '1.5rem', color: 'var(--primary-dark)', letterSpacing: '-0.02em' }}>
-                    {editingIndex !== null ? 'Modifier une adresse' : 'Ajouter une adresse'}
-                </h2>
+            <div style={{ maxWidth: '640px', animation: 'fadeIn 0.3s ease' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '2rem' }}>
+                    <button onClick={resetForm} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '600', fontSize: '0.9rem', padding: '0' }}>
+                        <ArrowLeft size={18} /> Retour
+                    </button>
+                    <h2 style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
+                        {editingPsId ? 'Modifier l\'adresse' : 'Ajouter une adresse'}
+                    </h2>
+                </div>
 
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Type d'adresse</label>
-                        <select required value={formData.alias || 'Domicile'} onChange={e => setFormData({ ...formData, alias: e.target.value })} style={{ ...inputStyle, WebkitAppearance: 'none', appearance: 'none', background: 'white url("data:image/svg+xml;utf8,<svg fill=%234B5563 height=24 viewBox=0 0 24 24 width=24 xmlns=http://www.w3.org/2000/svg><path d=M7 10l5 5 5-5z/></svg>") no-repeat right 10px center' }} onFocus={inputFocus} onBlur={inputBlur}>
+                    <Field label="Alias" optional>
+                        <select value={formData.alias} onChange={e => setFormData({ ...formData, alias: e.target.value })}
+                            style={{ ...inputStyle, appearance: 'none', backgroundImage: 'url("data:image/svg+xml;utf8,<svg fill=%236B7280 height=20 viewBox=0 0 24 24 width=20 xmlns=http://www.w3.org/2000/svg><path d=M7 10l5 5 5-5z/></svg>")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}>
                             <option value="Domicile">Domicile</option>
                             <option value="Boutique">Boutique</option>
+                            <option value="Bureau">Bureau</option>
                         </select>
+                    </Field>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                        <Field label="Prénom">
+                            <input type="text" value={formData.firstname} required onChange={e => setFormData({ ...formData, firstname: e.target.value })} style={inputStyle}
+                                onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="Jean" />
+                        </Field>
+                        <Field label="Nom">
+                            <input type="text" value={formData.lastname} required onChange={e => setFormData({ ...formData, lastname: e.target.value })} style={inputStyle}
+                                onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="Dupont" />
+                        </Field>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '15px' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-                            <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Prénom</label>
-                            <input type="text" value={formData.firstname} onChange={e => setFormData({ ...formData, firstname: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-                            <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Nom</label>
-                            <input type="text" value={formData.lastname} onChange={e => setFormData({ ...formData, lastname: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                        </div>
+                    <Field label="Société" optional>
+                        <input type="text" value={formData.company} onChange={e => setFormData({ ...formData, company: e.target.value })} style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="Ma Société SAS" />
+                    </Field>
+
+                    <Field label="Numéro de TVA" optional>
+                        <input type="text" value={formData.vat_number} onChange={e => setFormData({ ...formData, vat_number: e.target.value })} style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="FR00123456789" />
+                    </Field>
+
+                    <Field label="Adresse">
+                        <input type="text" value={formData.address1} required onChange={e => setFormData({ ...formData, address1: e.target.value })} style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="10 Rue de la Paix" />
+                    </Field>
+
+                    <Field label="Complément d'adresse" optional>
+                        <input type="text" value={formData.address2} onChange={e => setFormData({ ...formData, address2: e.target.value })} style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="Appartement 3B" />
+                    </Field>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '14px' }}>
+                        <Field label="Code postal">
+                            <input type="text" value={formData.postcode} required onChange={e => setFormData({ ...formData, postcode: e.target.value })} style={inputStyle}
+                                onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="75001" />
+                        </Field>
+                        <Field label="Ville">
+                            <input type="text" value={formData.city} required onChange={e => setFormData({ ...formData, city: e.target.value })} style={inputStyle}
+                                onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="Paris" />
+                        </Field>
                     </div>
 
-                    {user?.role === 'buraliste' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Société (Boutique)</label>
-                            <input type="text" value={formData.company} onChange={e => setFormData({ ...formData, company: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                        </div>
-                    )}
+                    <Field label="Pays">
+                        <select value={formData.country_code} onChange={e => setFormData({ ...formData, country_code: e.target.value })}
+                            style={{ ...inputStyle, appearance: 'none', backgroundImage: 'url("data:image/svg+xml;utf8,<svg fill=%236B7280 height=20 viewBox=0 0 24 24 width=20 xmlns=http://www.w3.org/2000/svg><path d=M7 10l5 5 5-5z/></svg>")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}>
+                            {COUNTRIES.map(c => (
+                                <option key={c.code} value={c.code}>{c.name}</option>
+                            ))}
+                        </select>
+                    </Field>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Adresse</label>
-                        <input required type="text" value={formData.address1} onChange={e => setFormData({ ...formData, address1: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                    </div>
+                    <Field label="Téléphone" optional>
+                        <input type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = 'var(--accent-neon)'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} placeholder="06 12 34 56 78" />
+                    </Field>
 
-                    <div style={{ display: 'flex', gap: '15px' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-                            <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Code Postal</label>
-                            <input required type="text" value={formData.postcode} onChange={e => setFormData({ ...formData, postcode: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 2 }}>
-                            <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Ville</label>
-                            <input required type="text" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                        </div>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#4B5563' }}>Téléphone</label>
-                        <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
-                    </div>
-
-                    <div style={{ marginTop: '20px', display: 'flex', gap: '15px' }}>
-                        <button
-                            type="button"
-                            onClick={resetForm}
-                            style={{ padding: '14px', background: '#F3F4F6', color: '#4B5563', border: 'none', borderRadius: '10px', cursor: 'pointer', flex: 1, fontWeight: '600', fontSize: '1rem', transition: 'background 0.2s' }}
-                            onMouseEnter={(e) => e.target.style.background = '#E5E7EB'}
-                            onMouseLeave={(e) => e.target.style.background = '#F3F4F6'}
-                        >
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                        <button type="button" onClick={resetForm}
+                            style={{ padding: '13px 20px', background: '#F3F4F6', color: '#4B5563', border: 'none', borderRadius: '10px', cursor: 'pointer', fontWeight: '600', fontSize: '0.95rem', flex: 1 }}>
                             Annuler
                         </button>
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            style={{
-                                padding: '14px',
-                                background: 'var(--primary-dark)',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '10px',
-                                cursor: isLoading ? 'not-allowed' : 'pointer',
-                                flex: 2,
-                                fontWeight: '600',
-                                fontSize: '1rem',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '8px',
-                                transition: 'all 0.2s',
-                                boxShadow: '0 4px 12px rgba(31, 75, 64, 0.2)',
-                                opacity: isLoading ? 0.8 : 1
-                            }}
-                            onMouseEnter={(e) => { if (!isLoading) e.target.style.transform = 'translateY(-1px)'; }}
-                            onMouseLeave={(e) => { if (!isLoading) e.target.style.transform = 'translateY(0)'; }}
-                        >
-                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Save size={20} />}
-                            Sauvegarder l'adresse
+                        <button type="submit" disabled={isSaving}
+                            style={{ padding: '13px 20px', background: 'var(--primary-dark)', color: 'white', border: 'none', borderRadius: '10px', cursor: isSaving ? 'not-allowed' : 'pointer', fontWeight: '700', fontSize: '0.95rem', flex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', opacity: isSaving ? 0.7 : 1 }}>
+                            {isSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                            Sauvegarder
                         </button>
                     </div>
                 </form>
@@ -203,85 +244,63 @@ export default function AddressesTab({ user, onUpdate }) {
         );
     }
 
+    // --- LIST VIEW ---
     return (
         <div style={{ animation: 'fadeIn 0.4s ease' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--primary-dark)', margin: 0, letterSpacing: '-0.02em' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
                     Carnet d'adresses
                 </h2>
-                <button
-                    onClick={() => setIsEditing(true)}
-                    style={{
-                        background: 'var(--primary-dark)',
-                        color: 'white',
-                        border: 'none',
-                        padding: '10px 20px',
-                        borderRadius: '30px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontWeight: '600',
-                        fontSize: '0.95rem',
-                        transition: 'all 0.2s',
-                        boxShadow: '0 4px 12px rgba(31, 75, 64, 0.2)'
-                    }}
-                    onMouseEnter={(e) => e.target.style.transform = 'translateY(-1px)'}
-                    onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
-                >
+                <button onClick={() => setIsEditing(true)}
+                    style={{ background: 'var(--primary-dark)', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '30px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', fontSize: '0.95rem', boxShadow: '0 4px 12px rgba(31, 75, 64, 0.2)' }}>
                     <Plus size={18} /> Ajouter
                 </button>
             </div>
 
-            {addresses.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '60px 20px', background: '#F9FAFB', borderRadius: '24px', color: '#6B7280', border: '1px dashed #D1D5DB' }}>
+            {loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
+                    <Loader2 size={36} style={{ color: 'var(--primary-dark)', animation: 'spin 1s linear infinite' }} />
+                </div>
+            ) : addresses.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '60px 20px', background: '#F9FAFB', borderRadius: '24px', border: '1px dashed #D1D5DB' }}>
                     <MapPin size={48} style={{ color: '#D1D5DB', margin: '0 auto 15px auto' }} />
                     <h3 style={{ color: 'var(--primary-dark)', fontSize: '1.2rem', marginBottom: '8px' }}>Aucune adresse</h3>
-                    <p>Vous n'avez pas encore enregistré d'adresse de livraison.</p>
+                    <p style={{ color: '#6B7280' }}>Vous n'avez pas encore enregistré d'adresse de livraison.</p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-                    {addresses.map((addr, idx) => (
-                        <div key={idx} style={{
-                            border: '1px solid #F3F4F6',
-                            background: '#FFFFFF',
-                            borderRadius: '20px',
-                            padding: '24px',
-                            position: 'relative',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
-                            transition: 'transform 0.2s',
-                            display: 'flex',
-                            flexDirection: 'column'
-                        }}
-                            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', paddingBottom: '15px', borderBottom: '1px solid #F3F4F6' }}>
-                                <div style={{ background: 'var(--background-light)', color: 'var(--primary-dark)', padding: '8px', borderRadius: '10px' }}>
-                                    <MapPin size={20} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '20px' }}>
+                    {addresses.map((addr) => (
+                        <div key={addr.ps_id} style={{ border: '1px solid #F0F0F0', background: '#fff', borderRadius: '20px', padding: '22px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'transform 0.2s, box-shadow 0.2s' }}
+                            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                            onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingBottom: '16px', borderBottom: '1px solid #F3F4F6' }}>
+                                <div style={{ background: 'var(--background-light)', padding: '8px', borderRadius: '10px' }}>
+                                    <MapPin size={20} style={{ color: 'var(--primary-dark)' }} />
                                 </div>
-                                <h3 style={{ fontSize: '1.15rem', fontWeight: '700', color: 'var(--primary-dark)', margin: 0 }}>
-                                    {addr.alias || `Adresse ${idx + 1}`}
+                                <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
+                                    {addr.alias}
                                 </h3>
                             </div>
 
-                            <div style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: '1.6', flex: 1 }}>
-                                {(addr.firstname || addr.lastname) && <div style={{ fontWeight: '600', color: '#1F2937' }}>{addr.firstname} {addr.lastname}</div>}
-                                {addr.company && <div style={{ fontWeight: '600', color: 'var(--primary-dark)' }}>🏢 {addr.company}</div>}
+                            <div style={{ fontSize: '0.93rem', color: '#4B5563', lineHeight: '1.65', flex: 1 }}>
+                                <div style={{ fontWeight: '700', color: '#1F2937' }}>{addr.firstname} {addr.lastname}</div>
+                                {addr.company && <div style={{ color: 'var(--primary-dark)', fontWeight: '600' }}>🏢 {addr.company}</div>}
                                 <div>{addr.address1}</div>
                                 {addr.address2 && <div>{addr.address2}</div>}
                                 <div>{addr.postcode} {addr.city}</div>
-                                <div style={{ marginTop: '12px', color: '#6B7280', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                    📞 {addr.phone}
-                                </div>
+                                <div style={{ color: '#6B7280' }}>{COUNTRIES.find(c => c.code === addr.country_code)?.name || addr.country_code}</div>
+                                {addr.phone && <div style={{ marginTop: '8px', color: '#6B7280' }}>📞 {addr.phone}</div>}
                             </div>
 
-                            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-                                <button onClick={() => handleEdit(idx)} style={{ flex: 1, padding: '10px', background: '#F3F4F6', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#4B5563', fontWeight: '600', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'} onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}>
-                                    <Edit2 size={16} style={{ marginRight: '6px' }} /> Modifier
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <button onClick={() => handleEdit(addr)}
+                                    style={{ flex: 1, padding: '10px', background: '#F3F4F6', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', color: '#4B5563', fontWeight: '600', fontSize: '0.9rem' }}>
+                                    <Edit2 size={15} /> Modifier
                                 </button>
-                                <button onClick={() => handleDelete(idx)} style={{ flex: 1, padding: '10px', background: '#FEF2F2', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#EF4444', fontWeight: '600', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = '#FEE2E2'} onMouseLeave={e => e.currentTarget.style.background = '#FEF2F2'}>
-                                    <Trash2 size={16} style={{ marginRight: '6px' }} /> Supprimer
+                                <button onClick={() => handleDelete(addr.ps_id)}
+                                    style={{ flex: 1, padding: '10px', background: '#FEF2F2', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', color: '#EF4444', fontWeight: '600', fontSize: '0.9rem' }}>
+                                    <Trash2 size={15} /> Supprimer
                                 </button>
                             </div>
                         </div>

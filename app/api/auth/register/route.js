@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { email, password, firstname, lastname, birthday, company, siret } = body;
+        const { email, password, firstname, lastname, id_gender, birthday, company, siret } = body;
 
         // Validation basique
         if (!email || !password || !firstname || !lastname) {
@@ -30,6 +30,7 @@ export async function POST(req) {
             name: `${firstname} ${lastname}`.trim(),
             firstname,
             lastname,
+            id_gender: id_gender || '',
             password: hashedPassword,
             birthday: birthday || '',
             company: company || '',

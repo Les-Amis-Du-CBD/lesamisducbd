@@ -15,7 +15,7 @@ const HEADER_PROPS = {
         { label: "PRODUITS", href: "/produits" },
         { label: "L'ESSENTIEL", href: "/essentiel" },
         { label: "CBD & USAGES", href: "/usages" },
-        { label: "PROFESSIONNEL", href: "/buraliste" }
+        { label: "PROFESSIONNEL", href: "/professionnel" }
     ]
 };
 
@@ -25,7 +25,7 @@ const FOOTER_PROPS = {
         { label: "CGV", href: "/cgv" },
         { label: "Politique de confidentialité", href: "/privacy" },
         { label: "Transparence", href: "/transparence" },
-        { label: "Professionnel", href: "/buraliste" }
+        { label: "Professionnel", href: "/professionnel" }
     ],
     contactInfo: {
         title: "Les Amis du CBD France",

@@ -15,24 +15,31 @@ export async function POST(request) {
         let prestashopCustomerId = 0;
 
         if (user && user.email) {
-            console.log(`[checkout/prestashop] Utilisateur fourni (passage en mode Invité) : ${user.email}`);
-            // Cherche le client ou le crée en tant que GUEST
-            try {
-                const customerData = await prestaCheckoutService.createCustomer({
-                    email: user.email,
-                    name: user.name || 'Client',
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    company: user.company,
-                    siret: user.siret,
-                    birthday: user.birthday,
-                    role: user.role || 'client', // Preserve actual role (buraliste or client)
-                }, 1); // 1 = is_guest true
+            console.log(`[checkout/prestashop] Utilisateur fourni : ${user.email}`);
 
-                prestashopCustomerId = customerData?.id || customerData || 0;
-                console.log(`[checkout/prestashop] ID Client PrestaShop (Guest) : ${prestashopCustomerId}`);
-            } catch (err) {
-                console.error("[checkout/prestashop] Erreur création client invité, on continue anonymement", err);
+            if (user.legacy_ps_id) {
+                // Utiliser directement l'ID PrestaShop synchronisé
+                prestashopCustomerId = user.legacy_ps_id;
+                console.log(`[checkout/prestashop] Utilisation de l'ID PrestaShop existant : ${prestashopCustomerId}`);
+            } else {
+                // Création d'un vrai compte client (pas invité) car l'utilisateur est connecté sur le front
+                try {
+                    const customerData = await prestaCheckoutService.createCustomer({
+                        email: user.email,
+                        name: user.name || 'Client',
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        company: user.company,
+                        siret: user.siret,
+                        birthday: user.birthday,
+                        role: user.role || 'client',
+                    }, 0); // 0 = is_guest false (Ceci est un vrai compte)
+
+                    prestashopCustomerId = customerData?.id || customerData || 0;
+                    console.log(`[checkout/prestashop] Nouvel ID Client PrestaShop créé : ${prestashopCustomerId}`);
+                } catch (err) {
+                    console.error("[checkout/prestashop] Erreur création client PrestaShop", err);
+                }
             }
         }
 

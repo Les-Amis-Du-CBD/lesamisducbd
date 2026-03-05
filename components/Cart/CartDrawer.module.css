@@ -269,9 +269,180 @@
     font-weight: 700;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.checkoutBtn:hover {
+.checkoutBtn:hover:not(:disabled) {
     transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(31, 75, 64, 0.2);
+}
+
+.checkoutBtn:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.buttonContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.buttonIcon {
+    transition: transform 0.3s ease;
+}
+
+.checkoutBtn:hover:not(:disabled) .buttonIcon {
+    transform: translateX(4px);
+}
+
+/* Fullscreen Checkout Overlay */
+.fullscreenOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(31, 75, 64, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInOverlay 0.4s ease-out;
+}
+
+.loaderBox {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-width: 90%;
+    width: 360px;
+    text-align: center;
+    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pulseRing {
+    position: absolute;
+    top: 24px;
+    /* perfectly centered relative to the shield icon */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(0, 255, 148, 0.2);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulseGlow 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shieldIcon {
+    color: #1F4B40;
+    margin-bottom: 20px;
+    z-index: 1;
+    background: white;
+    border-radius: 50%;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(31, 75, 64, 0.1);
+    position: relative;
+    /* Ensure it stays above the absolute pulse ring */
+}
+
+.loaderTitle {
+    color: #1F4B40;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0 0 16px 0;
+}
+
+.stepContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #E3FFF8;
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 100%;
+    justify-content: center;
+}
+
+.loaderStepText {
+    color: #2A6657;
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    animation: textFadeIn 0.3s ease;
+}
+
+.spinner {
+    color: #1F4B40;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        transform: translateX(-50%) scale(0.8);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1.6);
+        opacity: 0;
+    }
+}
+
+@keyframes textFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }

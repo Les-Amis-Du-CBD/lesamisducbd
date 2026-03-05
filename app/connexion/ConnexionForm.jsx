@@ -1,15 +1,27 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './Connexion.module.css';
 import Link from 'next/link';
+import LoginModal from '@/components/LoginModal/LoginModal';
 
 function ConnexionFormInner() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/account';
+    const resetToken = searchParams.get('reset');
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalView, setModalView] = useState('forgot_password');
+
+    useEffect(() => {
+        if (resetToken) {
+            setModalView('reset_password');
+            setIsModalOpen(true);
+        }
+    }, [resetToken]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
@@ -226,6 +238,21 @@ function ConnexionFormInner() {
                     </div>
                 </div>
 
+                {isLogin && (
+                    <div style={{ textAlign: 'right', marginTop: '8px', marginBottom: '15px' }}>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setModalView('forgot_password');
+                                setIsModalOpen(true);
+                            }}
+                            style={{ background: 'none', border: 'none', color: '#666', fontSize: '14px', textDecoration: 'underline', cursor: 'pointer', padding: 0 }}
+                        >
+                            Mot de passe oublié ?
+                        </button>
+                    </div>
+                )}
+
                 {!isLogin && (
                     <div className={styles.checkboxGroup} style={{ marginTop: '10px', marginBottom: '15px' }}>
                         <label className={styles.checkboxLabel}>
@@ -273,6 +300,13 @@ function ConnexionFormInner() {
             <div className={styles.backHome}>
                 <Link href="/">← Retour à la boutique</Link>
             </div>
+
+            <LoginModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                initialView={modalView}
+                resetToken={resetToken}
+            />
         </div>
     );
 }

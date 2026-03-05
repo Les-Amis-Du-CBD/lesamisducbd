@@ -101,10 +101,6 @@ function ProductCardItem({ product, index, groupId }) {
             <Link href={`/produit/${selectedVariant.slug}`} className={styles.ctaLink}>
                 <button className={styles.cta}>Découvrir cette variété</button>
             </Link>
-
-            {perGramText && (
-                <div className={styles.perGramList}>Le gramme à partir de {perGramText}</div>
-            )}
         </div>
     );
 }

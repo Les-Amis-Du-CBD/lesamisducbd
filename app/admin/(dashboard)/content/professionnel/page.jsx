@@ -50,7 +50,7 @@ export default function BuralisteContentPage() {
 
     useEffect(() => {
         const controller = new AbortController();
-        fetch('/api/admin/content/buraliste', { signal: controller.signal })
+        fetch('/api/admin/content/professionnel', { signal: controller.signal })
             .then(r => r.json())
             .then(data => {
                 if (data.hero) setHero(data.hero);
@@ -69,7 +69,7 @@ export default function BuralisteContentPage() {
         e.preventDefault();
         setSaving(true);
         try {
-            await fetch('/api/admin/content/buraliste', {
+            await fetch('/api/admin/content/professionnel', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ hero, features1, features2, steps, visibility })

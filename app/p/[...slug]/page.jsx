@@ -67,7 +67,7 @@ export default async function DynamicPage({ params }) {
                 menuItems: [
                     { label: "PRODUITS", href: "/produits" },
                     { label: "L'ESSENTIEL", href: "/essentiel" },
-                    { label: "BURALISTE", href: "/buraliste" }
+                    { label: "BURALISTE", href: "/professionnel" }
                 ]
             }
         });

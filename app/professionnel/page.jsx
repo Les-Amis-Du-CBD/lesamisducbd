@@ -1,5 +1,5 @@
 import { kv } from '@vercel/kv';
-import BuralisteClient from './BuralisteClient';
+import ProfessionnelClient from './ProfessionnelClient';
 import { SHARED_TITLE } from '@/app/shared-metadata';
 
 export const revalidate = 60;
@@ -7,7 +7,7 @@ export const revalidate = 60;
 export const metadata = {
     title: 'Espace Professionnel & Revendeurs',
     description: 'Devenez partenaire des Amis du CBD. Offres exclusives pour professionnels et revendeurs : produits premium, marges attractives et accompagnement personnalisé.',
-    alternates: { canonical: '/buraliste' },
+    alternates: { canonical: '/professionnel' },
 };
 
 const DEFAULTS = {
@@ -49,5 +49,5 @@ export default async function BuralistePage() {
     } catch (e) {
         console.error('KV error (buraliste/global):', e);
     }
-    return <BuralisteClient content={content} globalContent={globalContent} />;
+    return <ProfessionnelClient content={content} globalContent={globalContent} />;
 }

@@ -221,7 +221,7 @@ export default function InteractiveMap() {
 
                 <div className={styles.footerAction}>
                     <p>Vous cherchez un point de vente proche de chez vous ?</p>
-                    <a href="/buralistes" className={styles.ctaButton}>
+                    <a href="/professionnels" className={styles.ctaButton}>
                         Cliquez ici
                     </a>
                 </div>

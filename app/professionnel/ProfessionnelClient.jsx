@@ -17,7 +17,7 @@ import { ArrowRight, CheckCircle, TrendingUp, Truck } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal/ScrollReveal';
 import ContentHero from '@/components/ContentHero/ContentHero';
 
-export default function BuralisteClient({ content, globalContent }) {
+export default function ProfessionnelClient({ content, globalContent }) {
 
     const headerProps = {
         bannerVisible: globalContent?.visibility?.headerBanner !== false,
@@ -28,7 +28,7 @@ export default function BuralisteClient({ content, globalContent }) {
             { label: "PRODUITS", href: "/produits" },
             { label: "L'ESSENTIEL", href: "/essentiel" },
             { label: "CBD & USAGES", href: "/usages" },
-            { label: "PROFESSIONNEL", href: "/buraliste" }
+            { label: "PROFESSIONNEL", href: "/professionnel" }
         ]
     };
 
@@ -38,7 +38,7 @@ export default function BuralisteClient({ content, globalContent }) {
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
-            { label: "Professionnel", href: "/buraliste" }
+            { label: "Professionnel", href: "/professionnel" }
         ],
         contactInfo: globalContent?.contact || {
             title: "Les Amis du CBD France",
@@ -68,7 +68,7 @@ export default function BuralisteClient({ content, globalContent }) {
                 {visibility.hero !== false && (
                     <>
                         <ContentHero
-                            imageSrc="/images/buraliste/header-illustration.webp"
+                            imageSrc="/images/professionnel/header-illustration.webp"
                             imageAlt="Partenariat Professionnel"
                             imagePosition="center 40%"
                         >

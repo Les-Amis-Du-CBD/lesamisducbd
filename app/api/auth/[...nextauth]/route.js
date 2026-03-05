@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { kv } from '@vercel/kv';
 import bcrypt from 'bcryptjs';
+import { prestaCheckoutService } from '@/lib/services/prestaCheckoutService';
 
 const authOptions = {
     providers: [
@@ -102,6 +103,25 @@ const authOptions = {
                                     user = { ...user, legacy_ps_id: freshPsId };
                                     await kv.set(userKey, user);
                                 }
+                            } else {
+                                // L'utilisateur n'existe pas du tout sur PrestaShop ! (Créé depuis le front Next)
+                                // On le crée silencieusement pour que son ID existe pour les paniers
+                                console.log(`[NextAuth] Création automatique sur PrestaShop pour le nouvel utilisateur front: ${credentials.email}`);
+                                const newPsUser = await prestaCheckoutService.createCustomer({
+                                    email: user.email,
+                                    firstname: user.firstname || user.name.split(' ')[0] || 'Client',
+                                    lastname: user.lastname || user.name.split(' ').slice(1).join(' ') || 'CBD',
+                                    company: user.company,
+                                    siret: user.siret,
+                                    birthday: user.birthday,
+                                    id_gender: user.id_gender,
+                                    role: user.role
+                                }, 0);
+
+                                if (newPsUser && newPsUser.id) {
+                                    user = { ...user, legacy_ps_id: newPsUser.id };
+                                    await kv.set(userKey, user);
+                                }
                             }
                         } catch (refreshErr) {
                             console.warn("[NextAuth] Impossible de rafraîchir le groupe PrestaShop (non bloquant):", refreshErr.message);
@@ -115,7 +135,8 @@ const authOptions = {
                         name: user.name,
                         role: user.role || 'client',
                         company: user.company || '',
-                        id_default_group: user.id_default_group || (user.role === 'buraliste' ? 4 : 3)
+                        id_default_group: user.id_default_group || (user.role === 'buraliste' ? 4 : 3),
+                        legacy_ps_id: user.legacy_ps_id || null // On renvoie l'ID PrestaShop
                     };
                 } catch (e) {
                     console.error("[NextAuth] Erreur authentification globale:", e);
@@ -135,6 +156,7 @@ const authOptions = {
                 token.role = user.role;
                 token.company = user.company;
                 token.id_default_group = user.id_default_group;
+                if (user.legacy_ps_id) token.legacy_ps_id = user.legacy_ps_id;
             }
 
             // Mettre à jour la session si `update` est appelé par le client
@@ -151,6 +173,7 @@ const authOptions = {
                 session.user.role = token.role;
                 session.user.company = token.company;
                 session.user.id_default_group = token.id_default_group;
+                if (token.legacy_ps_id) session.user.legacy_ps_id = token.legacy_ps_id;
             }
             return session;
         }

@@ -11,9 +11,11 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Champs obligatoires manquants' }, { status: 400 });
         }
 
-        // Pour configurer cet envoi, il faut ajouter EMAIL_USER et EMAIL_PASS dans .env.local
+        // Pour configurer cet envoi avec Brevo, il faut ajouter EMAIL_USER (login SMTP Brevo) et EMAIL_PASS (clé SMTP) dans .env.local
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp-relay.brevo.com',
+            port: 587,
+            secure: false,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS

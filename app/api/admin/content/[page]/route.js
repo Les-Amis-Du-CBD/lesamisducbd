@@ -64,7 +64,7 @@ const DEFAULTS = {
             { label: "CGV", href: "/cgv" },
             { label: "Politique de confidentialité", href: "/privacy" },
             { label: "Transparence", href: "/transparence" },
-            { label: "Buraliste", href: "/buraliste" }
+            { label: "Buraliste", href: "/professionnel" }
         ]
     }
 };

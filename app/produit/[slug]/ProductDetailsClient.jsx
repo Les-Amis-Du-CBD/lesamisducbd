@@ -19,7 +19,7 @@ const HEADER_PROPS = {
         { label: "PRODUITS", href: "/produits" },
         { label: "L'ESSENTIEL", href: "/essentiel" },
         { label: "CBD & USAGES", href: "/usages" },
-        { label: "PROFESSIONNEL", href: "/buraliste" }
+        { label: "PROFESSIONNEL", href: "/professionnel" }
     ]
 };
 
@@ -29,7 +29,7 @@ const FOOTER_PROPS = {
         { label: "CGV", href: "/cgv" },
         { label: "Politique de confidentialité", href: "/privacy" },
         { label: "Transparence", href: "/transparence" },
-        { label: "Professionnel", href: "/buraliste" }
+        { label: "Professionnel", href: "/professionnel" }
     ],
     contactInfo: {
         title: "Les Amis du CBD France",
@@ -69,6 +69,7 @@ export default function ProductDetailsClient({ product, relatedProducts, globalC
 
         addItem({
             ...product,
+            rawProduct: product, // Explicitly pass the raw product for future recalculations (e.g., login)
             price: displayPrice,
             priceHT: pHT,
             priceTTC: pTTC

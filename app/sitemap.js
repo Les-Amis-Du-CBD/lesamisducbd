@@ -3,16 +3,16 @@ import { SITE_URL } from './shared-metadata';
 export default function sitemap() {
     const routes = [
         '',
-        '/buraliste',
+        '/professionnel',
         '/essentiel',
         '/usages',
         '/recrutement',
         '/qui-sommes-nous',
         '/produits', // Assuming this exists or will exist
     ].map((route) => {
-        if (route === '/buraliste') {
+        if (route === '/professionnel') {
             return {
-                url: `${SITE_URL}/buraliste`,
+                url: `${SITE_URL}/professionnel`,
                 lastModified: new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.5,

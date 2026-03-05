@@ -26,7 +26,7 @@ const PAGES = [
         icon: '🏪',
         description: 'Hero, Arguments partenariat, Étapes pour devenir partenaire',
         count: 4,
-        href: '/admin/content/buraliste'
+        href: '/admin/content/professionnel'
     },
     {
         id: 'usages',

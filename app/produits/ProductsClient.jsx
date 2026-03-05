@@ -18,7 +18,7 @@ const HEADER_PROPS = {
         { label: "PRODUITS", href: "/produits" },
         { label: "L'ESSENTIEL", href: "/essentiel" },
         { label: "CBD & USAGES", href: "/usages" },
-        { label: "PROFESSIONNEL", href: "/buraliste" }
+        { label: "PROFESSIONNEL", href: "/professionnel" }
     ]
 };
 
@@ -28,7 +28,7 @@ const FOOTER_PROPS = {
         { label: "CGV", href: "/cgv" },
         { label: "Politique de confidentialité", href: "/privacy" },
         { label: "Transparence", href: "/transparence" },
-        { label: "Professionnel", href: "/buraliste" }
+        { label: "Professionnel", href: "/professionnel" }
     ],
     contactInfo: {
         title: "Les Amis du CBD France",
@@ -274,16 +274,18 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                             <span className={styles.priceLabel}>{groupPrice.suggestShowHT ? 'Prix HT' : 'Prix TTC'}</span>
                                             <span className={styles.priceValue}>
                                                 {groupPrice.hasDiscount ? (
-                                                    <>
-                                                        <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9em', marginRight: '6px' }}>
+                                                    <span className={styles.pricesContainer}>
+                                                        <span className={styles.originalPrice}>
                                                             {product.formattedPrice}
                                                         </span>
-                                                        <span style={{ color: '#d9534f', fontWeight: 'bold' }}>
+                                                        <span className={styles.discountedPrice}>
                                                             {groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : groupPrice.formattedPrice}
                                                         </span>
-                                                    </>
+                                                    </span>
                                                 ) : (
-                                                    groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : (product.formattedPrice || `${product.priceTTC || product.price || 5} €`)
+                                                    <span className={styles.normalPrice}>
+                                                        {groupPrice.suggestShowHT ? groupPrice.formattedPriceHT : (product.formattedPrice || `${product.priceTTC || product.price || 5} €`)}
+                                                    </span>
                                                 )}
                                             </span>
                                             {perGramText && (
@@ -299,7 +301,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                         const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
                                                         const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
                                                         const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
-                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 1);
+                                                        addItem({ ...product, rawProduct: product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 1);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 1 au panier"
@@ -314,7 +316,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                         const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
                                                         const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
                                                         const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
-                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 3);
+                                                        addItem({ ...product, rawProduct: product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 3);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 3 au panier"
@@ -329,7 +331,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                         const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
                                                         const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
                                                         const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
-                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 5);
+                                                        addItem({ ...product, rawProduct: product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 5);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 5 au panier"
@@ -344,7 +346,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                         const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
                                                         const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
                                                         const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
-                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 10);
+                                                        addItem({ ...product, rawProduct: product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 10);
                                                         setExpandedId(null);
                                                     }}
                                                     aria-label="Ajouter 10 au panier"
@@ -363,7 +365,7 @@ export default function ProductsClient({ initialProducts, globalContent }) {
                                                         const pHT = groupPrice.priceHT || product.priceHT || product.price || 0;
                                                         const pTTC = groupPrice.priceTTC || product.priceTTC || 0;
                                                         const displayPrice = groupPrice.suggestShowHT ? pHT : pTTC;
-                                                        addItem({ ...product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 1);
+                                                        addItem({ ...product, rawProduct: product, price: displayPrice, priceHT: pHT, priceTTC: pTTC }, 1);
                                                     }
                                                 }}
                                                 aria-label="Ajouter au panier"

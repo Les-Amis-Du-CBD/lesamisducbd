@@ -4,14 +4,19 @@
 import { useCart } from '@/context/CartContext';
 import styles from './CartDrawer.module.css';
 import { useEffect, useState } from 'react';
+import { Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import useLockBodyScroll from '@/hooks/useLockBodyScroll';
+import LoginModal from '../LoginModal/LoginModal';
 
 export default function CartDrawer() {
     const { cart, isCartOpen, setIsCartOpen, removeItem, updateQuantity, clearCart, cartTotalHT, cartTotalTTC } = useCart();
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+    const [checkoutStep, setCheckoutStep] = useState(0);
     const { data: session } = useSession();
     // Use String comparison to handle both number and string types from session
     const isPro = String(session?.user?.id_default_group) === "4";
@@ -24,6 +29,19 @@ export default function CartDrawer() {
     if (!isCartOpen) return null;
 
     const handleCheckout = async () => {
+        if (!session) {
+            setIsLoginOpen(true);
+            return;
+        }
+
+        setIsCheckingOut(true);
+        setCheckoutStep(0);
+
+        // Cycle through steps for the UI animation
+        const stepInterval = setInterval(() => {
+            setCheckoutStep((prev) => (prev < 2 ? prev + 1 : prev));
+        }, 1500);
+
         try {
             const res = await fetch('/api/checkout/prestashop', {
                 method: 'POST',
@@ -35,13 +53,25 @@ export default function CartDrawer() {
             if (res.ok && data.success && data.redirectUrl) {
                 window.location.href = data.redirectUrl;
             } else {
+                clearInterval(stepInterval);
+                setIsCheckingOut(false);
+                setCheckoutStep(0);
                 alert(`Erreur de redirection vers le paiement: ${data.error || 'Inconnue'}`);
             }
         } catch (error) {
+            clearInterval(stepInterval);
+            setIsCheckingOut(false);
+            setCheckoutStep(0);
             console.error('Checkout redirect error:', error);
             alert("Erreur réseau lors de la préparation du paiement.");
         }
     };
+
+    const checkoutStepsText = [
+        "Connexion sécurisée en cours...",
+        "Préparation de votre commande...",
+        "Redirection vers la passerelle de paiement..."
+    ];
 
     return (
         <div className={styles.overlay} onClick={() => setIsCartOpen(false)}>
@@ -139,12 +169,37 @@ export default function CartDrawer() {
                         <p className={styles.shippingNote}>
                             Livraison <span style={{ color: '#10B981', fontWeight: 'bold' }}>offerte</span>
                         </p>
-                        <button onClick={handleCheckout} className={styles.checkoutBtn}>
-                            Procéder au paiement
+                        <button
+                            onClick={handleCheckout}
+                            className={styles.checkoutBtn}
+                            disabled={isCheckingOut}
+                        >
+                            <span className={styles.buttonContent}>
+                                Procéder au paiement
+                                <ArrowRight size={20} className={styles.buttonIcon} />
+                            </span>
                         </button>
                     </div>
                 )}
             </div>
+
+            {/* Fullscreen Checkout Loading Overlay */}
+            {isCheckingOut && (
+                <div className={styles.fullscreenOverlay}>
+                    <div className={styles.loaderBox}>
+                        <div className={styles.pulseRing}></div>
+                        <ShieldCheck className={styles.shieldIcon} size={48} />
+                        <h2 className={styles.loaderTitle}>Préparation Sécurisée</h2>
+                        <div className={styles.stepContainer}>
+                            <p className={styles.loaderStepText}>{checkoutStepsText[checkoutStep]}</p>
+                            <Loader2 className={styles.spinner} size={18} />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Login Modal Overlay */}
+            {!session && <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} fromCheckout={true} />}
         </div>
     );
 }

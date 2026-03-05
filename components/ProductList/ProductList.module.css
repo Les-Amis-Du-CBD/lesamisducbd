@@ -166,16 +166,6 @@
     flex: 1;
 }
 
-.perGramList {
-    text-align: center;
-    font-size: 0.85rem;
-    color: white;
-    font-weight: 500;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    opacity: 0.9;
-}
-
 .pillLeft {
     background: #7EE3CB;
     color: #1F4B40;
@@ -363,6 +353,21 @@
         padding: 5px 6px;
         font-size: 0.65rem;
         white-space: nowrap;
+    }
+
+    .variationSelector {
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .variationBtn {
+        width: 100%;
+        padding: 8px 6px;
+        font-size: 0.75rem;
+        white-space: normal;
+        line-height: 1.2;
     }
 
     .cta {

@@ -279,8 +279,9 @@
 
 .grid {
     display: grid;
-    /* clamp: min 180px on tiny screens, scales with viewport, max 260px */
-    grid-template-columns: repeat(auto-fill, minmax(clamp(180px, 18vw, 260px), 1fr));
+    /* Force exactly 4 columns, but limit their max width so cards don't stretch */
+    grid-template-columns: repeat(4, minmax(0, 280px));
+    justify-content: center;
     gap: 30px 20px;
 }
 
@@ -404,6 +405,45 @@
     display: block;
 }
 
+.pricesContainer {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.originalPrice {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9em;
+}
+
+.discountedPrice {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .priceLabel {
+        order: 2;
+        margin-top: 2px;
+        margin-bottom: 0;
+    }
+
+    .priceValue {
+        order: 1;
+    }
+
+    .perGramText {
+        order: 3;
+    }
+
+    .pricesContainer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+}
+
 .perGramText {
     font-size: 0.7rem;
     color: #6a7c76;
@@ -435,9 +475,11 @@
     position: absolute;
     bottom: calc(100% + 12px);
     right: 0;
-    display: flex; /* <-- LA LIGNE MAGIQUE EST ICI */
+    display: flex;
+    /* <-- LA LIGNE MAGIQUE EST ICI */
     flex-direction: column;
-    align-items: center; /* Perfect horizontal centering */
+    align-items: center;
+    /* Perfect horizontal centering */
     background: #1F4B40;
     border-radius: 14px;
     width: 50px;
@@ -624,16 +666,20 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        gap: 8px; /* Laisse un peu d'air entre le texte et le bouton */
+        gap: 8px;
+        /* Laisse un peu d'air entre le texte et le bouton */
     }
 
     .priceInfo {
-        flex: 1; /* Prend l'espace disponible... */
-        min-width: 0; /* ... MAIS s'écrase si besoin au lieu de pousser le bouton dehors ! (C'est la ligne magique) */
+        flex: 1;
+        /* Prend l'espace disponible... */
+        min-width: 0;
+        /* ... MAIS s'écrase si besoin au lieu de pousser le bouton dehors ! (C'est la ligne magique) */
     }
 
     .perGramText {
-        max-width: 100%; /* Annule la limite de 60% du PC pour que le texte respire sur mobile */
+        max-width: 100%;
+        /* Annule la limite de 60% du PC pour que le texte respire sur mobile */
     }
 
     /* Interactive Drawer Mobile */
@@ -646,7 +692,8 @@
         display: flex;
         align-items: center;
         border-radius: 12px;
-        flex-shrink: 0; /* Interdit formellement au navigateur de rétrécir ton bouton */
+        flex-shrink: 0;
+        /* Interdit formellement au navigateur de rétrécir ton bouton */
     }
 
     .qtyDrawer {

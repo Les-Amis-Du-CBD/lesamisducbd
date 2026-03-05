@@ -3,7 +3,9 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
-import { useSession } from 'next-auth/react'; // Added import for useSession
+import { useSession } from 'next-auth/react';
+import { calculateGroupPrice } from '@/lib/utils/groupPricing';
+import isEqual from 'lodash.isequal'; // Added import for useSession
 
 const CartContext = createContext();
 
@@ -69,6 +71,48 @@ export function CartProvider({ children }) {
         }
     }, [cart, isLoaded]);
 
+    // Recalculate prices on Session Change (Login/Logout)
+    useEffect(() => {
+        if (!isLoaded || cart.length === 0) return;
+
+        const groupId = session?.user?.id_default_group || 3;
+
+        let hasChanges = false;
+        const updatedCart = cart.map(item => {
+            // We need the raw product data to recalculate accurately.
+            // Items added *before* this fix might not have rawProduct attached in localStorage,
+            // but we can pass the whole item to calculateGroupPrice as a fallback since it has priceTTC/priceHT.
+            const rawSource = item.rawProduct || item;
+            const newPriceInfo = calculateGroupPrice(rawSource, groupId);
+
+            // Check if prices need updating
+            const newDisplayPrice = newPriceInfo.suggestShowHT ? newPriceInfo.priceHT : newPriceInfo.priceTTC;
+            const currentDisplayPrice = item.suggestShowHT ? item.priceHT : item.priceTTC;
+
+            if (
+                item.priceHT !== newPriceInfo.priceHT ||
+                item.priceTTC !== newPriceInfo.priceTTC ||
+                item.suggestShowHT !== newPriceInfo.suggestShowHT
+            ) {
+                hasChanges = true;
+                return {
+                    ...item,
+                    price: newDisplayPrice,
+                    priceHT: newPriceInfo.priceHT,
+                    priceTTC: newPriceInfo.priceTTC,
+                    suggestShowHT: newPriceInfo.suggestShowHT,
+                    hasDiscount: newPriceInfo.hasDiscount
+                };
+            }
+            return item;
+        });
+
+        if (hasChanges && !isEqual(cart, updatedCart)) {
+            setCart(updatedCart);
+            showToast("Panier mis à jour avec vos tarifs", "success");
+        }
+    }, [session?.user?.id_default_group, isLoaded]);
+
     // Add Item to Cart
     const addItem = (product, quantity = 1, variant = null) => {
         setCart((prevCart) => {
@@ -93,6 +137,7 @@ export function CartProvider({ children }) {
                 // New item
                 return [...prevCart, {
                     ...product, // Keep all product props including image, price, etc.
+                    rawProduct: product.rawProduct || product, // Save the raw source for future recalculations
                     id: productId, // Ensure stable ID
                     quantity,
                     variant: variant || null

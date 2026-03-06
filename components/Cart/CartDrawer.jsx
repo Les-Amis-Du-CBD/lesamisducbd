@@ -26,6 +26,27 @@ export default function CartDrawer() {
     // Lock scroll when cart is open
     useLockBodyScroll(isCartOpen);
 
+    // Reset checkout state if drawer closes or if user returns via "Back" button (BFCache)
+    useEffect(() => {
+        if (!isCartOpen) {
+            setIsCheckingOut(false);
+            setCheckoutStep(0);
+        }
+    }, [isCartOpen]);
+
+    useEffect(() => {
+        const handlePageShow = (event) => {
+            if (event.persisted) {
+                // If the page is restored from cache (Back button)
+                setIsCheckingOut(false);
+                setCheckoutStep(0);
+                setIsCartOpen(false); // Close the cart entirely
+            }
+        };
+        window.addEventListener('pageshow', handlePageShow);
+        return () => window.removeEventListener('pageshow', handlePageShow);
+    }, [setIsCartOpen]);
+
     if (!isCartOpen) return null;
 
     const handleCheckout = async () => {

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Save, Loader2, CheckCircle, Eye, EyeOff } from 'lucide-react';
+import styles from '../AccountTabs.module.css';
 
 const Field = ({ label, children, optional, hint }) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -28,7 +29,8 @@ export default function ProfileTab({ user, onUpdate }) {
         birthday: '',
         oldPassword: '',
         newPassword: '',
-        privacyAccepted: false
+        privacyAccepted: false,
+        newsletterOptin: false
     });
 
     useEffect(() => {
@@ -118,10 +120,23 @@ export default function ProfileTab({ user, onUpdate }) {
             const data = await res.json();
 
             if (res.ok && data.success) {
+                // Si l'utilisateur a coché la newsletter
+                if (formData.newsletterOptin) {
+                    try {
+                        await fetch('/api/newsletter', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: user?.email })
+                        });
+                    } catch (nsErr) {
+                        console.error("Erreur d'inscription à la newsletter:", nsErr);
+                    }
+                }
+
                 setMessage({ text: 'Profil mis à jour avec succès.', type: 'success' });
                 // Only pass up the fields that KV stores to avoid replacing the user object with missing data
                 onUpdate(data.user);
-                setFormData(prev => ({ ...prev, oldPassword: '', newPassword: '', privacyAccepted: false }));
+                setFormData(prev => ({ ...prev, oldPassword: '', newPassword: '', privacyAccepted: false, newsletterOptin: false }));
             } else {
                 setMessage({ text: data.message || 'Erreur lors de la mise à jour.', type: 'error' });
             }
@@ -243,14 +258,29 @@ export default function ProfileTab({ user, onUpdate }) {
                     />
                 </Field>
 
-                {/* Privacy Checkbox */}
-                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer', marginTop: '10px', padding: '12px', background: '#F9FAFB', borderRadius: '10px', border: '1px solid #E5E7EB' }}>
-                    <input type="checkbox" required checked={formData.privacyAccepted} onChange={(e) => setFormData({ ...formData, privacyAccepted: e.target.checked })}
-                        style={{ marginTop: '3px', width: '18px', height: '18px', accentColor: 'var(--primary-dark)', cursor: 'pointer' }} />
-                    <span style={{ fontSize: '0.875rem', color: '#4B5563', lineHeight: '1.5' }}>
+                {/* Checkboxes Area */}
+                <div className={styles.checkboxGroup} style={{ marginTop: '10px', padding: '12px', background: '#F9FAFB', borderRadius: '10px', border: '1px solid #E5E7EB' }}>
+
+                    <label className={styles.checkboxLabel}>
+                        <input
+                            type="checkbox"
+                            checked={formData.newsletterOptin}
+                            onChange={(e) => setFormData({ ...formData, newsletterOptin: e.target.checked })}
+                            className={styles.checkbox}
+                        />
+                        S'inscrire à la newsletter (optionnel)
+                    </label>
+
+                    <label className={styles.checkboxLabel} style={{ marginTop: '4px' }}>
+                        <input
+                            type="checkbox"
+                            checked={formData.privacyAccepted}
+                            onChange={(e) => setFormData({ ...formData, privacyAccepted: e.target.checked })}
+                            className={styles.checkbox}
+                        />
                         En cochant cette case, j'accepte la politique de confidentialité et je consens au traitement de mes données personnelles conformément aux conditions décrites.
-                    </span>
-                </label>
+                    </label>
+                </div>
 
                 {/* Submit */}
                 <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '20px' }}>

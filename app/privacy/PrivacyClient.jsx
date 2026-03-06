@@ -7,7 +7,7 @@ import styles from './Privacy.module.css';
 
 const HEADER_PROPS = {
     logoText: "LES AMIS DU CBD",
-    logoImage: "/images/logo.png",
+    logoImage: "/images/logo.webp",
     menuItems: [
         { label: "PRODUITS", href: "/produits" },
         { label: "L'ESSENTIEL", href: "/essentiel" },

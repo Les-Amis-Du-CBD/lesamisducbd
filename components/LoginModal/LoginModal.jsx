@@ -25,6 +25,7 @@ export default function LoginModal({ isOpen, onClose, fromCheckout = false, init
     const [company, setCompany] = useState('');
     const [siret, setSiret] = useState('');
     const [rgpdAccepted, setRgpdAccepted] = useState(false);
+    const [newsletterOptin, setNewsletterOptin] = useState(false);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -133,6 +134,19 @@ export default function LoginModal({ isOpen, onClose, fromCheckout = false, init
                 if (loginRes?.error) {
                     setError("Inscription réussie, mais erreur de connexion automatique.");
                 } else {
+                    // Si l'inscription à la newsletter est cochée
+                    if (newsletterOptin) {
+                        try {
+                            await fetch('/api/newsletter', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: email })
+                            });
+                        } catch (nsErr) {
+                            console.error("Erreur d'inscription à la newsletter:", nsErr);
+                        }
+                    }
+
                     onClose();
                 }
             } catch (err) {
@@ -210,6 +224,7 @@ export default function LoginModal({ isOpen, onClose, fromCheckout = false, init
         setCompany('');
         setSiret('');
         setRgpdAccepted(false);
+        setNewsletterOptin(false);
         setError('');
         setMessage('');
     };
@@ -448,14 +463,23 @@ export default function LoginModal({ isOpen, onClose, fromCheckout = false, init
                     )}
 
                     {view === 'register' && (
-                        <div className={styles.checkboxGroup} style={{ marginTop: '4px' }}>
+                        <div className={styles.checkboxGroup} style={{ marginTop: '4px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <label className={styles.checkboxLabel}>
+                                <input
+                                    type="checkbox"
+                                    checked={newsletterOptin}
+                                    onChange={(e) => setNewsletterOptin(e.target.checked)}
+                                    className={styles.checkbox}
+                                />
+                                S'inscrire à la newsletter (optionnel)
+                            </label>
+
                             <label className={styles.checkboxLabel}>
                                 <input
                                     type="checkbox"
                                     checked={rgpdAccepted}
                                     onChange={(e) => setRgpdAccepted(e.target.checked)}
                                     className={styles.checkbox}
-                                    required
                                 />
                                 J&apos;accepte la{' '}
                                 <a href="/privacy" target="_blank" style={{ color: 'inherit', textDecoration: 'underline' }}>

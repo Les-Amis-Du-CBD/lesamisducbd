@@ -21,14 +21,23 @@ export async function POST(req) {
 
             // Check if user exists in KV or PrestaShop
             let userExists = false;
+            let firstName = lowerEmail.split('@')[0];
             let existingKvUser = await kv.get(userKey);
 
             if (existingKvUser) {
                 userExists = true;
+                if (existingKvUser.firstname) {
+                    firstName = existingKvUser.firstname;
+                } else if (existingKvUser.name) {
+                    firstName = existingKvUser.name.split(' ')[0];
+                }
             } else {
                 const prestaUser = await prestaCheckoutService.getCustomerByEmail(lowerEmail);
                 if (prestaUser) {
                     userExists = true;
+                    if (prestaUser.firstname) {
+                        firstName = prestaUser.firstname;
+                    }
                 }
             }
 
@@ -61,16 +70,131 @@ export async function POST(req) {
                         to: lowerEmail,
                         subject: `Réinitialisation de votre mot de passe - Les Amis du CBD`,
                         html: `
-                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                            <h2 style="color: #333;">Réinitialisation de votre mot de passe</h2>
-                            <p>Vous avez demandé la réinitialisation de votre mot de passe sur la boutique Les Amis du CBD.</p>
-                            <p>Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe. Ce lien est valable pendant 1 heure.</p>
-                            <div style="text-align: center; margin: 30px 0;">
-                                <a href="${resetUrl}" style="background-color: #49B197; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Réinitialiser mon mot de passe</a>
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Réinitialisation de votre mot de passe</title>
+                            <style>
+                                body {
+                                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                                    line-height: 1.6;
+                                    color: #1F2937;
+                                    background-color: #F3F4F6;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+                                .container {
+                                    max-width: 600px;
+                                    margin: 40px auto;
+                                    background: #FFFFFF;
+                                    border-radius: 16px;
+                                    overflow: hidden;
+                                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                                }
+                                .header {
+                                    background-color: #1F4B40;
+                                    padding: 30px 20px;
+                                    text-align: center;
+                                }
+                                .header img {
+                                    height: 48px;
+                                    width: auto;
+                                    display: block;
+                                    margin: 0 auto;
+                                }
+                                .content {
+                                    padding: 40px 30px;
+                                    text-align: center;
+                                }
+                                h1 {
+                                    color: #1F4B40;
+                                    font-size: 24px;
+                                    font-weight: 700;
+                                    margin-bottom: 20px;
+                                    margin-top: 0;
+                                }
+                                p {
+                                    font-size: 16px;
+                                    color: #4B5563;
+                                    margin-bottom: 24px;
+                                }
+                                .button-container {
+                                    margin: 35px 0;
+                                }
+                                .button {
+                                    display: inline-block;
+                                    background-color: #00FF94;
+                                    color: #0A3222 !important;
+                                    font-weight: 700;
+                                    font-size: 16px;
+                                    text-decoration: none;
+                                    padding: 16px 36px;
+                                    border-radius: 12px;
+                                    box-shadow: 0 4px 12px rgba(0, 255, 148, 0.3);
+                                }
+                                .footer {
+                                    background-color: #F9FAFB;
+                                    padding: 24px 30px;
+                                    text-align: center;
+                                    border-top: 1px solid #E5E7EB;
+                                }
+                                .footer p {
+                                    font-size: 13px;
+                                    color: #9CA3AF;
+                                    margin: 0 0 10px 0;
+                                }
+                                .footer a {
+                                    color: #1F4B40;
+                                    text-decoration: underline;
+                                }
+                                @media only screen and (max-width: 600px) {
+                                    .container {
+                                        margin: 20px 15px;
+                                        border-radius: 12px;
+                                    }
+                                    .content {
+                                        padding: 30px 20px;
+                                    }
+                                    h1 {
+                                        font-size: 22px;
+                                    }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                <div class="header" style="background-color: #1F4B40; padding: 30px 20px; text-align: center;">
+                                    <a href="${baseUrl}" target="_blank">
+                                        <img src="cid:logo" alt="Les Amis du CBD" width="250" height="75" style="height: 75px; width: auto; max-width: 100%; display: block; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h1>Mot de passe oublié, ${firstName} ?</h1>
+                                    <p>Pas de panique, ça arrive aux meilleurs. 🌿<br/>Nous avons reçu une demande pour réinitialiser le mot de passe de votre compte sur <strong>Les Amis du CBD</strong>.</p>
+                                    
+                                    <div class="button-container">
+                                        <a href="${resetUrl}" class="button" target="_blank">Réinitialiser mon mot de passe</a>
+                                    </div>
+                                    
+                                    <p style="font-size: 14px; margin-bottom: 0;">Ce lien sécurisé expire dans <strong style="color: #1F4B40;">1 heure</strong>.</p>
+                                </div>
+                                <div class="footer">
+                                    <p>Si vous n'avez pas fait cette demande, vous pouvez ignorer cet e-mail en toute tranquillité. Votre mot de passe actuel est conservé.</p>
+                                    <p>© Les Amis du CBD. <a href="mailto:lesamisducbd@gmail.com" target="_blank">Nous contacter</a></p>
+                                </div>
                             </div>
-                            <p style="color: #666; font-size: 14px;">Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sécurité. Votre mot de passe actuel restera inchangé.</p>
-                        </div>
-                        `
+                        </body>
+                        </html>
+                        `,
+                        attachments: [
+                            {
+                                filename: 'logo-email.png',
+                                path: './public/images/logo-email.png',
+                                cid: 'logo' // same cid value as in the html img src
+                            }
+                        ]
                     };
 
                     await transporter.sendMail(mailOptions);

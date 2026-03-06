@@ -167,7 +167,7 @@ export async function POST(req) {
                             <div class="container">
                                 <div class="header" style="background-color: #1F4B40; padding: 30px 20px; text-align: center;">
                                     <a href="${baseUrl}" target="_blank">
-                                        <img src="cid:logo" alt="Les Amis du CBD" width="250" height="75" style="height: 75px; width: auto; max-width: 100%; display: block; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
+                                        <img src="https://lesamisducbd.fr/images/logo-email.png" alt="Les Amis du CBD" width="250" height="75" style="height: 75px; width: auto; max-width: 100%; display: block; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
                                     </a>
                                 </div>
                                 <div class="content">
@@ -187,14 +187,7 @@ export async function POST(req) {
                             </div>
                         </body>
                         </html>
-                        `,
-                        attachments: [
-                            {
-                                filename: 'logo-email.png',
-                                path: `${baseUrl}/images/logo-email.png`,
-                                cid: 'logo' // same cid value as in the html img src
-                            }
-                        ]
+                        `
                     };
 
                     await transporter.sendMail(mailOptions);

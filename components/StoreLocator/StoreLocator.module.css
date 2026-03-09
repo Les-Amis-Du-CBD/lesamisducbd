@@ -102,18 +102,22 @@
     grid-template-columns: 350px 1fr;
     flex: 1;
     min-height: 0;
-    /* Important for flex child to allow vertical scroll inner */
+    overflow: hidden;
+    /* Prevent grid expansion */
     background: white;
     border-top: 1px solid #eee;
 }
 
 @media (max-width: 1024px) {
     .header {
-        padding: 10px 20px 10px;
+        padding: 5px 20px 0px;
+        margin-top: -30px;
+        /* Offset the parent's padding-top to move the title up */
     }
 
     .title {
         font-size: 1.5rem;
+        margin-bottom: 5px;
     }
 
     .subtitle {
@@ -121,11 +125,14 @@
     }
 
     .searchBox {
-        margin: 0 15px 15px;
+        margin: 5px 15px 5px;
+        /* Controlled margins */
         width: calc(100% - 30px);
         max-width: none;
         padding: 8px;
         border-radius: 12px;
+        position: relative;
+        z-index: 11;
     }
 
     .locatorContainer {
@@ -138,16 +145,24 @@
         flex-direction: column;
         flex: 1;
         min-height: 0;
-        border-radius: 20px 20px 0 0;
+        border-radius: 12px 12px 0 0;
         overflow: hidden;
         border-top: none;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        margin-top: 0;
+        /* Remove overlap overlap gap */
+        position: relative;
+        z-index: 10;
     }
 
     .mapWrapper {
         order: 1;
-        flex: 0 0 45%;
-        height: auto;
+        flex: 1 1 45%;
+        min-height: 0;
+        transition: flex 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding-top: 0 !important;
+        /* CRITICAL FIX: Kill the mystery 100px padding */
     }
 
     .sidebar {
@@ -157,6 +172,17 @@
         border-right: none;
         border-bottom: none;
         background: #fdfdfd;
+        transition: flex 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .noInteraction .mapWrapper {
+        flex: 1 0 75%;
+        /* More space for placeholder when it's the main CTA */
+    }
+
+    .noInteraction .sidebar {
+        flex: 0 0 25%;
+        /* Less space for the redundant search prompt below */
     }
 
     .resultsList {
@@ -176,6 +202,8 @@
     border-right: 1px solid #eee;
     background: #fafafa;
     height: 100%;
+    overflow: hidden;
+    /* Ensure it doesn't expand past flex container */
 }
 
 .resultsCount {
@@ -262,7 +290,8 @@
     height: 100%;
     position: relative;
     z-index: 1;
-    padding-top: 0px;
+    overflow: hidden;
+    /* Crucial to keep placeholder/map at 100% of viewport, not 100% of grid */
 }
 
 .loader {
@@ -314,4 +343,159 @@
 
 :global(.maplibregl-popup-tip) {
     border-top-color: white;
+}
+
+/* =========================================
+   Écran d'attente (Placeholder) Hyper Moderne
+   ========================================= */
+
+.mapPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fcfb 0%, #e6f5f0 100%);
+    text-align: center;
+    padding: 40px;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 0 20px 20px 0;
+}
+
+.placeholderIconWrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(31, 75, 64, 0.08);
+    z-index: 1;
+}
+
+.placeholderIcon {
+    color: var(--primary-dark);
+    z-index: 2;
+}
+
+/* Animation "Radar" autour de l'icône */
+.pulseRing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    /* Base size */
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #00FF94;
+    animation: pulse 2.5s infinite cubic-bezier(0.45, 0, 0.55, 1);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.mapPlaceholder h2 {
+    color: var(--primary-dark);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: -0.02em;
+}
+
+.mapPlaceholder p {
+    color: #6a7c76;
+    font-size: 1.1rem;
+    max-width: 400px;
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+
+.placeholderBtn {
+    background: var(--primary-dark);
+    color: #00FF94;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 99px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(31, 75, 64, 0.15);
+}
+
+.placeholderBtn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(31, 75, 64, 0.25);
+    background: #193e35;
+}
+
+/* Animations clés */
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.6);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1024px) {
+    .mapPlaceholder {
+        border-radius: 20px;
+        padding: 20px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .placeholderIconWrapper {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 2px;
+    }
+
+    .placeholderIcon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .pulseRing {
+        width: 40px;
+        height: 40px;
+    }
+
+    .mapPlaceholder h2 {
+        font-size: 1.4rem;
+        margin-bottom: 2px;
+    }
+
+    .mapPlaceholder p {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+        max-width: 260px;
+        line-height: 1.4;
+    }
+
+    .placeholderBtn {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+    }
 }

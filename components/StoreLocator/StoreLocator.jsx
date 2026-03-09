@@ -208,7 +208,7 @@ export default function StoreLocator({ subtitle = true }) {
     };
 
     const displayPartners = filteredPartners.length > 0 ? filteredPartners : nearbyPartners;
-
+    const hasInteracted = searchQuery.trim().length > 0 || nearbyPartners.length > 0 || activePartner !== null || isLocating;
     return (
         <section className={styles.locatorContainer}>
             <header className={styles.header}>
@@ -252,7 +252,7 @@ export default function StoreLocator({ subtitle = true }) {
                 </div>
             </div>
 
-            <div className={styles.layout}>
+            <div className={`${styles.layout} ${hasInteracted ? styles.hasInteracted : styles.noInteraction}`}>
                 <aside className={styles.sidebar}>
                     <div className={styles.resultsCount}>
                         {isSearchingNearby ? (
@@ -270,6 +270,10 @@ export default function StoreLocator({ subtitle = true }) {
                         {isLoading ? (
                             <div className={styles.loader}>
                                 <Loader2 className="animate-spin" size={30} />
+                            </div>
+                        ) : !hasInteracted && window.innerWidth < 1024 ? (
+                            <div className={styles.emptyState}>
+                                <p>Entrez une ville pour voir les points de vente.</p>
                             </div>
                         ) : displayPartners.length === 0 && !isSearchingNearby ? (
                             <div className={styles.emptyState}>
@@ -294,11 +298,28 @@ export default function StoreLocator({ subtitle = true }) {
                 </aside>
 
                 <main id="map-wrapper" className={styles.mapWrapper}>
-                    <StoreMap
-                        partners={displayPartners}
-                        activePartner={activePartner}
-                        onPartnerClick={setActivePartner}
-                    />
+                    {hasInteracted ? (
+                        <StoreMap
+                            partners={displayPartners}
+                            activePartner={activePartner}
+                            onPartnerClick={setActivePartner}
+                        />
+                    ) : (
+                        <div className={styles.mapPlaceholder}>
+                            <div className={styles.placeholderIconWrapper}>
+                                <MapPin size={48} className={styles.placeholderIcon} />
+                                <div className={styles.pulseRing}></div>
+                            </div>
+                            <h2>Où êtes-vous ?</h2>
+                            <p>Entrez une ville ou utilisez la géolocalisation pour trouver le point de vente le plus proche.</p>
+                            <button
+                                className={styles.placeholderBtn}
+                                onClick={() => document.querySelector(`.${styles.searchInput}`).focus()}
+                            >
+                                Rechercher une boutique
+                            </button>
+                        </div>
+                    )}
                 </main>
             </div>
         </section>

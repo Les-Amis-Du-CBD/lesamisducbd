@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
 import { Save, Loader2, Plus, Trash2 } from 'lucide-react';
+import ImageUpload from '@/components/Admin/ImageUpload';
 import styles from './TransparenceEditor.module.css';
 
 export default function TransparenceEditor({ initialData }) {
@@ -218,25 +219,33 @@ export default function TransparenceEditor({ initialData }) {
                     <div className={styles.certifList}>
                         {data.certificats.map((cert, i) => (
                             <div key={i} className={styles.certifRow}>
-                                <div className={styles.certifInputs}>
-                                    <input
-                                        type="text"
-                                        placeholder="Label affiché en dessous (ex: AK-47 CBD = 7,5%)"
-                                        value={cert.label}
-                                        onChange={e => updateCertificat(i, 'label', e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="URL de l'image (ex: /images/transparence/ak47.png)"
-                                        value={cert.src}
-                                        onChange={e => updateCertificat(i, 'src', e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Texte alternatif SEO (Alt)"
-                                        value={cert.alt}
-                                        onChange={e => updateCertificat(i, 'alt', e.target.value)}
-                                    />
+                                <div className={styles.certifContent}>
+                                    <div className={styles.certifImageWrapper}>
+                                        <ImageUpload
+                                            currentImage={cert.src || ''}
+                                            onImageChange={url => updateCertificat(i, 'src', url)}
+                                        />
+                                    </div>
+                                    <div className={styles.certifTextInputs}>
+                                        <div className={styles.inputStack}>
+                                            <label>Label affiché en dessous</label>
+                                            <input
+                                                type="text"
+                                                placeholder="ex: AK-47 CBD = 7,5%"
+                                                value={cert.label}
+                                                onChange={e => updateCertificat(i, 'label', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className={styles.inputStack}>
+                                            <label>Texte alternatif SEO (Alt)</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Pour l'accessibilité Google"
+                                                value={cert.alt}
+                                                onChange={e => updateCertificat(i, 'alt', e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <button onClick={() => removeCertificat(i)} className={styles.deleteBtn} title="Supprimer ce certificat">
                                     <Trash2 size={20} />

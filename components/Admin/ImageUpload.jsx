@@ -1,14 +1,22 @@
 'use client';
 import { useState } from 'react';
+import { FileText } from 'lucide-react';
 import styles from './ImageUpload.module.css';
 
-export default function ImageUpload({ currentImage, onImageChange }) {
+export default function ImageUpload({ currentImage, onImageChange, accept = "image/*,application/pdf" }) {
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(currentImage);
+    const [previewType, setPreviewType] = useState(() => {
+        if (currentImage?.toLowerCase().endsWith('.pdf')) return 'pdf';
+        return 'image';
+    });
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
+
+        const isPdf = file.type === 'application/pdf';
+        setPreviewType(isPdf ? 'pdf' : 'image');
 
         // Preview immediate
         const objectUrl = URL.createObjectURL(file);
@@ -41,17 +49,26 @@ export default function ImageUpload({ currentImage, onImageChange }) {
         <div className={styles.container}>
             <div className={styles.previewContainer}>
                 {preview ? (
-                    <img src={preview} alt="Preview" className={styles.image} />
+                    previewType === 'pdf' ? (
+                        <iframe
+                            src={`${preview}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                            title="Aperçu PDF"
+                            className={styles.pdfThumbnail}
+                            tabIndex={-1}
+                        />
+                    ) : (
+                        <img src={preview} alt="Preview" className={styles.image} />
+                    )
                 ) : (
-                    <div className={styles.placeholder}>Aucune image</div>
+                    <div className={styles.placeholder}>Aucun fichier</div>
                 )}
                 {uploading && <div className={styles.overlay}>Upload...</div>}
             </div>
             <label className={styles.uploadBtn}>
-                {uploading ? 'Chargement...' : 'Changer l\'image'}
+                {uploading ? 'Chargement...' : 'Changer le fichier'}
                 <input
                     type="file"
-                    accept="image/*"
+                    accept={accept}
                     onChange={handleFileChange}
                     disabled={uploading}
                     style={{ display: 'none' }}

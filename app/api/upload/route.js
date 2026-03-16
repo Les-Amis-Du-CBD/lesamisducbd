@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import path from 'path';
-import fs from 'fs';
-import { v4 as uuidv4 } from 'uuid';
+import cloudinary from '@/lib/cloudinary';
 
 export async function POST(request) {
     try {
@@ -14,27 +12,24 @@ export async function POST(request) {
 
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        // Define upload directory
-        const uploadDir = path.join(process.cwd(), 'public/images/uploads');
-
-        // Ensure directory exists
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-
-        // Generate unique filename
-        const uniqueFilename = `${uuidv4()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
-        const filePath = path.join(uploadDir, uniqueFilename);
-
-        // Write file
-        fs.writeFileSync(filePath, buffer);
-
-        // Return public URL
-        const fileUrl = `/images/uploads/${uniqueFilename}`;
+        // Upload to Cloudinary using a promise wrapper since the stream API is callback-based
+        const uploadResult = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+                { 
+                    folder: 'lesamisducbd/uploads',
+                    resource_type: 'auto' // Important for PDFs
+                },
+                (error, result) => {
+                    if (error) return reject(error);
+                    resolve(result);
+                }
+            );
+            uploadStream.end(buffer);
+        });
 
         return NextResponse.json({
             success: true,
-            url: fileUrl
+            url: uploadResult.secure_url
         });
 
     } catch (e) {

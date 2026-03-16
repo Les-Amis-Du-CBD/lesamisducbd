@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './Transparence.module.css';
-import { X, Star, BadgeEuro, ShieldCheck } from 'lucide-react';
+import { X, Star, BadgeEuro, ShieldCheck, FileText } from 'lucide-react';
 import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 
 const HEADER_PROPS = {
@@ -209,26 +209,35 @@ export default function TransparenceClient({ globalContent, content }) {
                         <h3 className={styles.certifTitle}>Certificats d'analyses :</h3>
 
                         <div className={styles.galleryGrid}>
-                            {data.certificats.map((analyse, idx) => (
+                            {data.certificats.filter(c => c.src).map((analyse, idx) => (
                                 <div
                                     key={idx}
                                     className={styles.imageCard}
                                     onClick={() => setSelectedImage(analyse)}
                                 >
                                     <div className={styles.imageWrapper}>
-                                        <Image
-                                            src={analyse.src}
-                                            alt={analyse.alt || 'Certificat analyse'}
-                                            fill
-                                            className={styles.image}
-                                        />
+                                        {analyse.src.toLowerCase().endsWith('.pdf') ? (
+                                            <iframe
+                                                src={`${analyse.src}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                                                title={analyse.alt || 'Certificat PDF'}
+                                                className={styles.pdfThumbnail}
+                                                tabIndex={-1}
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={analyse.src}
+                                                alt={analyse.alt || 'Certificat analyse'}
+                                                fill
+                                                className={styles.image}
+                                            />
+                                        )}
                                     </div>
                                     <div className={styles.imageCaption}>
                                         {analyse.label}
                                     </div>
                                 </div>
                             ))}
-                            {data.certificats.length === 0 && (
+                            {data.certificats.filter(c => c.src).length === 0 && (
                                 <p style={{ textAlign: 'center', width: '100%', padding: '2rem' }}>Aucun certificat publié.</p>
                             )}
                         </div>
@@ -237,7 +246,7 @@ export default function TransparenceClient({ globalContent, content }) {
             </div>
 
             {/* Lightbox / Modal for viewing full document */}
-            {selectedImage && (
+            {selectedImage && selectedImage.src && (
                 <div className={styles.modalOverlay}>
                     <button
                         className={styles.modalClose}
@@ -247,12 +256,20 @@ export default function TransparenceClient({ globalContent, content }) {
                         <X size={40} />
                     </button>
                     <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                        <Image
-                            src={selectedImage.src}
-                            alt={selectedImage.alt || 'Ceticicat'}
-                            fill
-                            className={styles.modalImage}
-                        />
+                        {selectedImage.src.toLowerCase().endsWith('.pdf') ? (
+                            <iframe 
+                                src={selectedImage.src} 
+                                className={styles.modalIframe}
+                                title={selectedImage.alt || 'Certificat PDF'}
+                            />
+                        ) : (
+                            <Image
+                                src={selectedImage.src}
+                                alt={selectedImage.alt || 'Certificat'}
+                                fill
+                                className={styles.modalImage}
+                            />
+                        )}
                     </div>
                 </div>
             )}

@@ -15,6 +15,13 @@ export default function ImageUpload({ currentImage, onImageChange, accept = "ima
         const file = e.target.files[0];
         if (!file) return;
 
+        const MAX_SIZE_MB = 4.5;
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+            alert(`Erreur : Le fichier "${file.name}" est trop volumineux.\nLa taille maximale autorisée est de ${MAX_SIZE_MB} Mo.`);
+            e.target.value = ''; // Reset input
+            return;
+        }
+
         const isPdf = file.type === 'application/pdf';
         setPreviewType(isPdf ? 'pdf' : 'image');
 
@@ -74,6 +81,7 @@ export default function ImageUpload({ currentImage, onImageChange, accept = "ima
                     style={{ display: 'none' }}
                 />
             </label>
+            <span className={styles.sizeWarning}>⚠️ Poids max. : 4.5 Mo</span>
         </div>
     );
 }

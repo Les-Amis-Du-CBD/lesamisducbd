@@ -2,18 +2,26 @@ import styles from './Partners.module.css';
 import CountUp from '../CountUp/CountUp';
 
 export default function Partners({ title, subtitle, partners }) {
-    // Custom logic to handle the specific "+ de 100" title for animation
-    // If title contains "100", we split it to animate the number.
+    // Custom logic to handle dynamic numeric titles for animation (e.g., "+ de 100")
     const renderTitle = () => {
-        if (title && title.includes('300')) {
-            const parts = title.split('300');
-            return (
-                <>
-                    {parts[0]}
-                    <CountUp end={300} duration={2500} />
-                    {parts[1]}
-                </>
-            );
+        if (!title) return null;
+
+        const match = title.match(/(\d+)/);
+
+        if (match) {
+            const numStr = match[1];
+            const num = parseInt(numStr, 10);
+
+            if (num > 0) {
+                const parts = title.split(numStr);
+                return (
+                    <>
+                        <span dangerouslySetInnerHTML={{ __html: parts[0] }} />
+                        <CountUp end={num} duration={2500} />
+                        <span dangerouslySetInnerHTML={{ __html: parts[1] }} />
+                    </>
+                );
+            }
         }
         return <span dangerouslySetInnerHTML={{ __html: title }} />;
     };

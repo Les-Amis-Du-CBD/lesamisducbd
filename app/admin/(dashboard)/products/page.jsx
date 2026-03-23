@@ -57,7 +57,19 @@ export default function ProductsPage() {
             }
 
             setAllProducts(fetchedProducts);
-            setVitrine({ flowers: config?.flowers || [], resins: config?.resins || [] });
+
+            // Auto-heal vitrine items' images with fresh catalogue data
+            // This fixes old broken API URLs in KV and keeps images in sync with PrestaShop
+            const healItem = (item) => {
+                const fresh = fetchedProducts.find(p => p.slug === item.slug);
+                return fresh && fresh.image ? { ...item, image: fresh.image } : item;
+            };
+
+            setVitrine({ 
+                flowers: (config?.flowers || []).map(healItem), 
+                resins: (config?.resins || []).map(healItem) 
+            });
+            
             setHiddenIds(Array.isArray(config?.hiddenIds) ? config.hiddenIds : []);
         }).catch(console.error).finally(() => setLoading(false));
     }, []);
